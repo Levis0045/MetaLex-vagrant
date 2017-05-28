@@ -25,16 +25,16 @@ __all__ = ['makeTextWell', 'readFile', 'correction']
 # ----------------------------------------------------------
 
 
-file = "dicoparserimages/result.txt"
-
-corpus = 'dela-fr.txt'
-
 dicArticles = []
 AllWords = []
 
-#text = DICOparser.resultOcr
 
-def makeTextWell():
+def fileRuleUnpack(file):
+    return false
+    
+    
+    
+def makeTextWell(filerule):
     
     with open(file, 'r') as f :
         #tabCategorie = ["adj. ", "n. ", "n. m. ", "n. f. ", "adv.", "prép.", "v.", "n."]

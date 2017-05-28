@@ -25,13 +25,16 @@ from MetaLex import dicProject
 from tesserocr import PyTessBaseAPI
 import codecs
 
+# ----------------------------------------------------
 
 __all__ = ['imageToText']
+
+# ----------------------------------------------------
 
     
 def imageToText(show=False, save=False, langIn='fra'):
     """
-        Take image files, ocrised them and save them the 'dictemp'
+        Take image files, ocrised and save them to 'dicTemp' folder
     """
     
     allimages = []
@@ -58,10 +61,10 @@ def imageToText(show=False, save=False, langIn='fra'):
             for i in imagepart :
                 imageconcat +='_'+i 
             imageconcat = imageconcat.split('.')[0]
-            tempname = 'text_ocr'+imageconcat+'.'+'txt'
+            tempname = 'text_ocr'+imageconcat+'.html'
             
             print "\nDébut de la lecture optique de '"+imagefile+"'\n"
-            textocr = api.GetUTF8Text()
+            textocr = api.GetHOCRText(100)
             print "\nFin de la lecture optique de '"+imagefile+"'\n"
             
             if save:
@@ -75,7 +78,8 @@ def imageToText(show=False, save=False, langIn='fra'):
                 print textocr
                 print "\n\n*********************************************************\n\n"
             else :
-                print " Warning : imageToText(show=False, save=False) >> precise the action 'show=False or save=False'"
+                message = " Warning : imageToText(show=False, save=False) >> precise the action 'show=False or save=False'"
+                MetaLex.dicLog.manageLog.writelog(message) 
                 
             dicProject.treat_ocr_append(tempname)  
             MetaLex.resultOcrData[img] = [textocr]
