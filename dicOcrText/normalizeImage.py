@@ -84,7 +84,7 @@ class enhanceImages ():
     This Class enhance image file and save them to 'dicTemp'
     """
     
-    def __init__(self):
+    def __init__(self): 
         self.images = MetaLex.fileImages
         
     def contrast(self, value, show=False, save=False):
