@@ -95,7 +95,7 @@ class enhanceImages ():
             for image in  self.images :
                 img = Image.open(image)
                 imagename, ext = dicProject.get_part_file(image)
-                tempname = 'img_contrast_'+str(num)+'.'+ext
+                tempname = 'img_contrast_'+str(num)+ext
                 enh = ImageEnhance.Contrast(img)
                 
                 if show :
@@ -124,7 +124,7 @@ class enhanceImages ():
             for image in  self.images :
                 img = Image.open(image)
                 imagename, ext = dicProject.get_part_file(image)
-                tempname = 'img_sharp_'+str(num)+'.'+ext
+                tempname = 'img_sharp_'+str(num)+ext
                 enh = ImageEnhance.Sharpness(img)
 
                 if show :
@@ -153,7 +153,7 @@ class enhanceImages ():
             for image in  self.images :
                 img = Image.open(image)
                 imagename, ext = dicProject.get_part_file(image)
-                tempname = 'img_bright_'+str(num)+'.'+ext
+                tempname = 'img_bright_'+str(num)+ext
                 enh = ImageEnhance.Brightness(img)
 
                 if show :
@@ -181,18 +181,18 @@ class enhanceImages ():
             for image in  self.images :
                 img = Image.open(image)
                 imagename, ext = dicProject.get_part_file(image)
-                tempname = 'img_bright_'+str(num)+'.'+ext
+                tempname = 'img_bright_'+str(num)+ext
                 enhbright = ImageEnhance.Brightness(img)
                 dicProject.createtemp()
                 enhbright.enhance(bright).save(tempname)
                 img2 = Image.open(tempname)
                 enhconst = ImageEnhance.Contrast(img2)
-                tempname2 = 'img_contrast_bright_'+str(num)+'.png'
+                tempname2 = 'img_contrast_bright_'+str(num)+ext
                 dicProject.createtemp()
                 enhconst.enhance(contrast).save(tempname2)
                 os.remove(tempname)
                 dicProject.treat_image_append(tempname2)
-                message = imagename + ' is modified with  contrast (' +str(contrast)+ ') and  bright ('+str(bright)+') > '+tempname2+' > Saved in dictemp folder'  
+                message = imagename + ' is modified with  contrast (' +str(contrast)+ ') and  bright ('+str(bright)+') > '+tempname2+' > Saved in dicTemp folder'  
                 MetaLex.dicLog.manageLog.writelog(message) 
                 img.close()
                 num += 1
@@ -211,7 +211,7 @@ class enhanceImages ():
             for image in  self.images :
                 img = Image.open(image)
                 imagename, ext = dicProject.get_part_file(image)
-                tempname = 'img_convert_'+str(num)+'.'+ext
+                tempname = 'img_convert_'+str(num)+ext
                 img.convert("L").show()
                 num += 1
         else:
@@ -229,7 +229,7 @@ class enhanceImages ():
             for image in  self.images :
                 img = Image.open(image)
                 imagename, ext = dicProject.get_part_file(image)
-                tempname = 'img_filter_'+str(num)+'.'+ext
+                tempname = 'img_filter_'+str(num)+ext
                 dicProject.createtemp()
                 img.filter(imgfilter).save(tempname)
                 dicProject.treat_image_append(tempname)
@@ -252,7 +252,7 @@ class enhanceImages ():
             for image in  self.images :
                 img = Image.open(image)
                 imagename, ext = dicProject.get_part_file(image)
-                tempname = 'img_color_remove_'+str(num)+'.'+ext
+                tempname = 'img_color_remove_'+str(num)+ext
                 
                 replace_color = (255, 255, 255)
                 find_color = (0, 0, 0)
