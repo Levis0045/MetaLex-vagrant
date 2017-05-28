@@ -90,7 +90,7 @@ class enhanceImages ():
     def contrast(self, value, show=False, save=False):
         """Enhance image file with the contrast value"""
         
-        if self.images >= 1 :
+        if self.images >= 1 : 
             num = 1
             for image in  self.images :
                 img = Image.open(image)
