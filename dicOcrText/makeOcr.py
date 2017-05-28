@@ -46,7 +46,7 @@ def imageToText(show=False, save=False, langIn='fra'):
     
     else:
         allimages = MetaLex.treatImages
-        
+         
     num = 1
     for img in allimages :
         with PyTessBaseAPI() as api:
