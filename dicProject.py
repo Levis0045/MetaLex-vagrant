@@ -6,16 +6,23 @@
 """
     manageLog enrégistre toutes les opérations déclenchées tout au long du processus
     de traitement métalexicographique
+    
+     
+    Usage:
+    >>> from MetaLex.dicProject import *
+    >>> 
      
 """
 
+# ----Internal Modules------------------------------------------------------
+
 import MetaLex
 
-# ----------------------------------------------------------
+# ----External Modules------------------------------------------------------
 
 import os
 
-# ----------------------------------------------------------
+# ----Exported Functions-----------------------------------------------------
 
 __all__ = ['createtemp', 'newProject', 'treat_image_append', 'get_part_file']
 
@@ -39,7 +46,7 @@ def treat_image_append(namefile) :
 def treat_ocr_append(namefile) :
     """Append ocr result files to the global variable"""
     
-    tempnameLocation =  os.getcwd()+'/'+namefile
+    tempnameLocation =  os.getcwd()+'/dicTemp/'+namefile
     MetaLex.resultOcrFiles.append(tempnameLocation)
      
      
@@ -100,17 +107,17 @@ class newProject :
             return self.fileImages
     
     def getTreatImages (self):
-        if (len(MetaLex.dicOcrText.fileImages)>= 1) :
-            self.treatImageFile  = MetaLex.dicOcrText.treatImageFile 
+        if (len(MetaLex.treatImages)>= 1) :
+            self.treatImageFile  = MetaLex.treatImages
             return self.treatImageFile 
     
     def getTextOcr (self):
-        if (MetaLex.dicOcrText.textOcr) :
-            self.resultOcr += MetaLex.dicOcrText.textOcr
+        if (MetaLex.resultOcrData) :
+            self.resultOcr += MetaLex.resultOcrData
             return self.resultOcr
         
-    def getOcrText (self):
-        return MetaLex.dicOcrText.makeOcr
+    def getOcrFiles (self):
+        return MetaLex.resultOcrFiles
 
        
         
