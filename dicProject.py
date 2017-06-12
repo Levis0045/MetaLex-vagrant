@@ -90,7 +90,6 @@ class newProject :
         MetaLex.allProjectNames.append(self.name)
         MetaLex.projectName = self.name
         self.fileImages = []
-        self.treatImageFile = object
         self.resultOcr = ""
         self.resultText = ""
         self.resultXmlised = ""
