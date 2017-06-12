@@ -11,6 +11,7 @@
     Usage:
     >>> from MetaLex.dicOcrText import *
     >>> makeTextWell()
+    
 """
 
 # ----Internal Modules------------------------------------------------------
@@ -22,7 +23,7 @@ import MetaLex
 import re, sys, codecs
 from bs4 import BeautifulSoup
 import warnings
-from array import array
+#import ipdb
 
 # -----Exported Functions-----------------------------------------------------
 
@@ -35,16 +36,48 @@ AllWords = []
 
 # ----------------------------------------------------------
 
-    
-def makeTextWell(file_rules, okCorrect=False):
+
+def makeTextWell(html_f, file_rules, okCorrect=False):
     filerule = fileRule(file_rules)
     data_rules = filerule.fileRuleUnpack()
-    html_files = MetaLex.resultOcrFiles
-    for html in html_files :
+    #html_ocr_files = MetaLex.resultOcrFiles
+    html_ocr_files = html_f
+    for html in html_ocr_files :
         with open(html, 'r') as h :
             extractArticle(h, data_rules, okCorrect)
             
-        
+         
+def findArticle(articles, enhance=False):
+    for article in articles :
+        #print article
+        for art, artcorrect in article.items() :
+            if enhance :
+                content = artcorrect
+                #print content
+                #ipdb.set_trace() 
+                text = u''
+                if content.count(u' n.') > 1 or content.count(u' adj.') > 1 \
+                or content.count(u' v.') > 1 or content.count(u' adv.') > 1 \
+                or content.count(u' prép.') > 1 :
+                    rt =  re.split(r'(\W+)', content)
+                    for i, t in enumerate(rt) :
+                        #print i, t
+                        if t != u'. ': 
+                            text += t+u''
+                        if t == u'. ' :
+                            if u'n' in rt[i:i+8] or u'adv' in rt[i:i+8] \
+                            or u'v' in rt[i:i+8] or u'prép' in rt[i:i+8] \
+                            or u'adj' in rt[i:i+8] or u'conj' in rt[i:i+8] :
+                                print text+'.\n'
+                                text = u''
+                            else :
+                                text += t
+                        #print re.split('.', content.strip())
+                    
+            else : 
+                print artcorrect, art
+
+                     
 def extractArticle(html_file, data, okCorrect):
     soup = BeautifulSoup(html_file, "html5lib")
     div = soup.find('div', attrs={'class': u'ocr_page'}) 
@@ -54,115 +87,58 @@ def extractArticle(html_file, data, okCorrect):
         for para in div.findAll('p', attrs={'class': u'ocr_par'}) :
             contentOrigin = u''
             contentCorrection = u''
+            
             for span in para.stripped_strings:
-                if span[-1] == u'—' or span[-1] == u'-':
+                if span[-1] == u'—' or span[-1] == u'-' or span[-1] == u'— ' or span[-1] == u'- ':
                     span = span[:-1]
                     AllWords.append(span)
                     if okCorrect :
-                        spanCorrect = correctWord(span)
+                        spanCorrect = MetaLex.correctWord(span)
                         contentCorrection += spanCorrect
                     else :
-                        contentOrigin += span+u' '
+                        contentOrigin += span+u''
+                        
                     #print '*****  '+span + ' : ' + spanCorrect
-                elif wordReplace(span, data[1], test=True) :
-                    span = wordReplace(span, data[1])
+                elif MetaLex.wordReplace(span, data[1], test=True) :
+                    span = MetaLex.wordReplace(span, data[1])
                     if okCorrect :
-                        spanCorrect = correctWord(span)
+                        spanCorrect = MetaLex.correctWord(span)
                         contentCorrection += spanCorrect+u' '
                     else :
                         contentOrigin += span+u' '
+                        
                     #print '*****  '+span + ' : ' + spanCorrect
-                elif caractReplace(span, data[2], test=True):
-                    span = caractReplace(span, data[2])
+                elif MetaLex.caractReplace(span, data[2], test=True):
+                    span = MetaLex.caractReplace(span, data[2])
                     AllWords.append(span)
                     if okCorrect :
-                        spanCorrect = correctWord(span)
+                        spanCorrect = MetaLex.correctWord(span)
                         contentCorrection += spanCorrect+u' '
                     else:
                         contentOrigin += span+u' '
+                        
                     #print '*****  '+span + ' : ' + spanCorrect
+                elif span.count(u'n.') > 1 :
+                    print span+'\n'
                 else:
                     if okCorrect :
                         AllWords.append(span)
-                        spanCorrect = correctWord(span)
+                        spanCorrect = MetaLex.correctWord(span)
                         contentCorrection += spanCorrect+u' '
                     else :
                         AllWords.append(span)
                         contentOrigin += span+u' '
                     #print '*****  '+span + ' : ' + spanCorrect
-            artnum = 'art'+str(art)
-            crtnum = 'correct'+str(art)
+            print contentOrigin+'\n'
+            artnum = 'article_'+str(art)
+            crtnum = 'correction_'+str(art)
             if len(contentOrigin) >= 5 :
-                article = {artnum:contentOrigin, crtnum:contentCorrection}
+                article = {crtnum:contentCorrection, artnum:contentOrigin}
                 dicArticles.append(article)
                 art += 1
 
-    for article in dicArticles :
-        for art in article.items()[0]:
-            print art+'\n'
-
-
-def correctWord (word):
-    correct = MetaLex.wordCorrection()
-    if len(word) > 1 :
-        word = word.strip()
-        if word[-1] in [u'.', u',']:
-            fin = word[-1]
-            if word[0].isupper() :
-                deb = word[0]
-                wordc = word[:-1]
-                goodword = correct.correction(wordc.lower())
-                wordg = deb+goodword[1:]+fin
-                return wordg
-            else : 
-                wordc = word[:-1]
-                goodword = correct.correction(wordc)
-                wordg = goodword+fin
-                return wordg
-        elif word[-1] in [u')']:
-            return word
-        elif word[1] in [u"'", u"’"] :
-            deb = word[:2]
-            wordc = word[2:]
-            goodword = correct.correction(wordc)
-            wordg = deb+goodword[1:]
-            return wordg
-        elif word[0] in [u":"] :
-            deb = word[0]
-            wordc = word[1:]
-            goodword = correct.correction(wordc)
-            wordg = deb+goodword[1:]
-            return wordg
-        else :
-            goodword = correct.correction(word)
-            return goodword
-    else :
-        return word
-        
-        
-def wordReplace(word, data, test=False):
-    equiv_words = data
-    if test :
-        if equiv_words.has_key(word) :
-            return True
-    else :
-        if  word in equiv_words.keys() :
-            return equiv_words[word]
+    #findArticle(dicArticles, enhance=True)
     
-    
-def caractReplace(word, data, test=False):
-    equiv_caract = data
-    if test :
-        for k in equiv_caract.items()[0]:
-            if word.find(k):
-                return True
-            else :
-                return False
-    else:
-        for ke in equiv_caract.keys() :
-            if word.find(ke):
-                return word.replace(ke, equiv_caract[ke])
-            break
         
         
 class fileRule():

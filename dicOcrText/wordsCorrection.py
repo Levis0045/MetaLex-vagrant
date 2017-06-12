@@ -20,7 +20,7 @@ from collections import Counter
 
 # -----Exported Functions-----------------------------------------------------
 
-__all__ = ['wordCorrection ']
+__all__ = ['correctWord', 'wordReplace', 'caractReplace']
 
 # -----Global Variables-----------------------------------------------------
 
@@ -28,11 +28,48 @@ __all__ = ['wordCorrection ']
 
 # ----------------------------------------------------------
 
+def correctWord (word):
+    correct = wordCorrection()
+    if len(word) > 1 :
+        word = word.strip()
+        if word[-1] in [u'.', u',']:
+            fin = word[-1]
+            if word[0].isupper() :
+                deb = word[0]
+                wordc = word[:-1]
+                goodword = correct.correction(wordc.lower())
+                wordg = deb+goodword[1:]+fin
+                return wordg
+            else : 
+                wordc = word[:-1]
+                goodword = correct.correction(wordc)
+                wordg = goodword+fin
+                return wordg
+        elif word[-1] in [u')']:
+            return word
+        elif word[1] in [u"'", u"’"] :
+            wordtab = word.split(u"’")
+            deb, wordc = wordtab[0], wordtab[1]
+            goodword = correct.correction(wordc)
+            wordg = deb+u'’'+goodword[1:]
+            return wordg
+        elif word[0] in [u":"] :
+            wordtab = word.split(u":")
+            deb, wordc = wordtab[0], wordtab[1]
+            goodword = correct.correction(wordc)
+            wordg = deb+u'’'+goodword[1:]
+            return wordg
+        else :
+            goodword = correct.correction(word)
+            return goodword
+    else :
+        return word
+
 
 class wordCorrection :
     def __init__(self):
         MetaLex.dicPlugins
-        filepath = sys.path[-1]+'/METALEX_words-corpus.txt'
+        filepath = sys.path[-1]+'/METALEX_words-corpus2.txt'
         self.corpusData = open(filepath).read()
         self.WORDS = {}
         self.start()
@@ -42,7 +79,7 @@ class wordCorrection :
         self.WORDS = self.train(self.words(self.corpusData))
         
     def words(self, text): 
-        return re.findall(r'\w+', text.lower())
+        return re.findall(r'\W+', text.lower())
     
     def train(self, features):
         model = collections.defaultdict(lambda: 1)
@@ -68,7 +105,34 @@ class wordCorrection :
         return max(candidates, key=self.WORDS.get)
     
     
+def wordReplace(word, data, test=False):
+    equiv_words = data
+    if test :
+        if equiv_words.has_key(word) :
+            return True
+        else :
+            return False
+    elif word in equiv_words.keys() :
+            return equiv_words[word]
+        
     
+    
+def caractReplace(word, data, test=False):
+    equiv_caract = data
+    equiv_keys = equiv_caract.keys()
+    if test :
+        for k in equiv_keys:
+            #print word + ' ' + k
+            if word.find(k):
+                return True
+            else :
+                return False
+    else :
+        for ke in equiv_keys :
+            #print equiv_caract.keys()
+            if word.find(ke):
+                return word.replace(ke, equiv_caract[ke])
+            break    
     
     
     

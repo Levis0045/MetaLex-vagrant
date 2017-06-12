@@ -72,7 +72,7 @@ def createtemp():
 
 
 def dicFile(file):
-    """Take the current current script path and join it to file path"""
+    """Take the current script path and join it to file path"""
     
     script_dir = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(script_dir, file)
