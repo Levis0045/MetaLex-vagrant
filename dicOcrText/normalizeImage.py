@@ -136,7 +136,7 @@ class enhanceImages ():
                     dicProject.createtemp()
                     enh.enhance(value).save(tempname)
                     dicProject.treat_image_append(tempname)
-                    message = imagename + 'is modified with sharp (' +str(value)+ ') > '+tempname+' > Saved in dictemp folder'  
+                    message = imagename + 'is modified with sharp ( ' +str(value)+ ') > '+tempname+' > Saved in dictemp folder'  
                     MetaLex.dicLog.manageLog.writelog(message) 
                     num += 1 
                 else :
@@ -212,7 +212,6 @@ class enhanceImages ():
             message = '  > They are not images for the current treatment : input images!!' 
             print "--> "+message+"\n"
             MetaLex.dicLog.manageLog.writelog(message)  
-            
             
            
     def convert (self, img, show=False, save=False):
