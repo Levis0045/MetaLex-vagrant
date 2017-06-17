@@ -69,7 +69,7 @@ def correctWord (word):
 class wordCorrection :
     def __init__(self):
         MetaLex.dicPlugins
-        filepath = sys.path[-1]+'/METALEX_words-corpus2.txt'
+        filepath = sys.path[-1]+'/METALEX_words-corpus.txt'
         self.corpusData = open(filepath).read()
         self.WORDS = {}
         self.start()
@@ -79,7 +79,7 @@ class wordCorrection :
         self.WORDS = self.train(self.words(self.corpusData))
         
     def words(self, text): 
-        return re.findall(r'\W+', text.lower())
+        return re.findall(r'(\s+)', text.lower())
     
     def train(self, features):
         model = collections.defaultdict(lambda: 1)
@@ -113,7 +113,7 @@ def wordReplace(word, data, test=False):
         else :
             return False
     elif word in equiv_words.keys() :
-            return equiv_words[word]
+        return equiv_words[word]
         
     
     
@@ -128,11 +128,11 @@ def caractReplace(word, data, test=False):
             else :
                 return False
     else :
-        for ke in equiv_keys :
+        for k in equiv_keys :
             #print equiv_caract.keys()
-            if word.find(ke):
-                return word.replace(ke, equiv_caract[ke])
-            break    
+            if word.find(k):
+                return word.replace(k, equiv_caract[k])
+            
     
     
     

@@ -9,9 +9,23 @@
 """
 
 
-__version__ = "0.0.1"
+__version__ = "0.0.4"
 
-import sys
+
+# ----Internal Modules------------------------------------------------------
 
 from .. import *
 from manageLog import *
+
+# ----External Modules------------------------------------------------------
+
+import sys
+
+# -----Global Variables-----------------------------------------------------
+
+
+# ----------------------------------------------------------
+
+
+def version():
+    return "dicLog package is in a version : %s \n" %__version__
