@@ -44,7 +44,8 @@ def imageToText(show=False, save=False, langIn='fra'):
     allimages = []
     if len(MetaLex.fileImages) >= 1 and not len(MetaLex.treatImages) >= 1 :
         print "\n Vous avez aucun(s) fichier(s) image traité(s), veuillez les traiter avant la lecture optique \n"
-    
+        os.chdir('..')
+        return None
     elif not len(MetaLex.fileImages) >= 1 :
         print " \n Vous n'avez aucun(s) fichier(s) image à traiter"
     
