@@ -21,8 +21,8 @@ from MetaLex import dicXmlised as Xml
 
 # ----External Modules------------------------------------------------------
 
-import re, sys, codecs
 from bs4 import BeautifulSoup
+import re, sys, codecs
 import warnings
 #import ipdb
 
