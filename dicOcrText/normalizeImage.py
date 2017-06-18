@@ -104,11 +104,12 @@ class enhanceImages ():
                     enh.enhance(value).show()
                 elif save :
                     dicProject.createtemp()
-                    enh.enhance(value).save(tempname)
-                    dicProject.treat_image_append(tempname)
-                    message = imagename + 'is modified with contrast (' +str(value)+ ') > '+tempname+' > Saved in dicTemp folder'  
-                    MetaLex.dicLog.manageLog.writelog(message) 
-                    num += 1 
+                    if dicProject.inDir(tempname) :
+                        enh.enhance(value).save(tempname)
+                        dicProject.treat_image_append(tempname)
+                        message = imagename + 'is modified with contrast (' +str(value)+ ') > '+tempname+' > Saved in dicTemp folder'  
+                        MetaLex.dicLog.manageLog.writelog(message) 
+                        num += 1 
                 else :
                     print ' Warning : contrast(value, show=False, save=False) --> You must define one action for the current treatment : show=true or save=true '
                     
@@ -134,11 +135,12 @@ class enhanceImages ():
                     enh.enhance(value).show()
                 elif save :
                     dicProject.createtemp()
-                    enh.enhance(value).save(tempname)
-                    dicProject.treat_image_append(tempname)
-                    message = imagename + 'is modified with sharp ( ' +str(value)+ ') > '+tempname+' > Saved in dicTemp folder'  
-                    MetaLex.dicLog.manageLog.writelog(message) 
-                    num += 1 
+                    if dicProject.inDir(tempname) :
+                        enh.enhance(value).save(tempname)
+                        dicProject.treat_image_append(tempname)
+                        message = imagename + 'is modified with sharp ( ' +str(value)+ ') > '+tempname+' > Saved in dicTemp folder'  
+                        MetaLex.dicLog.manageLog.writelog(message) 
+                        num += 1 
                 else :
                     print 'Warning : sharp(value, show=False, save=False) --> You must define one action for the current treatment : show=true or save=true '
         
@@ -164,7 +166,8 @@ class enhanceImages ():
                     enh.enhance(value).show()
                 elif save :
                     dicProject.createtemp()
-                    enh.enhance(value).save(tempname)
+                    if dicProject.inDir(tempname) :
+                        enh.enhance(value).save(tempname)
                     dicProject.treat_image_append(tempname)
                     message = imagename + 'is modified with bright (' +str(value)+ ') > '+tempname+' > Saved in dicTemp folder'  
                     MetaLex.dicLog.manageLog.writelog(message) 
@@ -199,10 +202,11 @@ class enhanceImages ():
                 if save :
                     tempname2 = 'img_contrast_bright_'+str(num)+ext
                     dicProject.createtemp()
-                    enhconst.enhance(contrast).save(tempname2)
-                    os.remove(tempname)
-                    os.remove(img_conv)
-                    dicProject.treat_image_append(tempname2)
+                    if dicProject.inDir(tempname2) :
+                        enhconst.enhance(contrast).save(tempname2)
+                        os.remove(tempname)
+                        os.remove(img_conv)
+                        dicProject.treat_image_append(tempname2)
                     
                 message = imagename + ' is modified with  contrast (' +str(contrast)+ ') and  bright ('+str(bright)+') > '+tempname2+' > Saved in dicTemp folder'  
                 MetaLex.dicLog.manageLog.writelog(message) 
@@ -226,8 +230,11 @@ class enhanceImages ():
                     img.convert("L").show()
                 if save :
                     dicProject.createtemp()
-                    img.convert("L").save(tempname)
-                    return tempname
+                    if dicProject.inDir(tempname) :
+                        img.convert("L").save(tempname)
+                        return tempname
+                    else: 
+                        return tempname
                     
         else:
             message = '  > They are not images for the current treatment : input images!!' 
@@ -249,7 +256,7 @@ class enhanceImages ():
                 dicProject.createtemp()
                 if show :
                     img.filter(imgfilter).show()
-                else :
+                elif not show and dicProject.inDir(tempname) :
                     img.filter(imgfilter).save(tempname)
                 dicProject.treat_image_append(tempname)
                 message = imagename + ' is modified with  filter (' +str(imgfilter)+ ')  > '+tempname+' > Saved in dicTemp folder'  
@@ -289,9 +296,10 @@ class enhanceImages ():
                 if show :
                     img.show()
                 if save :
-                    dicProject.createtemp() 
-                    img.save(tempname)   
-                    return tempname
+                    dicProject.createtemp()
+                    if dicProject.inDir(tempname) : 
+                        img.save(tempname)   
+                        return tempname
         else:
             message = '  > They are not images for the current treatment : input images!!' 
             print "--> "+message+"\n"
