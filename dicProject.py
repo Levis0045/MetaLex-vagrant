@@ -4,13 +4,11 @@
 
 
 """
-    manageLog enrégistre toutes les opérations déclenchées tout au long du processus
-    de traitement métalexicographique
+    manageLog store all changes operate during Metalex processing
     
-     
     Usage:
     >>> from MetaLex.dicProject import *
-    >>> 
+    >>> manageLog.writelog(message)
      
 """
 
