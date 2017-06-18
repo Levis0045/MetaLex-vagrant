@@ -43,7 +43,9 @@ __all__ = ['getImages', 'enhanceImages']
 
 
 def getImages(images):
-    """Take input image list and save it in the scope"""
+    """
+    Take input image list and save it in the scope
+    """
     
     if len(images) >= 1 :
         num = 1
@@ -90,7 +92,9 @@ class enhanceImages ():
         self.images = MetaLex.fileImages
         
     def contrast(self, value, show=False, save=False):
-        """Enhance image file with the contrast value"""
+        """
+        Enhance image file with the contrast value
+        """
         
         if self.images >= 1 : 
             num = 1
@@ -120,7 +124,9 @@ class enhanceImages ():
             
             
     def sharp(self, value, show=False, save=False):
-        """Enhance image file with the sharp value"""
+        """
+        Enhance image file with the sharp value
+        """
         
         if len(self.images) >= 1 :
             num = 1
@@ -142,7 +148,7 @@ class enhanceImages ():
                         MetaLex.dicLog.manageLog.writelog(message) 
                         num += 1 
                 else :
-                    print 'Warning : sharp(value, show=False, save=False) --> You must define one action for the current treatment : show=true or save=true '
+                    print 'Warning : sharp(value, show=False, save=False) --> You must define one action for the current treatment : show=true or save=true'
         
         else:
             message = ' Error : getImages(images) >> They are not images for the current treatment : please input images !! ' 
@@ -151,7 +157,9 @@ class enhanceImages ():
             
             
     def bright(self, value, show=False, save=False):
-        """Enhance image file with the bright value"""
+        """
+        Enhance image file with the bright value
+        """
         
         if len(self.images) >= 1 :
             num = 1
@@ -181,36 +189,41 @@ class enhanceImages ():
             
             
     def contrastBright(self, contrast, bright, show=False, save=False):
-        """Enhance image file with the contrastBright value"""
+        """
+        Enhance image file with the contrastBright value
+        """
         
         if len(self.images) >= 1 :
             num = 1
-            for image in  self.images :
-                img_conv = self.removeColor(image, save=True)
-                img = Image.open(img_conv)
+            for i, image in  enumerate(self.images) :
+                img_conv = self.removeColor(i, image, save=True)
+                imgpil = Image.open(img_conv)
                 imagename, ext = dicProject.get_part_file(image)
                 tempname = 'img_bright_'+str(num)+ext
-                enhbright = ImageEnhance.Brightness(img)
+                enhbright = ImageEnhance.Brightness(imgpil)
                 dicProject.createtemp()
                 enhbright.enhance(bright).save(tempname)
                 img2 = Image.open(tempname)
                 enhconst = ImageEnhance.Contrast(img2)
+                img_conv_part = dicProject.get_part_file(img_conv)
+                img_conv_file = img_conv_part[0]+img_conv_part[1]
                 if show :
                     enhconst.enhance(contrast).show()
                     dicProject.createtemp()
                     os.remove(tempname)
+                    os.remove(img_conv_file)
                 if save :
                     tempname2 = 'img_contrast_bright_'+str(num)+ext
                     dicProject.createtemp()
                     if dicProject.inDir(tempname2) :
                         enhconst.enhance(contrast).save(tempname2)
                         os.remove(tempname)
-                        os.remove(img_conv)
                         dicProject.treat_image_append(tempname2)
-                    
+                    if dicProject.inDir(img_conv_file) :
+                        os.remove(img_conv_file)
                     message = imagename + ' is modified with  contrast (' +str(contrast)+ ') and  bright ('+str(bright)+') > '+tempname2+' > Saved in dicTemp folder'  
                     MetaLex.dicLog.manageLog.writelog(message) 
-                    img.close()
+                    imgpil.close()
                     num += 1
         else:
             message = '  > They are not images for the current treatment : input images!!' 
@@ -219,7 +232,9 @@ class enhanceImages ():
             
            
     def convert (self, img, show=False, save=False):
-        """Convert image file to white/black image"""
+        """
+        Convert image file to white/black image
+        """
         num = 1
         if len(self.images) >= 1 :
             for image in  self.images :
@@ -244,7 +259,9 @@ class enhanceImages ():
                   
                 
     def filter (self, imgfilter, show=False):
-        """Filter image file with specific filter value"""
+        """
+        Filter image file with specific filter value
+        """
         
         if len(self.images) >= 1 :
             num = 1
@@ -270,38 +287,40 @@ class enhanceImages ():
             
                     
                 
-    def removeColor(self, img, show=False, save=False):
-        """Remove color in image file to enhance its quality"""
+    def removeColor(self, i, img, show=False, save=False):
+        """
+        Remove color in image file to enhance its quality
+        """
         
-        if len(self.images) >= 1 :
-            num = 1
-            for image in  self.images :
-                img = Image.open(image)
-                imagepart = dicProject.get_part_file(image)
-                tempname = 'img_color_remove_'+str(num)+imagepart[1]
-                
-                replace_color = (255, 255, 255)
-                find_color = (0, 0, 0)
-                new_image_data = []
-                for color in list(img.getdata()) :
-                    #print color
-                    if color == find_color or color == replace_color :
-                        #print color
-                        new_image_data += [color]
-                    else:
-                        #print color
-                        pass
-                        
-                img.putdata(new_image_data)
-                if show :
-                    img.show()
-                if save :
-                    dicProject.createtemp()
-                    if dicProject.inDir(tempname) : 
-                        img.save(tempname)   
-                        return tempname
-                    else :
-                        return tempname 
+        if img :
+            imagepart = dicProject.get_part_file(img)
+            tempname = 'img_color_remove_'+str(i)+imagepart[1]
+            
+            imgpil = Image.open(img)
+            replace_color = (255, 255, 255)
+            find_color = (0, 0, 0)
+            new_image_data = []
+            for color in list(imgpil.getdata()) :
+                if color == find_color or color == replace_color :
+                    new_image_data += [color]
+                else:
+                    pass
+            
+            imgdir = os.path.dirname(img)
+            namestore = ""
+            for tep in imgdir.split('/')[:-1] :
+                namestore += tep +"/"
+            namestore = namestore+"dicTemp/"+tempname
+            imgpil.putdata(new_image_data)
+            if show :
+                imgpil.show()
+            if save :
+                dicProject.createtemp()
+                if dicProject.inDir(tempname) : 
+                    imgpil.save(tempname) 
+                    return namestore
+                else :
+                    return namestore
         else:
             message = '  > They are not images for the current treatment : input images!!' 
             print "--> "+message+"\n"
