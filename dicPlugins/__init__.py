@@ -3,7 +3,7 @@
 
 
 """
-    dicPlugings 
+    dicPlugings contains all extra-module fo Metalex Tool
      
 """
 
