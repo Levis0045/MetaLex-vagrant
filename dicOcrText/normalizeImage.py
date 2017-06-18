@@ -106,7 +106,7 @@ class enhanceImages ():
                     dicProject.createtemp()
                     enh.enhance(value).save(tempname)
                     dicProject.treat_image_append(tempname)
-                    message = imagename + 'is modified with contrast (' +str(value)+ ') > '+tempname+' > Saved in dictemp folder'  
+                    message = imagename + 'is modified with contrast (' +str(value)+ ') > '+tempname+' > Saved in dicTemp folder'  
                     MetaLex.dicLog.manageLog.writelog(message) 
                     num += 1 
                 else :
@@ -136,14 +136,14 @@ class enhanceImages ():
                     dicProject.createtemp()
                     enh.enhance(value).save(tempname)
                     dicProject.treat_image_append(tempname)
-                    message = imagename + 'is modified with sharp ( ' +str(value)+ ') > '+tempname+' > Saved in dictemp folder'  
+                    message = imagename + 'is modified with sharp ( ' +str(value)+ ') > '+tempname+' > Saved in dicTemp folder'  
                     MetaLex.dicLog.manageLog.writelog(message) 
                     num += 1 
                 else :
                     print 'Warning : sharp(value, show=False, save=False) --> You must define one action for the current treatment : show=true or save=true '
         
         else:
-            message = ' Error : getImages(images) >> They are not images for the current treatement : please input images !! ' 
+            message = ' Error : getImages(images) >> They are not images for the current treatment : please input images !! ' 
             print "--> "+message+"\n"
             MetaLex.dicLog.manageLog.writelog(message)
             
@@ -166,13 +166,13 @@ class enhanceImages ():
                     dicProject.createtemp()
                     enh.enhance(value).save(tempname)
                     dicProject.treat_image_append(tempname)
-                    message = imagename + 'is modified with bright (' +str(value)+ ') > '+tempname+' > Saved in dictemp folder'  
+                    message = imagename + 'is modified with bright (' +str(value)+ ') > '+tempname+' > Saved in dicTemp folder'  
                     MetaLex.dicLog.manageLog.writelog(message) 
                     num += 1 
                 else :
                     print 'Warning : bright(value, show=False, save=False) --> You must define one action for the current treatment : show=true or save=true '
         else:
-            message = ' Error : getImages(images) >> They are not images for the current treatement : input images!!' 
+            message = ' Error : getImages(images) >> They are not images for the current treatment : input images!!' 
             print "--> "+message+"\n"
             MetaLex.dicLog.manageLog.writelog(message)
             
@@ -236,7 +236,7 @@ class enhanceImages ():
             
                   
                 
-    def filter (self, imgfilter):
+    def filter (self, imgfilter, show=False):
         """Filter image file with specific filter value"""
         
         if len(self.images) >= 1 :
@@ -247,9 +247,12 @@ class enhanceImages ():
                 imagename, ext = dicProject.get_part_file(image)
                 tempname = 'img_filter_'+str(num)+ext
                 dicProject.createtemp()
-                img.filter(imgfilter).save(tempname)
+                if show :
+                    img.filter(imgfilter).show()
+                else :
+                    img.filter(imgfilter).save(tempname)
                 dicProject.treat_image_append(tempname)
-                message = imagename + ' is modified with  filter (' +str(imgfilter)+ ')  > '+tempname+' > Saved in dictemp folder'  
+                message = imagename + ' is modified with  filter (' +str(imgfilter)+ ')  > '+tempname+' > Saved in dicTemp folder'  
                 MetaLex.dicLog.manageLog.writelog(message)
                 img.close()
                 num += 1
