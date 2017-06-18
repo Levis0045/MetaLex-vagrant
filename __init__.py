@@ -16,7 +16,7 @@ from .dicPlugins import *
 from dicProject import *
 
 projectName = ''
-allProjectNames = []
+allProjectNames = [] 
 fileImages = []
 treatImages = []
 resultOcrFiles = []

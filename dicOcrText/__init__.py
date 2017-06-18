@@ -13,14 +13,16 @@
 """
 
 
-__version__ = "0.0.1"
+__version__ = "0.0.3"
 
- 
+# ----Internal Modules------------------------------------------------------
+
 from normalizeImage import enhanceImages, getImages
 from makeOcr import imageToText
-from normalizeText import makeTextWell, readFile, correction
+from normalizeText import makeTextWell, fileRule
+from wordsCorrection import correctWord, caractReplace, wordReplace
 
-# ----------------------------------------------------------
+# -----Global Variables-----------------------------------------------------
 
 lang = ""
 treatImageFile = object
