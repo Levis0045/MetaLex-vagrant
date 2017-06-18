@@ -19,7 +19,7 @@ import os
 
 # -----Exported Functions-----------------------------------------------------
 
-__all__ = ['createtemp', 'newProject', 'treat_image_append', 'get_part_file']
+__all__ = ['createtemp', 'newProject', 'treat_image_append', 'get_part_file', 'inDir']
 
 # -----Global Variables-----------------------------------------------------
 
@@ -47,7 +47,17 @@ def treat_ocr_append(namefile) :
     tempnameLocation =  os.getcwd()+'/'+namefile
     MetaLex.resultOcrFiles.append(tempnameLocation)
      
-     
+def inDir(file):
+    """Verify id a file is in a 'dicTemp' folder """
+    
+    name = 'dicTemp'
+    currentdir = os.listdir('.')
+    if file in currentdir :
+        return False
+    else :
+        return True
+
+    
 def createtemp():
     """Create a 'dicTemp' folder is it doesn't exist at the parent folder at the scope"""
     
