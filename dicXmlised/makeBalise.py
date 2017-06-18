@@ -21,11 +21,11 @@ from bs4 import BeautifulSoup
 
 # -----Exported Functions-----------------------------------------------------
 
-__all__ = ['findArticles', 'extractArticles']
+__all__ = ['xmlised', 'dicoHtml']
 
 # -----Global Variables-----------------------------------------------------
 
-allforms    = {}
+allforms = {}
 
 
 # ----------------------------------------------------------
@@ -36,9 +36,7 @@ def xmlised(data, typ='xml') :
     
     
     
-    
-    
-    
+      
 def buildStructure(data, typ='dtd'):
     
     return False
