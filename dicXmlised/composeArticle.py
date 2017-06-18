@@ -7,7 +7,7 @@
     
     Usage:
     >>> from MetaLex.dicOcrText import *
-    >>> composeArticle()
+    >>> findArticles()
 """
 
 # ----Internal Modules------------------------------------------------------
@@ -31,7 +31,7 @@ allforms    = {
                'genres' : [u'm.', u'f.', u'Fig.', u'tr.', u'intr.'],
                'flexs'  : [u'tr.', u'intr.']
                
-               }
+            }
 
 
 # ----------------------------------------------------------
@@ -119,12 +119,13 @@ def next(i, tab, typ) :
         for el in allforms['forms'] :
             if el in nextpart : return True
     if typ == 'var' :
-        for el in allforms['cats'] :
-            if el in nextpart : 
-                apres = el
-                print avant, word, apres
-                return True
-    
+        if word[-1] == u',' :
+            for el in allforms['cats'] :
+                if el in nextpart : 
+                    apres = el
+                    print avant, word, apres
+                    return True
+        else : return False
     
 def before(i, tab, typ) :
     word  = tab[i]
