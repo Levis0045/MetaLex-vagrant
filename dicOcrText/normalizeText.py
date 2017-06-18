@@ -39,7 +39,7 @@ AllWords = []
 
 
 def makeTextWell(html_f, file_rules, okCorrect=False):
-    filerule = fileRule(file_rules, type=u'rule_wc')
+    filerule = fileRule(file_rules, typ=u'rule_wc')
     data_rules = filerule.fileRuleUnpack()
     #html_ocr_files = MetaLex.resultOcrFiles
     html_ocr_files = html_f
@@ -114,9 +114,9 @@ def enhanceText(html_file, data, okCorrect):
         
 class fileRule():
     
-    def __init__(self, file_rule, type):
+    def __init__(self, file_rule, typ):
         self.file = file_rule
-        self.type = type
+        self.typ = typ
         
         
     def fileRuleUnpack(self):
@@ -124,8 +124,8 @@ class fileRule():
         metadata, ruleWords, ruleCaracts, ruleRegex = {}, {}, {}, {}
         startw, startc, startr = False, False, False
         
-        if self.verify(self.type) :
-            if self.type == u'rule_wc' :
+        if self.verify(self.typ) :
+            if self.typ == u'rule_wc' :
                 with codecs.open(self.file, 'r', 'utf-8') as rule :
                     for line in rule : 
                         line = line.strip()
@@ -145,7 +145,7 @@ class fileRule():
                         if startr :
                             linepart = line.split(u'/')
                             if len(linepart) == 3 : ruleRegex[linepart[1]] = linepart[2]
-            if self.type == u'rule_art' :
+            if self.typ == u'rule_art' :
                 return False
         else :
             warnings.warn(u"Your file syntax is not correct. Please correct it as recommended")
@@ -153,10 +153,10 @@ class fileRule():
         return metadata, ruleWords, ruleCaracts, ruleRegex 
         
     
-    def verify(self, type):
+    def verify(self, typ):
         module, synw, sync, synr, synrw, delimiter = (False for x in range(6))
         fileop = codecs.open(self.file, 'r', 'utf-8').readlines()
-        if type == u'rule_wc' :
+        if typ == u'rule_wc' :
             if u'\START' == fileop[0].strip() and u'\END' == fileop[-1].strip() : delimiter = True
             if len(fileop[1].strip().split(u'\\')) == 7 :
                 for el in fileop[1].strip().split(u'\\') :
@@ -173,7 +173,7 @@ class fileRule():
             else :
                 return False
             
-        if type == u'rule_art' :
+        if typ == u'rule_art' :
             return False
     
     
