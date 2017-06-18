@@ -62,7 +62,7 @@ def getImages(images):
                     os.mkdir(imagedirNew)
                     
                 imagefileNew = "dic_image_"+str(num)+ext
-                imageLocationNew =  imagedirNew+'/'+imagefileNew
+                imageLocationNew =  imagedirNew+imagefileNew
                 copyfile(image, imageLocationNew)
                 MetaLex.fileImages.append(imageLocationNew)
                 num += 1
@@ -208,10 +208,10 @@ class enhanceImages ():
                         os.remove(img_conv)
                         dicProject.treat_image_append(tempname2)
                     
-                message = imagename + ' is modified with  contrast (' +str(contrast)+ ') and  bright ('+str(bright)+') > '+tempname2+' > Saved in dicTemp folder'  
-                MetaLex.dicLog.manageLog.writelog(message) 
-                img.close()
-                num += 1
+                    message = imagename + ' is modified with  contrast (' +str(contrast)+ ') and  bright ('+str(bright)+') > '+tempname2+' > Saved in dicTemp folder'  
+                    MetaLex.dicLog.manageLog.writelog(message) 
+                    img.close()
+                    num += 1
         else:
             message = '  > They are not images for the current treatment : input images!!' 
             print "--> "+message+"\n"
@@ -300,6 +300,8 @@ class enhanceImages ():
                     if dicProject.inDir(tempname) : 
                         img.save(tempname)   
                         return tempname
+                    else :
+                        return tempname 
         else:
             message = '  > They are not images for the current treatment : input images!!' 
             print "--> "+message+"\n"
