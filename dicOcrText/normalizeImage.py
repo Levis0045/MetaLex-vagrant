@@ -4,22 +4,23 @@
 """
     Implémentation des outils de normalization de l'image.
  
+    Package:
+        >>> pip install pillow
+    
     Usage:
- 
-    >>> import MetaLex as dico
-    >>> import ImageFilter
-    >>> project = dico.newProject(project_name)
-    >>> images = project.MetaLex.getImages(imagelist)
-    >>> images.enhanceImages().filter(f.DETAIL)
-    >>> images.enhanceImages().bright(1, save=True)
+        >>> import MetaLex as dico
+        >>> import ImageFilter
+        >>> project = dico.newProject(project_name)
+        >>> images = project.MetaLex.getImages(imagelist)
+        >>> images.enhanceImages().filter(f.DETAIL)
+        >>> images.enhanceImages().bright(1, save=True)
     
-    ImageFilter.filters :
-    
-    'BLUR', 'BuiltinFilter', 'CONTOUR', 'DETAIL', 'EDGE_ENHANCE', 
-    'EDGE_ENHANCE_MORE', 'EMBOSS', 'FIND_EDGES', 'Filter', 
-    'GaussianBlur', 'Kernel', 'MaxFilter', 'MedianFilter', 
-    'MinFilter', 'ModeFilter', 'RankFilter', 
-    'SHARPEN', 'SMOOTH', 'SMOOTH_MORE', 'UnsharpMask'
+    ImageFilter.filters:
+        'BLUR', 'BuiltinFilter', 'CONTOUR', 'DETAIL', 'EDGE_ENHANCE', 
+        'EDGE_ENHANCE_MORE', 'EMBOSS', 'FIND_EDGES', 'Filter', 
+        'GaussianBlur', 'Kernel', 'MaxFilter', 'MedianFilter', 
+        'MinFilter', 'ModeFilter', 'RankFilter', 
+        'SHARPEN', 'SMOOTH', 'SMOOTH_MORE', 'UnsharpMask'
           
 """
 
@@ -218,9 +219,11 @@ class enhanceImages ():
                     if dicProject.inDir(tempname2) :
                         enhconst.enhance(contrast).save(tempname2)
                         os.remove(tempname)
-                        dicProject.treat_image_append(tempname2)
-                    if dicProject.inDir(img_conv_file) :
                         os.remove(img_conv_file)
+                    else :
+                        os.remove(img_conv_file)
+                        os.remove(tempname)
+                    dicProject.treat_image_append(tempname2)
                     message = imagename + ' is modified with  contrast (' +str(contrast)+ ') and  bright ('+str(bright)+') > '+tempname2+' > Saved in dicTemp folder'  
                     MetaLex.dicLog.manageLog.writelog(message) 
                     imgpil.close()
@@ -317,7 +320,7 @@ class enhanceImages ():
             if save :
                 dicProject.createtemp()
                 if dicProject.inDir(tempname) : 
-                    imgpil.save(tempname) 
+                    imgpil.save(tempname)
                     return namestore
                 else :
                     return namestore
