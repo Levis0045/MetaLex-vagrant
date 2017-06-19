@@ -3,8 +3,13 @@
 
 
 """
-    manageLog enrégistre toutes les opérations déclenchées tout au long du processus
-    de traitement métalexicographique
+    
+    ManageLog registers all operations triggered throughout the process
+    Of metalexicographic processing
+    
+    Usage:
+        >>> from MetaLex import manageLog
+        >>> manageLog.writelog()
      
 """
 
@@ -78,5 +83,5 @@ def writelog(content):
         pass
     
     os.chdir('..')
-    print 'Log Writing is finish !!\n'
+    print 'Log Writing is finish : "'+content+'"\n'
     
