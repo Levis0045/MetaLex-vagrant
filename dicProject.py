@@ -4,8 +4,13 @@
 
 
 """
-    manageLog enrégistre toutes les opérations déclenchées tout au long du processus
-    de traitement métalexicographique
+    ManageLog registers all operations triggered throughout the process
+    Of metalexicographic processing
+
+
+    Usage:
+        >>> import MetaLex as dico
+        >>> projet = dico.newProject('LarousseMemoire')
      
 """
 
