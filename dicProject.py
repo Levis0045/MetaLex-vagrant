@@ -65,7 +65,7 @@ def inDir(file):
     
 def createtemp():
     """
-    Create a 'dicTemp' folder is it doesn't exist at the parent folder at the scope
+    Create a 'dicTemp' folder if it doesn't exist at the parent folder at the scope
     """
     
     name = 'dicTemp'
