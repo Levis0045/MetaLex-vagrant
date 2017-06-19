@@ -6,11 +6,6 @@
 """
     manageLog enrégistre toutes les opérations déclenchées tout au long du processus
     de traitement métalexicographique
-    
-     
-    Usage:
-    >>> from MetaLex.dicProject import *
-    >>> 
      
 """
 
@@ -22,9 +17,12 @@ import MetaLex
 
 import os
 
-# ----Exported Functions-----------------------------------------------------
+# -----Exported Functions-----------------------------------------------------
 
-__all__ = ['createtemp', 'newProject', 'treat_image_append', 'get_part_file']
+__all__ = ['createtemp', 'newProject', 'treat_image_append', 'get_part_file', 'inDir']
+
+# -----Global Variables-----------------------------------------------------
+
 
 # ----------------------------------------------------------
 
@@ -46,10 +44,20 @@ def treat_image_append(namefile) :
 def treat_ocr_append(namefile) :
     """Append ocr result files to the global variable"""
     
-    tempnameLocation =  os.getcwd()+'/dicTemp/'+namefile
+    tempnameLocation =  os.getcwd()+'/'+namefile
     MetaLex.resultOcrFiles.append(tempnameLocation)
      
-     
+def inDir(file):
+    """Verify id a file is in a 'dicTemp' folder """
+    
+    name = 'dicTemp'
+    currentdir = os.listdir('.')
+    if file in currentdir :
+        return False
+    else :
+        return True
+
+    
 def createtemp():
     """Create a 'dicTemp' folder is it doesn't exist at the parent folder at the scope"""
     
@@ -72,7 +80,7 @@ def createtemp():
 
 
 def dicFile(file):
-    """Take the current script path and join it to file path"""
+    """Take the current current script path and join it to file path"""
     
     script_dir = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(script_dir, file)
@@ -80,7 +88,7 @@ def dicFile(file):
         
 class newProject :
     """
-    
+        
     """
     
     import MetaLex
@@ -106,17 +114,17 @@ class newProject :
             return self.fileImages
     
     def getTreatImages (self):
-        if (len(MetaLex.treatImages)>= 1) :
-            self.treatImageFile  = MetaLex.treatImages
+        if (len(MetaLex.dicOcrText.fileImages)>= 1) :
+            self.treatImageFile  = MetaLex.dicOcrText.treatImageFile 
             return self.treatImageFile 
     
     def getTextOcr (self):
-        if (MetaLex.resultOcrData) :
-            self.resultOcr += MetaLex.resultOcrData
+        if (MetaLex.dicOcrText.textOcr) :
+            self.resultOcr += MetaLex.dicOcrText.textOcr
             return self.resultOcr
         
-    def getOcrFiles (self):
-        return MetaLex.resultOcrFiles
+    def getOcrText (self):
+        return MetaLex.dicOcrText.makeOcr
 
        
         
