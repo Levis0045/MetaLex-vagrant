@@ -92,8 +92,9 @@ def imageToText(show=False, save=False, langIn='fra'):
             else :
                 print "\n--> Fin de la lecture optique de '"+imagefile+"'\n"
             
+            dicProject.treat_ocr_append(tempname)
             os.chdir('..')
-            dicProject.treat_ocr_append(tempname)  
+              
             
         num += 1
                 
