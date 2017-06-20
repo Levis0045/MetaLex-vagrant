@@ -59,7 +59,7 @@ def treat_ocr_append(namefile) :
      
 def inDir(file):
     """
-    Verify id a file is in a 'dicTemp' folder 
+    Verify if a file is in a 'dicTemp' folder 
     """
     currentdir = os.listdir('.')
     if file in currentdir :
