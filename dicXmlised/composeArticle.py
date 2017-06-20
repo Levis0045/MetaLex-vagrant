@@ -6,8 +6,8 @@
  
     
     Usage:
-    >>> from MetaLex.dicOcrText import *
-    >>> findArticles()
+        >>> from MetaLex.dicOcrText import *
+        >>> findArticles()
 """
 
 # ----Internal Modules------------------------------------------------------
@@ -21,7 +21,7 @@ from bs4 import BeautifulSoup
 
 # -----Exported Functions-----------------------------------------------------
 
-__all__ = ['findArticles', 'extractArticles']
+__all__ = ['findArticles', 'formatArticles']
 
 # -----Global Variables-----------------------------------------------------
 
@@ -30,8 +30,7 @@ allforms    = {
                'cats'   : [u'n.', u'adj.', u'v.', u'prép.', u'adv.', u'Adv.', u'loc.'],
                'genres' : [u'm.', u'f.', u'Fig.', u'tr.', u'intr.'],
                'flexs'  : [u'tr.', u'intr.']
-               
-            }
+              }
 
 
 # ----------------------------------------------------------
@@ -156,7 +155,7 @@ def before(i, tab, typ) :
                     
                 
                 
-def extractArticles ():
+def formatArticles ():
     return False
 
 
