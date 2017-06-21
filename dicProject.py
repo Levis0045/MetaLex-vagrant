@@ -20,7 +20,8 @@ import MetaLex
 
 # ----External Modules------------------------------------------------------
 
-import os
+import os, codecs
+import pickle
 
 # -----Exported Functions-----------------------------------------------------
 
@@ -36,7 +37,6 @@ def get_part_file(namefile):
     """
     Extract file image name and file image extension
     """
-    
     (imageroot, ext) = os.path.splitext(os.path.basename(namefile))
     return (imageroot, ext)
 
@@ -53,9 +53,9 @@ def treat_ocr_append(namefile) :
     """
     Append ocr result files to the global variable
     """
-    
     tempnameLocation =  os.getcwd()+'/'+namefile
     MetaLex.resultOcrFiles.append(tempnameLocation)
+     
      
 def inDir(file):
     """
@@ -67,32 +67,63 @@ def inDir(file):
     else :
         return True
 
+
+def nameFile(tab, ext):
+    name  = str(tab[0]).split(u'/')[-1].split(u',')[0].split(u'_')[:-1]
+    if ext == u'.art' :
+        nametxt    = u'articles_'+u'_'.join(name)+u'.art'
+        return nametxt
+    elif ext == u'.pickle' :
+        namepickle = u'articles_'+u'_'.join(name)+u'.pickle'
+        return namepickle
+        
+
+def filePickle(data, name):
+    with codecs.open(name, 'wb') as f :
+        pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
+        return True
     
+    
+def fileUnpickle(fil):
+    with codecs.open(fil, 'rb') as f :
+        data = pickle.load(f)
+        return data 
+
+
+def fileGettext(fil):
+    datatext = {}
+    with codecs.open(fil, 'r', 'utf-8') as f :
+        for line in f :
+            partline = line.split(u':')
+            datatext[partline[0].strip()] = partline[1].strip()
+    return datatext
+   
+   
 def createtemp():
     """
     Create a 'dicTemp' folder if it doesn't exist at the parent folder at the scope
     """
     
-    name = 'dicTemp'
+    name = u'dicTemp'
     currentdir = os.listdir('.')
-    if 'testDicoParser' in currentdir :
-        os.chdir('testDicoParser/')
+    if u'testDicoParser' in currentdir :
+        os.chdir(u'testDicoParser/')
         currentdir = os.listdir('.')
-        if name not in currentdir and 'dicLogs' in currentdir :
+        if name not in currentdir and u'dicLogs' in currentdir :
             try:
-                os.mkdir('dicTemp')
+                os.mkdir(u'dicTemp')
             except os.error :
                 pass
-            message = 'dicTemp folder' + '  > is created' 
+            message = u'dicTemp folder' + u'  > is created' 
             MetaLex.dicLog.manageLog.writelog(message)
-            os.chdir('dicTemp/')
-            message = 'Change current directory to  > dicTemp folder'  
+            os.chdir(u'dicTemp/')
+            message = u'Change current directory to  > dicTemp folder'  
             MetaLex.dicLog.manageLog.writelog(message) 
-            os.chdir('dicTemp/')
+            os.chdir(u'dicTemp/')
         else:
-            os.chdir('dicTemp/') 
-    elif 'dicLogs' in currentdir and 'dicTemp' in currentdir :
-        os.chdir('dicTemp/') 
+            os.chdir(u'dicTemp/') 
+    elif u'dicLogs' in currentdir and u'dicTemp' in currentdir :
+        os.chdir(u'dicTemp/') 
 
 
 def dicFile(file):
@@ -116,12 +147,12 @@ class newProject :
         MetaLex.allProjectNames.append(self.name)
         MetaLex.projectName = self.name
         self.fileImages = []
-        self.resultOcr = ""
-        self.resultText = ""
-        self.resultXmlised = ""
-        self.resultLog = ""
-        self.lang = ""
-        self.dicoType = ""
+        self.resultOcr = u""
+        self.resultText = u""
+        self.resultXmlised = u""
+        self.resultLog = u""
+        self.lang = u""
+        self.dicoType = u""
     
     def getProjectName(self):
         return self.name
