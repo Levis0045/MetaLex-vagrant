@@ -7,7 +7,7 @@
     ManageLog registers all operations triggered throughout the process
     Of metalexicographic processing
     
-    Usage:
+    Usage:dryadedryadedryadedryadedryadedryadedryadedryadedryade
         >>> from MetaLex import manageLog
         >>> manageLog.writelog()
      
@@ -38,7 +38,7 @@ def logname():
         strdate += date + '-'
         
     projectName = MetaLex.projectName
-    return projectName+'_'+strdate.strip('-')+'.dicLog'
+    return projectName+u'_'+strdate.strip(u'-')+u'.dicLog'
     
     
 def folderlog():
@@ -46,16 +46,16 @@ def folderlog():
     position = os.getcwd()
     os.chdir('..')
     parentdir =  os.listdir('.')
-    if 'dicLogs' not in parentdir :
+    if u'dicLogs' not in parentdir :
         os.chdir(position)
         currentdir = os.listdir('.')
-        if 'dicLogs' not in currentdir :
-            os.mkdir('dicLogs')
-            os.chdir('dicLogs/')
+        if u'dicLogs' not in currentdir :
+            os.mkdir(u'dicLogs')
+            os.chdir(u'dicLogs/')
         else:
-            os.chdir('dicLogs/') 
+            os.chdir(u'dicLogs/') 
     else:
-        os.chdir('dicLogs/') 
+        os.chdir(u'dicLogs/') 
     
     currentdirlog = os.listdir('.')
     if name not in currentdirlog :
@@ -75,13 +75,13 @@ def writelog(content):
     currentdirlog = os.listdir('.')
     if name in currentdirlog :
         with codecs.open(name, 'a', 'utf-8') as file :
-            header = '\n***** MetaLex : '+hour+' ********************************************** \n\n'
-            message = '--> '+content+'\n'
+            header = u'\n***** MetaLex : '+hour+u' ********************************************** \n\n'
+            message = u'--> '+content+u'\n'
             file.write(header)
             file.write(message) 
     else:
         pass
     
     os.chdir('..')
-    print 'Log Writing is finish : "'+content+'"\n'
+    print u'Log Writing is finish : "'+content+u'"\n'
     
