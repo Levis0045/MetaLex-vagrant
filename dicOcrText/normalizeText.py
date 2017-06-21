@@ -25,7 +25,6 @@ from MetaLex import dicXmlised as Xml
 from bs4 import BeautifulSoup
 import re, sys, codecs
 import warnings
-import pickle
 #import ipdb
 
 # -----Exported Functions-----------------------------------------------------
@@ -51,12 +50,11 @@ def makeTextWell(file_rules, okCorrect=False):
         with open(html, 'r') as html_file :
             enhanceText(html_file, data_rules, okCorrect)
         
-    name       = str(html_ocr_files[0]).split('/')[-1].split(',')[0].split('_')[:-1]
-    namepickle = 'articles_'+'_'.join(name)+'.pickle'
-    nametxt    = 'articles_'+'_'.join(name)+'.txt'
+    namepickle = MetaLex.dicProject.nameFile(html_ocr_files, u'.pickle')
+    nametxt    = MetaLex.dicProject.nameFile(html_ocr_files, u'.art')
     
-    saveNormalize(namepickle, 'pickle')
-    saveNormalize(nametxt, 'text')     
+    saveNormalize(namepickle, u'pickle')
+    saveNormalize(nametxt, u'text')     
          
                      
 def enhanceText(html_file, data, okCorrect):
@@ -114,53 +112,52 @@ def enhanceText(html_file, data, okCorrect):
             #print contentOrigin+'\n'
             artnum = u'article_'+str(art)
             crtnum = u'correction_'+str(art)
-            if len(contentOrigin) >= 5 and len(contentCorrection) == 0:
+            if len(contentOrigin) >= 15 and len(contentCorrection) == 0:
                 article = {artnum:contentOrigin}
                 dicArticles.append(article)
                 art += 1
-            elif len(contentOrigin) >= 5 and len(contentCorrection) >= 5 :
+            elif len(contentOrigin) >= 15 and len(contentCorrection) >= 5 :
                 article = {crtnum:contentCorrection, artnum:contentOrigin}
                 dicArticles.append(article)
                 art += 1
-                
-    
     
     
     
 def saveNormalize(name, typ):
     MetaLex.dicProject.createtemp()
-    if typ == 'text' :
+    if typ == u'text' :
         if MetaLex.dicProject.inDir(name) :
             with codecs.open(name, 'a', 'utf-8') as file :
                 for art in dicArticles :
                     for k, v in art.items() :
                         file.write('%s : %s\n' %(k, v))
-            message = '"'+name+'" is created and contain all text format data from html files > Saved in dicTemp folder'  
+            message = name+u' is created and contain all text format data from html files > Saved in dicTemp folder'  
             MetaLex.dicLog.manageLog.writelog(message) 
-            print message
+            print u'--> '+message+u'\n'
         else :
-            message = '"'+name+'" is created and contain all text format data from html files > Saved in dicTemp folder'  
+            message = name+u' is created and contain all text format data from html files > Saved in dicTemp folder'  
             MetaLex.dicLog.manageLog.writelog(message) 
-            print message
+            print u'--> '+message+u'\n'
     
-    if typ == 'pickle' :  
-        if MetaLex.dicProject.inDir(name) :
-            with open(name, 'wb') as file :
-                pickle.dump(dicArticles, file, pickle.HIGHEST_PROTOCOL)
-            message = name + ' is created and contain all text format data from html files > Saved in dicTemp folder'  
+    if typ == u'pickle' :  
+        if MetaLex.dicProject.inDir(name) and MetaLex.dicProject.filePickle(dicArticles, name) :
+            message = name+u' is created and contain pickle data object from html files > Saved in dicTemp folder'  
             MetaLex.dicLog.manageLog.writelog(message) 
-            print message
+            print u'--> '+message+u'\n'
+        
         else :
-            message = name + ' is created and contain pickle data object from html files > Saved in dicTemp folder'  
+            message = name+u' is created and contain pickle data object from html files > Saved in dicTemp folder'  
             MetaLex.dicLog.manageLog.writelog(message) 
-            print message    
+            print u'--> '+message+u'\n'  
     
         
     #findArticle(dicArticles, enhance=True)
-    
-        
+ 
         
 class fileRule():
+    """
+    Managing of  file rules
+    """
     
     def __init__(self, file_rule, typ):
         self.file = file_rule
