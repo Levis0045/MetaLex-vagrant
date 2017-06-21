@@ -6,8 +6,8 @@
  
     
     Usage:
-    >>> from MetaLex.dicOcrText import *
-    >>> findArticles()
+        >>> from MetaLex.dicOcrText import *
+        >>> findArticles()
 """
 
 # ----Internal Modules------------------------------------------------------
@@ -21,7 +21,7 @@ from bs4 import BeautifulSoup
 
 # -----Exported Functions-----------------------------------------------------
 
-__all__ = ['findArticles', 'extractArticles']
+__all__ = ['findArticles', 'formatArticles']
 
 # -----Global Variables-----------------------------------------------------
 
@@ -30,8 +30,7 @@ allforms    = {
                'cats'   : [u'n.', u'adj.', u'v.', u'prép.', u'adv.', u'Adv.', u'loc.'],
                'genres' : [u'm.', u'f.', u'Fig.', u'tr.', u'intr.'],
                'flexs'  : [u'tr.', u'intr.']
-               
-            }
+              }
 
 
 # ----------------------------------------------------------
@@ -49,12 +48,12 @@ def findArticles(textart, enhance=False) :
         if len(word) >= 1 :
             #print word
             if  word[-1] != u'.' and fin == False \
-            and next(i, wordlists, 'entry')  and before(i, wordlists, 'entry'):
+            and next(i, wordlists, u'entry')  and before(i, wordlists, 'entry'):
             #entry
                 #print word
                 deb, fin, cat, lex  = True, False, False, False
                 article += word+u' '
-            elif before(i, wordlists, 'var') and next(i, wordlists, 'var') and word[-1] != u'.' \
+            elif before(i, wordlists, u'var') and next(i, wordlists, 'var') and word[-1] != u'.' \
             and fin == False :
             #word flexion
                 #print i, word
@@ -62,19 +61,19 @@ def findArticles(textart, enhance=False) :
                 article += word+u' '
                 #print article+'\n'
                 article = u''
-            elif word in allforms['cats']  :
+            elif word in allforms[u'cats']  :
             #category
                 cat, flex, deb = True, True, False
                 article += word+u' '
                 #print article+'\n'
                 #print word
-            elif word in allforms['genres']  :
+            elif word in allforms[u'genres']  :
             #genre
                 cat, flex, deb = True, True, False
                 article += word+u' '
                 #print article+'\n'
                 #print word
-            elif word in allforms['flexs'] :
+            elif word in allforms[u'flexs'] :
             #flexion
                 cat, flex, deb = True, True, False
                 article += word+u' '
@@ -86,13 +85,13 @@ def findArticles(textart, enhance=False) :
                 article += word+u' '
                 #print article+'\n'
                 #print word
-            elif before(i, wordlists, 'wordint') and word not in allforms['forms'] \
-            and next(i, wordlists, 'wordint') :
+            elif before(i, wordlists, u'wordint') and word not in allforms['forms'] \
+            and next(i, wordlists, u'wordint') :
             #word int
                 deb, fin, cat, flex  = False, False, False, True
                 article += word+u' '
                 #print word
-            elif next(i, wordlists, 'wordend')  and before(i, wordlists, 'wordend') \
+            elif next(i, wordlists, u'wordend')  and before(i, wordlists, 'wordend') \
             and word[-1] == u'.' :
             #mot de fin
                 #print word
@@ -109,21 +108,21 @@ def next(i, tab, typ) :
     word       = tab[i]
     nextpart   = tab[i+1:i+4]
     #print part
-    if typ == 'entry' :
-        for el in allforms['forms'] :
+    if typ == u'entry' :
+        for el in allforms[u'forms'] :
             if el in nextpart : return True
-    if typ == 'wordint' :
+    if typ == u'wordint' :
         for el in nextpart :
             if re.search(r'(\S+)+', el, re.I) : return True
-    if typ == 'wordend' :
-        for el in allforms['forms'] :
+    if typ == u'wordend' :
+        for el in allforms[u'forms'] :
             if el in nextpart : return True
-    if typ == 'var' :
+    if typ == u'var' :
         if word[-1] == u',' :
-            for el in allforms['cats'] :
+            for el in allforms[u'cats'] :
                 if el in nextpart : 
                     apres = el
-                    print avant, word, apres
+                    #print avant, word, apres
                     return True
         else : return False
     
@@ -132,22 +131,22 @@ def before(i, tab, typ) :
     if i >= 2 :
         previouspart  = tab[i-4:i-1]
         #print part
-        if typ == 'entry' :
-            for el in allforms['forms'] :
+        if typ == u'entry' :
+            for el in allforms[u'forms'] :
                 if el in previouspart : return True
             for el in previouspart :
                 if re.search(r'([a-zéèçêùàï.,]+)', el, re.I) : return True
-        if typ == 'wordint' :
-            for el in allforms['forms'] :
+        if typ == u'wordint' :
+            for el in allforms[u'forms'] :
                 if el in previouspart : return True
             for el in previouspart :
                 if re.search(r'(\S+)', el, re.I) : return True
-        if typ == 'wordend' :
-            for el in allforms['forms'] :
+        if typ == u'wordend' :
+            for el in allforms[u'forms'] :
                 if el in previouspart : return True
             for el in previouspart :
                 if re.search(r'(\S+)', el, re.I) : return True
-        if typ == 'var' :
+        if typ == u'var' :
             if len(previouspart) >= 1 :
                 if previouspart[0][-1] == u',' :
                     avant =  previouspart[0]
@@ -156,7 +155,7 @@ def before(i, tab, typ) :
                     
                 
                 
-def extractArticles ():
+def formatArticles ():
     return False
 
 

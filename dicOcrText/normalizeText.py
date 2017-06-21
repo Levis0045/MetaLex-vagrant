@@ -3,14 +3,15 @@
 
 """
     Implémentation des outils de normalization du texte des articles.
- 
-    apt-get install python-html5lib
-    apt-get install python-lxml
-    apt-get install python-bs4
+    
+    Packages:
+        >>> apt-get install python-html5lib
+        >>> apt-get install python-lxml
+        >>> apt-get install python-bs4
     
     Usage:
-    >>> from MetaLex.dicOcrText import *
-    >>> makeTextWell()
+        >>> from MetaLex.dicOcrText import *
+        >>> makeTextWell('dico_rules_larousse.dic')
     
 """
 
@@ -33,27 +34,34 @@ __all__ = ['makeTextWell', 'fileRule']
 # -----Global Variables-----------------------------------------------------
 
 dicArticles = []
-AllWords = []
+AllWords    = []
+namepickle  = ''
+nametxt     = ''
 
 # ----------------------------------------------------------
 
 
-def makeTextWell(html_f, file_rules, okCorrect=False):
+def makeTextWell(file_rules, okCorrect=False):
     filerule = fileRule(file_rules, typ=u'rule_wc')
     data_rules = filerule.fileRuleUnpack()
-    #html_ocr_files = MetaLex.resultOcrFiles
-    html_ocr_files = html_f
+    html_ocr_files = MetaLex.resultOcrFiles
+    #html_ocr_files = html_f
     for html in html_ocr_files :
-        with open(html, 'r') as h :
-            enhanceText(h, data_rules, okCorrect)
-            
+        with open(html, 'r') as html_file :
+            enhanceText(html_file, data_rules, okCorrect)
+        
+    namepickle = MetaLex.dicProject.nameFile(html_ocr_files, u'.pickle')
+    nametxt    = MetaLex.dicProject.nameFile(html_ocr_files, u'.art')
+    
+    saveNormalize(namepickle, u'pickle')
+    saveNormalize(nametxt, u'text')     
          
                      
 def enhanceText(html_file, data, okCorrect):
     soup = BeautifulSoup(html_file, "html5lib")
     div = soup.find(u'div', attrs={'class': u'ocr_page'}) 
     art = 1
-    
+        
     for div in div.findAll(u'div', attrs={'class': u'ocr_carea'}) :
         for para in div.findAll(u'p', attrs={'class': u'ocr_par'}) :
             contentOrigin = u''
@@ -100,19 +108,56 @@ def enhanceText(html_file, data, okCorrect):
                         AllWords.append(span)
                         contentOrigin += span+u' '
                     #print '*****  '+span + ' : ' + spanCorrect
-            Xml.findArticles(contentOrigin, enhance=True)
+            #Xml.findArticles(contentOrigin, enhance=True)
+            #print contentOrigin+'\n'
             artnum = u'article_'+str(art)
             crtnum = u'correction_'+str(art)
-            if len(contentOrigin) >= 5 :
+            if len(contentOrigin) >= 15 and len(contentCorrection) == 0:
+                article = {artnum:contentOrigin}
+                dicArticles.append(article)
+                art += 1
+            elif len(contentOrigin) >= 15 and len(contentCorrection) >= 5 :
                 article = {crtnum:contentCorrection, artnum:contentOrigin}
                 dicArticles.append(article)
                 art += 1
-
-    #findArticle(dicArticles, enhance=True)
+    
+    
+    
+def saveNormalize(name, typ):
+    MetaLex.dicProject.createtemp()
+    if typ == u'text' :
+        if MetaLex.dicProject.inDir(name) :
+            with codecs.open(name, 'a', 'utf-8') as file :
+                for art in dicArticles :
+                    for k, v in art.items() :
+                        file.write('%s : %s\n' %(k, v))
+            message = name+u' is created and contain all text format data from html files > Saved in dicTemp folder'  
+            MetaLex.dicLog.manageLog.writelog(message) 
+            print u'--> '+message+u'\n'
+        else :
+            message = name+u' is created and contain all text format data from html files > Saved in dicTemp folder'  
+            MetaLex.dicLog.manageLog.writelog(message) 
+            print u'--> '+message+u'\n'
+    
+    if typ == u'pickle' :  
+        if MetaLex.dicProject.inDir(name) and MetaLex.dicProject.filePickle(dicArticles, name) :
+            message = name+u' is created and contain pickle data object from html files > Saved in dicTemp folder'  
+            MetaLex.dicLog.manageLog.writelog(message) 
+            print u'--> '+message+u'\n'
+        
+        else :
+            message = name+u' is created and contain pickle data object from html files > Saved in dicTemp folder'  
+            MetaLex.dicLog.manageLog.writelog(message) 
+            print u'--> '+message+u'\n'  
     
         
+    #findArticle(dicArticles, enhance=True)
+ 
         
 class fileRule():
+    """
+    Managing of  file rules
+    """
     
     def __init__(self, file_rule, typ):
         self.file = file_rule
@@ -175,5 +220,6 @@ class fileRule():
             
         if typ == u'rule_art' :
             return False
-    
-    
+
+
+

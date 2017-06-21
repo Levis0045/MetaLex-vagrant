@@ -5,14 +5,16 @@
 """
     Implémentation des outils d'ocrisation de l'image.
  
+    Package:
+        >>> pip install tesserocr
+        
     Usage:
- 
-    >>> import MetaLex as dico
-    >>> import ImageFilter as     
-    >>> project = dico.newProject(project_name)
-    >>> images = project.MetaLex.getImages(imagelist)
-    >>> images.enhanceImages().filter(f.DETAIL)
-    >>> images.imageToText(show=True, langIn='fra')
+        >>> import MetaLex as dico
+        >>> import ImageFilter as     
+        >>> project = dico.newProject(project_name)
+        >>> images = project.MetaLex.getImages(imagelist)
+        >>> images.enhanceImages().filter(f.DETAIL)
+        >>> images.imageToText(show=True, langIn='fra')
     
 """
 
@@ -66,8 +68,7 @@ def imageToText(show=False, save=False, langIn='fra'):
             for i in imagepart :
                 imageconcat +='_'+i 
             imageconcat = imageconcat.split('.')[0]
-            tempname = 'text_ocr'+imageconcat+'.html'
-            
+            tempname = 'text_ocr'+imageconcat+'_'+str(num)+'.html'
             dicProject.createtemp()
             if dicProject.inDir(tempname) :
                 print "\n--> Début de la lecture optique de '"+imagefile+"'\n"
@@ -91,8 +92,9 @@ def imageToText(show=False, save=False, langIn='fra'):
             else :
                 print "\n--> Fin de la lecture optique de '"+imagefile+"'\n"
             
+            dicProject.treat_ocr_append(tempname)
             os.chdir('..')
-            dicProject.treat_ocr_append(tempname)  
+              
             
         num += 1
                 
