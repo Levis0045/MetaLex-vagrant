@@ -46,6 +46,7 @@ def treat_image_append(namefile) :
     Append image result files to the global variable at the scope
     """
     tempnameLocation =  os.getcwd()+'/'+namefile
+    print tempnameLocation
     MetaLex.treatImages.append(tempnameLocation)
 
 
