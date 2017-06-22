@@ -33,17 +33,17 @@ components = {
                           u'metadata'       : [u'namespace', u'projectname', u'author', u'date', u'comment', u'contributors'],
                           u'identification' : [u'entry', u'flexion', u'category', u'gender', u'rection', u'phonetic'], 
                           u'treatment'      : [u'definition', u'contextualisation', u'figured', u'contrary']
-                        },
+                         },
                 u'tei' : {
                           u'metadata'       : [],
                           u'identification' : [], 
                           u'treatment'      : []
-                        },
+                         },
                 u'lmf' : {
                           u'metadata'       : [],
                           u'identification' : [], 
                           u'treatment'      : []
-                        },
+                         },
                 u'dtd' : [u'ELEMENT', u'ATTRIBUTE', u'PCDATA', u'CDATA', u'REQUIRED', u'IMPLIED'],
                 u'xsd' : []
              }
