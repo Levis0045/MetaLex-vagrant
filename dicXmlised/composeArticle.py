@@ -26,8 +26,8 @@ __all__ = ['findArticles', 'formatArticles']
 # -----Global Variables-----------------------------------------------------
 
 allforms    = {
-               'forms'  : [u'.', u',', u'n.', u'adj.', u'v.', u'prép.', u'adv.', u'Adv.', u'loc.', u'm.', u'f.', u'Fig.', u'tr.', u'intr.'],
-               'cats'   : [u'n.', u'adj.', u'v.', u'prép.', u'adv.', u'Adv.', u'loc.'],
+               'forms'  : [u'.', u',', u'n.', u'adj.', u'v.', u'prép.', u'adv.', u'Adv.', u'loc.', u'm.', u'f.', u'Fig.', u'tr.', u'intr.', u'interj.', u'art.'],
+               'cats'   : [u'n.', u'adj.', u'v.', u'prép.', u'adv.', u'Adv.', u'loc.', u'interj.', u'art.'],
                'genres' : [u'm.', u'f.', u'Fig.', u'tr.', u'intr.'],
                'flexs'  : [u'tr.', u'intr.']
               }
@@ -41,7 +41,7 @@ def findArticles(textart, enhance=False) :
     deb, fin, cat, flex, wcpt  = False, False, False, False, False
     article     = u''
     allArticles = []
-    wordlists   = re.split(r'(\s+)', textart)
+    wordlists   = re.split(ur'(\s+)', textart.strip())
     
     for i, word in enumerate(wordlists) :
         word = word.strip()
@@ -113,7 +113,7 @@ def next(i, tab, typ) :
             if el in nextpart : return True
     if typ == u'wordint' :
         for el in nextpart :
-            if re.search(r'(\S+)+', el, re.I) : return True
+            if re.search(ur'(\S+)+', el, re.I) : return True
     if typ == u'wordend' :
         for el in allforms[u'forms'] :
             if el in nextpart : return True
@@ -135,17 +135,17 @@ def before(i, tab, typ) :
             for el in allforms[u'forms'] :
                 if el in previouspart : return True
             for el in previouspart :
-                if re.search(r'([a-zéèçêùàï.,]+)', el, re.I) : return True
+                if re.search(ur'([a-zéèçêùàï.,]+)', el, re.I) : return True
         if typ == u'wordint' :
             for el in allforms[u'forms'] :
                 if el in previouspart : return True
             for el in previouspart :
-                if re.search(r'(\S+)', el, re.I) : return True
+                if re.search(ur'(\S+)', el, re.I) : return True
         if typ == u'wordend' :
             for el in allforms[u'forms'] :
                 if el in previouspart : return True
             for el in previouspart :
-                if re.search(r'(\S+)', el, re.I) : return True
+                if re.search(ur'(\S+)', el, re.I) : return True
         if typ == u'var' :
             if len(previouspart) >= 1 :
                 if previouspart[0][-1] == u',' :
