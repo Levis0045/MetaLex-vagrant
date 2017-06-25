@@ -45,7 +45,7 @@ def treat_image_append(namefile) :
     """
     Append image result files to the global variable at the scope
     """
-    tempnameLocation =  os.getcwd()+'/'+namefile
+    tempnameLocation =  os.getcwd()+u'/'+namefile
     print tempnameLocation
     MetaLex.treatImages.append(tempnameLocation)
 
@@ -54,7 +54,7 @@ def treat_ocr_append(namefile) :
     """
     Append ocr result files to the global variable
     """
-    tempnameLocation =  os.getcwd()+'/'+namefile
+    tempnameLocation =  os.getcwd()+u'/'+namefile
     MetaLex.resultOcrFiles.append(tempnameLocation)
      
      
@@ -98,8 +98,20 @@ def fileGettext(fil):
             partline = line.split(u':')
             datatext[partline[0].strip()] = partline[1].strip()
     return datatext
-   
-   
+
+
+def readConf():
+    confData = {}
+    with codecs.open(u'MetaLex.cnf', 'r', 'utf-8') as conf :
+        for line in conf :
+            if line[0] == u'\\' : 
+                part  = line.strip().split(u':')
+                title = part[0][1:].replace(u' ', u'')
+                val   = part[1]
+                confData[title] = val
+    return confData
+        
+        
 def createtemp():
     """
     Create a 'dicTemp' folder if it doesn't exist at the parent folder at the scope
@@ -147,16 +159,30 @@ class newProject :
         self.name = projectname
         MetaLex.allProjectNames.append(self.name)
         MetaLex.projectName = self.name
-        self.fileImages = []
-        self.resultOcr = u""
-        self.resultText = u""
-        self.resultXmlised = u""
-        self.resultLog = u""
-        self.lang = u""
-        self.dicoType = u""
+        self.fileImages     = []
+        self.resultOcr      = u""
+        self.resultText     = u""
+        self.resultXmlised  = u""
+        self.resultLog      = u""
+        self.lang           = u""
+        self.dicoType       = u""
     
+    def setConfproject (self, author, coment, contrib):
+        project  = MetaLex.projectName
+        MetaLex.projectAuthor = author
+        dateInit = MetaLex.manageLog.getDate()
+        Intro    = u'***************** MetaLex project configuration *****************'
+        end      = u'*****************************************************************'
+        content  = Intro+'\n\n'+'\Project name  : '+project+'\n'+'\Creation date : '+dateInit+'\n'+'\Author        : '+author+'\n'+'\Contributors  : '+contrib\
+        +'\n'+'\Comment       : '+coment+'\n\n'+end
+        MetaLex.dicProject.createtemp()
+        if MetaLex.dicProject.inDir('MetaLex.cnf') :
+            with codecs.open('MetaLex.cnf', 'w', 'utf-8') as conf :
+                conf.write(content)
+        
+        
     def getProjectName(self):
-        return self.name
+        return MetaLex.projectName 
 
     def getFileImages (self):
         if (len(MetaLex.fileImages)>= 1) :
