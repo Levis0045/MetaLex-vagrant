@@ -150,11 +150,13 @@ class enhanceImages ():
                     if dicProject.inDir(tempname) :
                         enh.enhance(value).save(tempname)
                         dicProject.treat_image_append(tempname)
+                        os.remove(img_conv)
                         message = imagename + u'is modified with sharp ( ' +str(value)+ ') > '+tempname+' > Saved in dicTemp folder'  
                         MetaLex.dicLog.manageLog.writelog(message) 
                         num += 1 
                     else :
                         dicProject.treat_image_append(tempname)
+                        os.remove(img_conv)
                         message = imagename + u'is modified with contrast (' +str(value)+ u') > '+tempname+u' > Saved in dicTemp folder'  
                         MetaLex.dicLog.manageLog.writelog(message) 
                         num += 1
@@ -188,12 +190,14 @@ class enhanceImages ():
                     if dicProject.inDir(tempname) :
                         enh.enhance(value).save(tempname)
                         dicProject.treat_image_append(tempname)
-                        message = imagename + u'is modified with bright (' +str(value)+ ') > '+tempname+' > Saved in dicTemp folder'  
+                        os.remove(img_conv)
+                        message = imagename + u' is modified with bright (' +str(value)+ ') > '+tempname+' > Saved in dicTemp folder'  
                         MetaLex.dicLog.manageLog.writelog(message) 
                         num += 1 
                     else :
                         dicProject.treat_image_append(tempname)
-                        message = imagename + u'is modified with contrast (' +str(value)+ u') > '+tempname+u' > Saved in dicTemp folder'  
+                        os.remove(img_conv)
+                        message = imagename + u' is modified with contrast (' +str(value)+ u') > '+tempname+u' > Saved in dicTemp folder'  
                         MetaLex.dicLog.manageLog.writelog(message) 
                         num += 1
                 else :
