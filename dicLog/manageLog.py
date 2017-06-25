@@ -30,15 +30,19 @@ __all__ = ['writelog', 'logname', 'folderlog']
 
 # --------------------------------------------------------------------------
 
-def logname():
+def getDate():
     strdate = ''
     datefile = os.popen('date').read()
     datetab = datefile.split(',')[0].split(' ')
     for date in datetab[1:] :
         strdate += date + '-'
-        
+    return strdate.strip(u'-')
+
+
+def logname():
+    strdate = getDate()
     projectName = MetaLex.projectName
-    return projectName+u'_'+strdate.strip(u'-')+u'.dicLog'
+    return projectName+u'_'+strdate+u'.dicLog'
     
     
 def folderlog():
