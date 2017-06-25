@@ -133,22 +133,22 @@ def saveNormalize(name, typ):
                         file.write('%s : %s\n' %(k, v))
             message = name+u' is created and contain all text format data from html files > Saved in dicTemp folder'  
             MetaLex.dicLog.manageLog.writelog(message) 
-            print u'--> '+message+u'\n'
+            print u'--> '+message+u' \n'
         else :
             message = name+u' is created and contain all text format data from html files > Saved in dicTemp folder'  
             MetaLex.dicLog.manageLog.writelog(message) 
-            print u'--> '+message+u'\n'
+            print u'--> '+message+u' \n'
     
     if typ == u'pickle' :  
         if MetaLex.dicProject.inDir(name) and MetaLex.dicProject.filePickle(dicArticles, name) :
             message = name+u' is created and contain pickle data object from html files > Saved in dicTemp folder'  
             MetaLex.dicLog.manageLog.writelog(message) 
-            print u'--> '+message+u'\n'
+            print u'--> '+message+u' \n'
         
         else :
             message = name+u' is created and contain pickle data object from html files > Saved in dicTemp folder'  
             MetaLex.dicLog.manageLog.writelog(message) 
-            print u'--> '+message+u'\n'  
+            print u'--> '+message+u' \n'  
     
         
     #findArticle(dicArticles, enhance=True)
