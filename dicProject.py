@@ -58,12 +58,12 @@ def treat_ocr_append(namefile) :
     MetaLex.resultOcrFiles.append(tempnameLocation)
      
      
-def inDir(file):
+def inDir(fil):
     """
     Verify if a file is in a 'dicTemp' folder 
     """
     currentdir = os.listdir('.')
-    if file in currentdir :
+    if fil in currentdir :
         return False
     else :
         return True
@@ -139,13 +139,13 @@ def createtemp():
         os.chdir(u'dicTemp/') 
 
 
-def dicFile(file):
+def dicFile(fil):
     """
     Take the current current script path and join it to file path
     """
     
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    return os.path.join(script_dir, file)
+    return os.path.join(script_dir, fil)
        
         
 class newProject :
