@@ -25,18 +25,39 @@ __all__ = ['findArticles', 'formatArticles']
 
 # -----Global Variables-----------------------------------------------------
 
-allforms    = {
-               'forms'  : [u'.', u',', u'n.', u'adj.', u'v.', u'prép.', u'adv.', u'Adv.', u'loc.', u'm.', u'f.', u'Fig.', u'tr.', u'intr.', u'interj.', u'art.'],
+allforms = {
+               'forms'  : [u'.', u',', u'n.', u'adj.', u'v.', u'prép.', u'adv.', u'Adv.', u'loc.', u'm.', u'f.', u'Fig.', u'tr.', u'intr.', u'interj.', u'art.', u'Firm.'],
                'cats'   : [u'n.', u'adj.', u'v.', u'prép.', u'adv.', u'Adv.', u'loc.', u'interj.', u'art.'],
                'genres' : [u'm.', u'f.', u'Fig.', u'tr.', u'intr.'],
                'flexs'  : [u'tr.', u'intr.']
-              }
+           }
 
 
 # ----------------------------------------------------------
 
-
 def findArticles(textart, enhance=False) :
+    deb, fin, cat, flex, wcpt  = False, False, False, False, False
+    article     = u''
+    allArticles = []
+    wordlists   = re.split(ur'(\s+)', textart.strip())
+    
+    for i, word in enumerate(wordlists) :
+        word = word.strip()
+        if len(word) >= 1 :
+            if word[-1] != u'.' :
+                article += word+' '
+            elif word[-1] == u'.' and next(i, wordlists, u'wordend'):
+                #print word+'*****'
+                print article
+                article = u''
+            else : 
+                article += word+' '
+                
+            
+    
+    
+
+def findArticlesa(textart, enhance=False) :
 
     deb, fin, cat, flex, wcpt  = False, False, False, False, False
     article     = u''
@@ -106,8 +127,8 @@ apres = ''
 avant = ''
 def next(i, tab, typ) :
     word       = tab[i]
-    nextpart   = tab[i+1:i+4]
-    #print part
+    nextpart   = tab[i-1:i+5]
+    #print '***',nextpart
     if typ == u'entry' :
         for el in allforms[u'forms'] :
             if el in nextpart : return True
@@ -115,7 +136,7 @@ def next(i, tab, typ) :
         for el in nextpart :
             if re.search(ur'(\S+)+', el, re.I) : return True
     if typ == u'wordend' :
-        for el in allforms[u'forms'] :
+        for el in allforms[u'cats'] :
             if el in nextpart : return True
     if typ == u'var' :
         if word[-1] == u',' :
@@ -126,26 +147,27 @@ def next(i, tab, typ) :
                     return True
         else : return False
     
+    
 def before(i, tab, typ) :
     word  = tab[i]
     if i >= 2 :
-        previouspart  = tab[i-4:i-1]
-        #print part
+        previouspart  = tab[i-5:i-1]
+        print previouspart
         if typ == u'entry' :
             for el in allforms[u'forms'] :
-                if el in previouspart : return True
+                if el not in previouspart : return True
             for el in previouspart :
-                if re.search(ur'([a-zéèçêùàï.,]+)', el, re.I) : return True
+                if re.search(r'([a-zéèçêùàï.,]+)', el, re.I) : return True
         if typ == u'wordint' :
             for el in allforms[u'forms'] :
                 if el in previouspart : return True
             for el in previouspart :
-                if re.search(ur'(\S+)', el, re.I) : return True
+                if re.search(r'(\S+)', el, re.I) : return True
         if typ == u'wordend' :
             for el in allforms[u'forms'] :
                 if el in previouspart : return True
             for el in previouspart :
-                if re.search(ur'(\S+)', el, re.I) : return True
+                if re.search(r'(\S+)', el, re.I) : return True
         if typ == u'var' :
             if len(previouspart) >= 1 :
                 if previouspart[0][-1] == u',' :
