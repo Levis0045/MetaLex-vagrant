@@ -7,7 +7,7 @@
     ManageLog registers all operations triggered throughout the process
     Of metalexicographic processing
     
-    Usage:dryadedryadedryadedryadedryadedryadedryadedryadedryade
+    Usage:
         >>> from MetaLex import manageLog
         >>> manageLog.writelog()
      
