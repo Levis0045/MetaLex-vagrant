@@ -130,26 +130,20 @@ def saveNormalize(name, typ):
             with codecs.open(name, 'a', 'utf-8') as file :
                 for art in dicArticles :
                     for k, v in art.items() :
-                        file.write('%s : %s\n' %(k, v))
+                        file.write('%10s : %s\n' %(k, v))
             message = name+u' is created and contain all text format data from html files > Saved in dicTemp folder'  
             MetaLex.dicLog.manageLog.writelog(message) 
-            print u'--> '+message+u' \n'
         else :
             message = name+u' is created and contain all text format data from html files > Saved in dicTemp folder'  
             MetaLex.dicLog.manageLog.writelog(message) 
-            print u'--> '+message+u' \n'
     
     if typ == u'pickle' :  
         if MetaLex.dicProject.inDir(name) and MetaLex.dicProject.filePickle(dicArticles, name) :
             message = name+u' is created and contain pickle data object from html files > Saved in dicTemp folder'  
-            MetaLex.dicLog.manageLog.writelog(message) 
-            print u'--> '+message+u' \n'
-        
+            MetaLex.dicLog.manageLog.writelog(message)         
         else :
             message = name+u' is created and contain pickle data object from html files > Saved in dicTemp folder'  
-            MetaLex.dicLog.manageLog.writelog(message) 
-            print u'--> '+message+u' \n'  
-    
+            MetaLex.dicLog.manageLog.writelog(message)     
         
     #findArticle(dicArticles, enhance=True)
  
