@@ -24,9 +24,9 @@ from wordsCorrection import correctWord, caractReplace, wordReplace
 
 # -----Global Variables-----------------------------------------------------
 
-lang = ""
+lang = u""
 treatImageFile = object
-textOcr = ""
+textOcr = u""
 
 # ----------------------------------------------------------
 

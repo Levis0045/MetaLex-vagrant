@@ -45,11 +45,11 @@ def imageToText(show=False, save=False, langIn='fra'):
     
     allimages = []
     if len(MetaLex.fileImages) >= 1 and not len(MetaLex.treatImages) >= 1 :
-        print "\n Vous avez aucun(s) fichier(s) image traité(s), veuillez les traiter avant la lecture optique \n"
+        print u"\n Vous avez aucun(s) fichier(s) image traité(s), veuillez les traiter avant la lecture optique \n"
         os.chdir('..')
         return None
     elif not len(MetaLex.fileImages) >= 1 :
-        print " \n Vous n'avez aucun(s) fichier(s) image à traiter"
+        print u" \n Vous n'avez aucun(s) fichier(s) image à traiter"
     
     else:
         allimages = MetaLex.treatImages
@@ -64,33 +64,33 @@ def imageToText(show=False, save=False, langIn='fra'):
             imagepart = image.split('_')[:3]
             imagefile = image+ext
             
-            imageconcat = ''
+            imageconcat = u''
             for i in imagepart :
-                imageconcat +='_'+i 
-            imageconcat = imageconcat.split('.')[0]
-            tempname = 'text_ocr'+imageconcat+'_'+str(num)+'.html'
+                imageconcat +=u'_'+i 
+            imageconcat = imageconcat.split(u'.')[0]
+            tempname = u'text_ocr'+imageconcat+u'.html'
             dicProject.createtemp()
             if dicProject.inDir(tempname) :
-                print "\n--> Début de la lecture optique de '"+imagefile+"'\n"
+                print u"\n--> Début de la lecture optique de '"+imagefile+u"'\n"
                 textocr = api.GetHOCRText(2)
-                print "\n--> Fin de la lecture optique de '"+imagefile+"'\n"
+                print u"\n--> Fin de la lecture optique de '"+imagefile+u"'\n"
                 
                 if save:
                     with codecs.open(tempname, 'w', "utf-8") as wr :
                         wr.write(textocr)
-                    message = "'"+ imagefile +"' is Ocrised to > '"+tempname+"' > Saved in dicTemp folder" 
-                    print "--> "+message+"\n"
+                    message = u"'"+ imagefile +u"' is Ocrised to > '"+tempname+u"' > Saved in dicTemp folder" 
+                    print u"--> "+message+u"\n"
                     MetaLex.dicLog.manageLog.writelog(message) 
                     MetaLex.resultOcrData[img] = [textocr]
                 elif show :
-                    print "\n\n*********************************************************\n\n"
+                    print u"\n\n*********************************************************\n\n"
                     print textocr
-                    print "\n\n*********************************************************\n\n"
+                    print u"\n\n*********************************************************\n\n"
                 else :
-                    message = " Warning : imageToText(show=False, save=False) >> precise the action 'show=False or save=False'"
+                    message = u" Warning : imageToText(show=False, save=False) >> precise the action 'show=False or save=False'"
                     MetaLex.dicLog.manageLog.writelog(message) 
             else :
-                print "\n--> Fin de la lecture optique de '"+imagefile+"'\n"
+                print u"\n--> Fin de la lecture optique de '"+imagefile+u"'\n"
             
             dicProject.treat_ocr_append(tempname)
             os.chdir('..')

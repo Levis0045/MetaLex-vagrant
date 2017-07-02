@@ -6,7 +6,7 @@
     
 """
  
-__version__ = "0.0.1"
+__version__ = u"0.0.1"
 
 # ----Internal Modules------------------------------------------------------
 
@@ -18,15 +18,16 @@ from dicProject   import *
 
 # -----Global Variables-----------------------------------------------------
 
-projectName = ''
-allProjectNames = [] 
-fileImages = []
-treatImages = []
-resultOcrFiles = []
-resultOcrData = {}
+projectName           = u''
+projectAuthor         = u''
+allProjectNames       = [] 
+fileImages            = []
+treatImages           = []
+resultOcrFiles        = []
+resultOcrData         = {}
 
 # ----------------------------------------------------------
 
-version = "MetaLex package is in a version : %s " %__version__
+version = u"MetaLex package is in a version : %s " %__version__
 
     

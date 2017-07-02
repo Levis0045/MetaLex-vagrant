@@ -51,7 +51,7 @@ def getImages(images):
     if len(images) >= 1 :
         num = 1
         for image in images : 
-            exts = ('.png', '.jpg', '.JPG', '.jpeg', '.PNG', '.JPEG', '.tif', '.gif')
+            exts = (u'.png', u'.jpg', u'.JPG', u'.jpeg', u'.PNG', u'.JPEG', u'.tif', u'.gif')
             imageroot, ext = dicProject.get_part_file(image)
             if os.path.isfile(image) and ext in exts:
                 imagedir = os.path.dirname(image)
@@ -70,7 +70,7 @@ def getImages(images):
                 MetaLex.fileImages.append(imageLocationNew)
                 num += 1
             else :
-                print u" Error : getImages(images) >> The input image '"+imageroot+ext+"' is not a file image"
+                print u" Error : getImages(images) >> The input image '"+imageroot+ext+u"' is not a file image"
                 
         imagestr = str(images)
         message = imagestr + u' > are append for the current treatment' 
@@ -112,9 +112,14 @@ class enhanceImages ():
                     if dicProject.inDir(tempname) :
                         enh.enhance(value).save(tempname)
                         dicProject.treat_image_append(tempname)
-                        message = imagename + u'is modified with contrast (' +str(value)+ u') > '+tempname+' > Saved in dicTemp folder'  
+                        message = imagename + u'is modified with contrast (' +str(value)+ u') > '+tempname+u' > Saved in dicTemp folder'  
                         MetaLex.dicLog.manageLog.writelog(message) 
-                        num += 1 
+                        num += 1
+                    else :
+                        dicProject.treat_image_append(tempname)
+                        message = imagename + u'is modified with contrast (' +str(value)+ u') > '+tempname+u' > Saved in dicTemp folder'  
+                        MetaLex.dicLog.manageLog.writelog(message) 
+                        num += 1
                 else :
                     print u' Warning : contrast(value, show=False, save=False) --> You must define one action for the current treatment : show=true or save=true '
                     
@@ -145,9 +150,16 @@ class enhanceImages ():
                     if dicProject.inDir(tempname) :
                         enh.enhance(value).save(tempname)
                         dicProject.treat_image_append(tempname)
+                        os.remove(img_conv)
                         message = imagename + u'is modified with sharp ( ' +str(value)+ ') > '+tempname+' > Saved in dicTemp folder'  
                         MetaLex.dicLog.manageLog.writelog(message) 
                         num += 1 
+                    else :
+                        dicProject.treat_image_append(tempname)
+                        os.remove(img_conv)
+                        message = imagename + u'is modified with contrast (' +str(value)+ u') > '+tempname+u' > Saved in dicTemp folder'  
+                        MetaLex.dicLog.manageLog.writelog(message) 
+                        num += 1
                 else :
                     print u'Warning : sharp(value, show=False, save=False) --> You must define one action for the current treatment : show=true or save=true'
         
@@ -177,10 +189,17 @@ class enhanceImages ():
                     dicProject.createtemp()
                     if dicProject.inDir(tempname) :
                         enh.enhance(value).save(tempname)
-                    dicProject.treat_image_append(tempname)
-                    message = imagename + u'is modified with bright (' +str(value)+ ') > '+tempname+' > Saved in dicTemp folder'  
-                    MetaLex.dicLog.manageLog.writelog(message) 
-                    num += 1 
+                        dicProject.treat_image_append(tempname)
+                        os.remove(img_conv)
+                        message = imagename + u' is modified with bright (' +str(value)+ ') > '+tempname+' > Saved in dicTemp folder'  
+                        MetaLex.dicLog.manageLog.writelog(message) 
+                        num += 1 
+                    else :
+                        dicProject.treat_image_append(tempname)
+                        os.remove(img_conv)
+                        message = imagename + u' is modified with contrast (' +str(value)+ u') > '+tempname+u' > Saved in dicTemp folder'  
+                        MetaLex.dicLog.manageLog.writelog(message) 
+                        num += 1
                 else :
                     print u'Warning : bright(value, show=False, save=False) --> You must define one action for the current treatment : show=true or save=true '
         else:
@@ -220,14 +239,19 @@ class enhanceImages ():
                         enhconst.enhance(contrast).save(tempname2)
                         os.remove(tempname)
                         os.remove(img_conv_file)
+                        dicProject.treat_image_append(tempname2)
+                        message = imagename + u' is modified with  contrast (' +str(contrast)+ ') and  bright ('+str(bright)+') > '+tempname2+' > Saved in dicTemp folder'  
+                        MetaLex.dicLog.manageLog.writelog(message) 
+                        imgpil.close()
+                        num += 1
                     else :
                         os.remove(img_conv_file)
                         os.remove(tempname)
-                    dicProject.treat_image_append(tempname2)
-                    message = imagename + u' is modified with  contrast (' +str(contrast)+ ') and  bright ('+str(bright)+') > '+tempname2+' > Saved in dicTemp folder'  
-                    MetaLex.dicLog.manageLog.writelog(message) 
-                    imgpil.close()
-                    num += 1
+                        dicProject.treat_image_append(tempname2)
+                        message = imagename + u' is modified with  contrast (' +str(contrast)+ ') and  bright ('+str(bright)+') > '+tempname2+' > Saved in dicTemp folder'  
+                        MetaLex.dicLog.manageLog.writelog(message) 
+                        imgpil.close()
+                        num += 1
         else:
             message = u'  > They are not images for the current treatment : input images!!' 
             print u"--> "+message+u"\n"
