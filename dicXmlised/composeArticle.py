@@ -4,7 +4,11 @@
 """
     Implémentation de détection de composants  des articles.
  
-    
+    Packages:
+        >>> apt-get install python-html5lib
+        >>> apt-get install python-lxml
+        >>> apt-get install python-bs4
+        
     Usage:
         >>> from MetaLex.dicOcrText import *
         >>> findArticles()
@@ -25,12 +29,16 @@ __all__ = ['findArticles', 'formatArticles']
 
 # -----Global Variables-----------------------------------------------------
 
-allforms = {
-               'forms'  : [u'.', u',', u'n.', u'adj.', u'v.', u'prép.', u'adv.', u'Adv.', u'loc.', u'm.', u'f.', u'Fig.', u'tr.', u'intr.', u'interj.', u'art.', u'Firm.'],
-               'cats'   : [u'n.', u'adj.', u'v.', u'prép.', u'adv.', u'Adv.', u'loc.', u'interj.', u'art.'],
-               'genres' : [u'm.', u'f.', u'Fig.', u'tr.', u'intr.'],
-               'flexs'  : [u'tr.', u'intr.']
-           }
+contentDic = {
+               u'forms'           : [u'.', u',', u'n.', u'adj.', u'v.', u'prép.', u'adv.', u'Adv.', u'loc.', u'm.', u'f.', u'Fig.', u'tr.', u'intr.', u'interj.', u'art.', u'Firm.'],
+               u'cats'            : [u'n.', u'adj.', u'v.', u'prép.', u'adv.', u'Adv.', u'loc.', u'interj.', u'art.'],
+               u'genres'          : [u'm.', u'f.', u'Fig.', u'tr.', u'intr.'],
+               u'flexs'           : [u'tr.', u'intr.'],
+               u'textuel'         : [u'n.', u'adj.', u'v.', u'prép.', u'adv.', u'Adv.', u'loc.', u'm.', u'f.', u'Fig.', u'tr.', u'intr.', u'interj.', u'art.'],
+               u'graphematique'   : [u'.', u',', u':', u'-', u';'],
+               u'symbolique'      : [u'||', u'&#9830;', u'-', u'1.',u'2.',u'3.',u'4.',u'5.',u'6.',u'7.',u'8.',u'9.',u'a)',u'b)',u'c)',u'd)',u'e)',u'f)',u'g)',u'a.'],
+               u'typographique'   : [u'I', u'G', u'B', u'P', u'']
+             }
 
 
 # ----------------------------------------------------------
@@ -58,7 +66,9 @@ def findArticles(textart, enhance=False) :
     
 
 def findArticlesa(textart, enhance=False) :
-
+    """
+        Extract all articles in the file input with codification code of language dictionary  
+    """
     deb, fin, cat, flex, wcpt  = False, False, False, False, False
     article     = u''
     allArticles = []
@@ -82,19 +92,19 @@ def findArticlesa(textart, enhance=False) :
                 article += word+u' '
                 #print article+'\n'
                 article = u''
-            elif word in allforms[u'cats']  :
+            elif word in contentDic[u'cats']  :
             #category
                 cat, flex, deb = True, True, False
                 article += word+u' '
                 #print article+'\n'
                 #print word
-            elif word in allforms[u'genres']  :
+            elif word in contentDic[u'genres']  :
             #genre
                 cat, flex, deb = True, True, False
                 article += word+u' '
                 #print article+'\n'
                 #print word
-            elif word in allforms[u'flexs'] :
+            elif word in contentDic[u'flexs'] :
             #flexion
                 cat, flex, deb = True, True, False
                 article += word+u' '
@@ -106,7 +116,7 @@ def findArticlesa(textart, enhance=False) :
                 article += word+u' '
                 #print article+'\n'
                 #print word
-            elif before(i, wordlists, u'wordint') and word not in allforms['forms'] \
+            elif before(i, wordlists, u'wordint') and word not in contentDic['forms'] \
             and next(i, wordlists, u'wordint') :
             #word int
                 deb, fin, cat, flex  = False, False, False, True
@@ -126,21 +136,24 @@ def findArticlesa(textart, enhance=False) :
 apres = ''
 avant = ''
 def next(i, tab, typ) :
+    """
+        Find an element in its right context 
+    """
     word       = tab[i]
     nextpart   = tab[i-1:i+5]
     #print '***',nextpart
     if typ == u'entry' :
-        for el in allforms[u'forms'] :
+        for el in contentDic[u'forms'] :
             if el in nextpart : return True
     if typ == u'wordint' :
         for el in nextpart :
             if re.search(ur'(\S+)+', el, re.I) : return True
     if typ == u'wordend' :
-        for el in allforms[u'cats'] :
+        for el in contentDic[u'cats'] :
             if el in nextpart : return True
     if typ == u'var' :
         if word[-1] == u',' :
-            for el in allforms[u'cats'] :
+            for el in contentDic[u'cats'] :
                 if el in nextpart : 
                     apres = el
                     #print avant, word, apres
@@ -149,22 +162,25 @@ def next(i, tab, typ) :
     
     
 def before(i, tab, typ) :
+    """
+        Find an element in its left context 
+    """
     word  = tab[i]
     if i >= 2 :
         previouspart  = tab[i-5:i-1]
         print previouspart
         if typ == u'entry' :
-            for el in allforms[u'forms'] :
+            for el in contentDic[u'forms'] :
                 if el not in previouspart : return True
             for el in previouspart :
                 if re.search(r'([a-zéèçêùàï.,]+)', el, re.I) : return True
         if typ == u'wordint' :
-            for el in allforms[u'forms'] :
+            for el in contentDic[u'forms'] :
                 if el in previouspart : return True
             for el in previouspart :
                 if re.search(r'(\S+)', el, re.I) : return True
         if typ == u'wordend' :
-            for el in allforms[u'forms'] :
+            for el in contentDic[u'forms'] :
                 if el in previouspart : return True
             for el in previouspart :
                 if re.search(r'(\S+)', el, re.I) : return True
