@@ -23,7 +23,7 @@ from MetaLex import dicXmlised as Xml
 # ----External Modules------------------------------------------------------
 
 from bs4 import BeautifulSoup
-import re, sys, codecs
+import re, sys, codecs, os
 import warnings
 #import ipdb
 
@@ -42,6 +42,9 @@ nametxt     = ''
 
 
 def makeTextWell(file_rules, okCorrect=False):
+    """
+      Composed and saved all treatments process to enhance quality of html articles 
+    """
     filerule = fileRule(file_rules, typ=u'rule_wc')
     data_rules = filerule.fileRuleUnpack()
     html_ocr_files = MetaLex.resultOcrFiles
@@ -58,12 +61,16 @@ def makeTextWell(file_rules, okCorrect=False):
          
                      
 def enhanceText(html_file, data, okCorrect):
+    """
+       Enhance quality of text by remove all inconvenients characters and optionally 
+       correct malformed words.
+    """
     soup = BeautifulSoup(html_file, "html5lib")
-    div = soup.find(u'div', attrs={'class': u'ocr_page'}) 
+    div = soup.find(u'div', attrs={u'class': u'ocr_page'}) 
     art = 1
         
-    for div in div.findAll(u'div', attrs={'class': u'ocr_carea'}) :
-        for para in div.findAll(u'p', attrs={'class': u'ocr_par'}) :
+    for div in div.findAll(u'div', attrs={u'class': u'ocr_carea'}) :
+        for para in div.findAll(u'p', attrs={u'class': u'ocr_par'}) :
             contentOrigin = u''
             contentCorrection = u''
             
@@ -124,6 +131,9 @@ def enhanceText(html_file, data, okCorrect):
     
     
 def saveNormalize(name, typ):
+    """
+      Saved normalized text in text format (*.art) or in pickle format (*.pickle) 
+    """
     MetaLex.dicProject.createtemp()
     if typ == u'text' :
         if MetaLex.dicProject.inDir(name) :
@@ -150,15 +160,17 @@ def saveNormalize(name, typ):
         
 class fileRule():
     """
-    Managing of  file rules
+      Managing of input file rules for text normalization
     """
     
     def __init__(self, file_rule, typ):
         self.file = file_rule
         self.typ = typ
-        
-        
+         
     def fileRuleUnpack(self):
+        """
+          Unpack file rule and extract its contents
+        """
         word, caracter, regex = u'\W', u'\C', u'\R'
         metadata, ruleWords, ruleCaracts, ruleRegex = {}, {}, {}, {}
         startw, startc, startr = False, False, False
@@ -193,6 +205,9 @@ class fileRule():
         
     
     def verify(self, typ):
+        """
+          Verified if file rule content respect the norm description of MetaLex  
+        """
         module, synw, sync, synr, synrw, delimiter = (False for x in range(6))
         fileop = codecs.open(self.file, 'r', 'utf-8').readlines()
         if typ == u'rule_wc' :
