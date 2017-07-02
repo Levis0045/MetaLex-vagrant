@@ -61,12 +61,14 @@ components = {
              }
 
 article = []
-#Cauthor, Cname, Cdate, Ccomment = "", "", "",""
 
 # ----------------------------------------------------------
 
 
-def dataArticles(typ=u'pickle'):
+def getDataArticles(typ=u'pickle'):
+    """
+        Get data article from the store data file depending of the type wanted   
+    """
     MetaLex.dicProject.createtemp()
     contentdir = os.listdir('.')
     filepickle = u''
@@ -86,6 +88,9 @@ def dataArticles(typ=u'pickle'):
 
 
 def xmlised(typ=u'xml', save=False) :
+    """
+        Create well formed (xml|tei|lmf) file with metadata and content xml 
+    """
     metadata   = xmlMetadata()
     content    = xmlContent()
     if typ == u'xml' :
@@ -109,6 +114,9 @@ def xmlised(typ=u'xml', save=False) :
     
 
 def xmlMetadata(typ=u'xml'):
+    """
+        Create xml metadata file with configuration of the project 
+    """
     MetaLex.dicProject.createtemp()
     if typ == u'xml' :
         projectconf = MetaLex.dicProject.readConf()
@@ -130,7 +138,10 @@ def xmlMetadata(typ=u'xml'):
         
         
 def xmlContent(typ=u'xml'): 
-    data    = dataArticles()
+    """
+        Create xml content file (representing articles) with data articles extracting
+    """
+    data    = getDataArticles()
     content = u''
     result  = u''
     if typ == u'xml' :
@@ -148,6 +159,9 @@ def buildStructure(data, typ=u'dtd'):
 
 
 def dicoHtml(save=False) :
+    """
+        Build html editor file of the all articles 
+    """
     MetaLex.dicPlugins
     filepath     = sys.path[-1]+u'/MetaLex-template.html'
     MetaLex.dicProject.createtemp()
@@ -171,6 +185,9 @@ def dicoHtml(save=False) :
     
     
 def htmlInject(template):
+    """
+        Create html prettify file all previous data generated 
+    """
     MetaLex.dicProject.createtemp()
     contentxml     = xmlised(typ=u'xml', save=False)
     projectconf    = MetaLex.dicProject.readConf()
@@ -208,6 +225,9 @@ def htmlInject(template):
         
         
 def balise(element, markup, typ=u'xml', art=False):
+    """
+        Markup data with a specific format type (xml|tei|lmf)
+    """
     if type :
         if markup in components[u'xml'][u'identification'] \
         or components[u'xml'][u'treatment'] :
@@ -251,6 +271,9 @@ def generateMetadata():
 
     
 def chevron(el, openchev=True, art=False):
+    """
+      Put tag around the data element 
+    """
     idart = generateID()
     if art :
         if openchev     : return u"<"+el+u" id='"+idart+u"' class='data-article'"+u">"
@@ -261,6 +284,9 @@ def chevron(el, openchev=True, art=False):
     
     
 def generateID():
+    """
+        Generate ID of 5 characters with alpha numeric characters 
+    """
     idart = sample([u'1',u'2',u'3',u'4',u'5',u'6',u'7',u'8',u'9',u'0',u'a',u'b',u'c',u'd',u'e',u'f',u'g',u'h',u'i',u'j',u'k',u'l',u'm',u'n',u'o',u'p',u'q',u'r',u's',u't',u'v',u'w',u'y',u'z'], k=5)
     return u''.join(idart)
     
