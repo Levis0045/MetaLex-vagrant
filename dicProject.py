@@ -32,7 +32,7 @@ __all__ = ['createtemp', 'newProject', 'treat_image_append', 'get_part_file', 'i
 
 # ----------------------------------------------------------
 
-
+        
 def get_part_file(namefile):
     """
       Extract file image name and file image extension
@@ -59,7 +59,7 @@ def treat_ocr_append(namefile) :
       @keyword namefile:str
       @return: ...
     """
-    tempnameLocation =  os.getcwd()+u'/'+namefile
+    tempnameLocation =  os.getcwd()+u'/dicTemp/'+namefile
     MetaLex.resultOcrFiles.append(tempnameLocation)
      
      
