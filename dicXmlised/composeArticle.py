@@ -16,7 +16,7 @@
 
 # ----Internal Modules------------------------------------------------------
 
-import MetaLex
+from MetaLex import codifications
 
 # ----External Modules------------------------------------------------------
 
@@ -29,16 +29,7 @@ __all__ = ['findArticles', 'formatArticles']
 
 # -----Global Variables-----------------------------------------------------
 
-contentDic = {
-               u'forms'           : [u'.', u',', u'n.', u'adj.', u'v.', u'prép.', u'adv.', u'Adv.', u'loc.', u'm.', u'f.', u'Fig.', u'tr.', u'intr.', u'interj.', u'art.', u'Firm.'],
-               u'cats'            : [u'n.', u'adj.', u'v.', u'prép.', u'adv.', u'Adv.', u'loc.', u'interj.', u'art.'],
-               u'genres'          : [u'm.', u'f.', u'Fig.', u'tr.', u'intr.'],
-               u'flexs'           : [u'tr.', u'intr.'],
-               u'textuel'         : [u'n.', u'adj.', u'v.', u'prép.', u'adv.', u'Adv.', u'loc.', u'm.', u'f.', u'Fig.', u'tr.', u'intr.', u'interj.', u'art.'],
-               u'graphematique'   : [u'.', u',', u':', u'-', u';'],
-               u'symbolique'      : [u'||', u'&#9830;', u'-', u'1.',u'2.',u'3.',u'4.',u'5.',u'6.',u'7.',u'8.',u'9.',u'a)',u'b)',u'c)',u'd)',u'e)',u'f)',u'g)',u'a.'],
-               u'typographique'   : [u'I', u'G', u'B', u'P', u'']
-             }
+contentDic = codifications.getAllCodifications()
 
 
 # ----------------------------------------------------------
@@ -47,22 +38,19 @@ def findArticles(textart, enhance=False) :
     deb, fin, cat, flex, wcpt  = False, False, False, False, False
     article     = u''
     allArticles = []
-    wordlists   = re.split(ur'(\s+)', textart.strip())
+    coditext    = contentDic['text']
+    codisymb    = contentDic['symb']
+    coditypo    = contentDic['typo']
+    codigraph   = contentDic['graph']
     
-    for i, word in enumerate(wordlists) :
-        word = word.strip()
-        if len(word) >= 1 :
-            if word[-1] != u'.' :
-                article += word+' '
-            elif word[-1] == u'.' and next(i, wordlists, u'wordend'):
-                #print word+'*****'
-                print article
-                article = u''
-            else : 
-                article += word+' '
-                
+    print len(coditext)
+    for codi in coditext :
+        if re.search(codi, textart) :
+            replac = u'<cte>'+codi+u'</cte>'
+            artcodi = re.sub(codi, replac, textart) 
+            print artcodi+'\n'
+   
             
-    
     
 
 def findArticlesa(textart, enhance=False) :
@@ -142,6 +130,7 @@ def next(i, tab, typ) :
     word       = tab[i]
     nextpart   = tab[i-1:i+5]
     #print '***',nextpart
+    """
     if typ == u'entry' :
         for el in contentDic[u'forms'] :
             if el in nextpart : return True
@@ -159,13 +148,14 @@ def next(i, tab, typ) :
                     #print avant, word, apres
                     return True
         else : return False
-    
+    """
     
 def before(i, tab, typ) :
     """
         Find an element in its left context 
     """
     word  = tab[i]
+    """
     if i >= 2 :
         previouspart  = tab[i-5:i-1]
         print previouspart
@@ -191,7 +181,7 @@ def before(i, tab, typ) :
                     #print previouspart[0], word, apres
                     return True
                     
-                
+    """           
                 
 def formatArticles ():
     return False
