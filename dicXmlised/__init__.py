@@ -9,8 +9,8 @@ __version__ = "0.0.1"
 # ----Internal Modules------------------------------------------------------
 
 from composeArticle import findArticles, formatArticles
-from handleStat import *
-from makeBalise import *
+from handleStat     import *
+from makeBalise     import *
 
 # -----Global Variables-----------------------------------------------------
 
