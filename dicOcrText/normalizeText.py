@@ -19,6 +19,7 @@
 
 import MetaLex
 from MetaLex import dicXmlised as Xml
+from MetaLex import codifications
 
 # ----External Modules------------------------------------------------------
 
@@ -45,6 +46,7 @@ def makeTextWell(file_rules, okCorrect=False):
     """
       Composed and saved all treatments process to enhance quality of html articles 
     """
+
     filerule = fileRule(file_rules, typ=u'rule_wc')
     data_rules = filerule.fileRuleUnpack()
     html_ocr_files = MetaLex.resultOcrFiles
@@ -86,24 +88,24 @@ def enhanceText(html_file, data, okCorrect):
                         
                     #print '*****  '+span + ' : ' + spanCorrect
                 elif MetaLex.wordReplace(span, data[1], test=True) :
-                    span = MetaLex.wordReplace(span, data[1])
+                    spanR = MetaLex.wordReplace(span, data[1])
                     if okCorrect :
-                        spanCorrect = MetaLex.correctWord(span)
+                        spanCorrect = MetaLex.correctWord(spanR)
                         contentCorrection += spanCorrect+u' '
                     else :
-                        contentOrigin += span+u' '
+                        contentOrigin += spanR+u' '
                         
                     #print '*****  '+span + ' : ' + spanCorrect
                 elif MetaLex.caractReplace(span, data[2], test=True):
-                    span = MetaLex.caractReplace(span, data[2])
-                    AllWords.append(span)
+                    spanR = MetaLex.caractReplace(span, data[2])
+                    AllWords.append(spanR)
                     if okCorrect :
-                        spanCorrect = MetaLex.correctWord(span)
+                        spanCorrect = MetaLex.correctWord(spanR)
                         contentCorrection += spanCorrect+u' '
                     else:
-                        contentOrigin += span+u' '
+                        contentOrigin += spanR+u' '
                         
-                    #print '*****  '+span + ' : ' + spanCorrect
+                    #print '*****  '+span + ' : ' + spanR
                 #elif span.count(u'n.') > 1 :
                     #print span+'\n'
                 else:
@@ -115,7 +117,7 @@ def enhanceText(html_file, data, okCorrect):
                         AllWords.append(span)
                         contentOrigin += span+u' '
                     #print '*****  '+span + ' : ' + spanCorrect
-            #Xml.findArticles(contentOrigin, enhance=True)
+            Xml.findArticles(contentOrigin, enhance=True)
             #print contentOrigin+'\n'
             artnum = u'article_'+str(art)
             crtnum = u'correction_'+str(art)

@@ -2,7 +2,8 @@
 # coding: utf8
 
 """
-    Implémentation de détection de composants  des articles.
+    makeBalise transform extracted articles into  well formed xml file.
+    It can also generate HTML file for article edition
     
     Packages:
         >>> apt-get install python-html5lib
@@ -10,8 +11,8 @@
         >>> apt-get install python-bs4
     
     Usage:
-        >>> from MetaLex.dicOcrText import *
-        >>> composeArticle()
+        >>> from MetaLex.dicXmilised import *
+        >>> dicoHtml(save=True)
 """
 
 # ----Internal Modules------------------------------------------------------
@@ -49,22 +50,10 @@ components = {
                               u'treatment'      : []
                             },
                 u'dtd'  :   [u'ELEMENT', u'ATTRIBUTE', u'PCDATA', u'CDATA', u'REQUIRED', u'IMPLIED'],
-                u'xsd'  :   [],
-                u'forms':   {
-                             u'allfs'  : [u'.', u',', u'n.', u'adj.', u'v.', u'prép.', u'adv.', u'Adv.', u'loc.', u'm.', u'f.', u'Fig.', u'tr.', u'intr.', u'interj.', u'art.', u'Firm.'],
-                             u'cats'   : [u'n.', u'adj.', u'v.', u'prép.', u'adv.', u'Adv.', u'loc.', u'interj.', u'art.', u'Firm.'],
-                             u'genres' : [u'm.', u'f.', u'Fig.', u'tr.', u'intr.'],
-                             u'flexs'  : [u'tr.', u'intr.']
-                            },
-                u'codif':   {
-                             u'text'   : [u'n.', u'adj.', u'v.', u'prép.', u'adv.', u'Adv.', u'loc.', u'm.', u'f.', u'Fig.', u'tr.', u'intr.', u'interj.', u'art.'],
-                             u'graph'  : [u'.', u',', u':', u'-', u';'],
-                             u'symb'   : [u'||', u'&#9830;', u'-', u'1.',u'2.',u'3.',u'4.',u'5.',u'6.',u'7.',u'8.',u'9.',u'a)',u'b)',u'c)',u'd)',u'e)',u'f)',u'g)',u'a.'],
-                             u'typo'   : [u'I', u'G', u'B', u'P', u'']
-                            }
+                u'xsd'  :   []
              }
 
-article = []
+articles   = []
 
 # ----------------------------------------------------------
 

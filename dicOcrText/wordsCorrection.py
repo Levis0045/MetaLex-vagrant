@@ -131,7 +131,7 @@ def caractReplace(word, data, test=False):
         for k in equiv_keys :
             #print equiv_caract.keys()
             if word.find(k):
-                return word.replace(k, equiv_caract[k])
+                return re.sub(k, equiv_caract[k], word)
             
     
     
