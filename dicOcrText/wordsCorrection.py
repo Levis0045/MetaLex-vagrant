@@ -26,7 +26,7 @@ __all__ = ['correctWord', 'wordReplace', 'caractReplace']
 
 
 
-# ----------------------------------------------------------
+# --------------------------------------------------------------------
 
 def correctWord (word):
     correct = wordCorrection()
