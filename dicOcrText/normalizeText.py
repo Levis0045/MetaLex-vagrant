@@ -117,7 +117,7 @@ def enhanceText(html_file, data, okCorrect):
                         AllWords.append(span)
                         contentOrigin += span+u' '
                     #print '*****  '+span + ' : ' + spanCorrect
-            Xml.findArticles(contentOrigin, enhance=True)
+            #Xml.findArticles(contentOrigin, enhance=True)
             #print contentOrigin+'\n'
             artnum = u'article_'+str(art)
             crtnum = u'correction_'+str(art)
@@ -142,7 +142,11 @@ def saveNormalize(name, typ):
             with codecs.open(name, 'a', 'utf-8') as file :
                 for art in dicArticles :
                     for k, v in art.items() :
-                        file.write('%10s : %s\n' %(k, v))
+                        if k != u'article_1' :
+                            file.write('%10s : %s\n' %(k, v))
+                        else :
+                            file.write('----------------------------------------------------------------------------\n')
+                            file.write('%10s : %s\n' %(k, v))
             message = name+u' is created and contain all text format data from html files > Saved in dicTemp folder'  
             MetaLex.dicLog.manageLog.writelog(message) 
         else :
