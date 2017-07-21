@@ -64,7 +64,7 @@ def getImages(images):
                 if not os.path.exists(imagedirNew) :
                     os.mkdir(imagedirNew)
                     
-                imagefileNew = u"dic_image_"+str(num)+ext
+                imagefileNew     = u"dic_image_"+str(num)+ext
                 imageLocationNew =  imagedirNew+imagefileNew
                 copyfile(image, imageLocationNew)
                 MetaLex.fileImages.append(imageLocationNew)
@@ -73,11 +73,10 @@ def getImages(images):
                 print u" Error : getImages(images) >> The input image '"+imageroot+ext+u"' is not a file image"
                 
         imagestr = str(images)
-        message = imagestr + u' > are append for the current treatment' 
+        message  = imagestr + u' > are append for the current treatment' 
         MetaLex.dicLog.manageLog.writelog(message)
     else: 
         message = u' Error : getImages(images) >> They are not images for the current treatment : input images !!' 
-        print message+u"\n"
         MetaLex.dicLog.manageLog.writelog(message)
         
     return MetaLex
