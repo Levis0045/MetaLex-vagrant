@@ -118,7 +118,7 @@ def xmlised(typ=u'xml', save=False) :
     if typ == u'xml' :
         if save :
             name = u'MetaLex-'+MetaLex.projectName+u'.xml'
-            metalexXml = balise(metadata+content, u'MetaLexProject')
+            metalexXml = balise(metadata+content, u'MetaLexProject', attr={'xmlns:mtl':'https://www.w3schools.com/MetaLex'})
             if MetaLex.dicProject.inDir(name) :
                 with codecs.open(name, 'w', 'utf-8') as fle :
                     fle.write(metalexXml)
@@ -130,7 +130,7 @@ def xmlised(typ=u'xml', save=False) :
                 #MetaLex.dicLog.manageLog.writelog(message)
             return metalexXml
         else :
-            metalexXml = balise(metadata+content, u'MetaLexProject')
+            metalexXml = balise(metadata+content, u'MetaLexProject', attr={'xmlns:mtl':'https://www.w3schools.com/MetaLex'})
             return metalexXml
         
     
@@ -156,7 +156,7 @@ def xmlMetadata(typ=u'xml'):
             contrib = balise(''.join(contribtab), u'mtl:pers') 
         contrib = balise(contrib, u'mtl:contributors')
         cont    = name+author+date+comment+contrib
-        content = balise(cont, u'mtl:metadata', attr={'xmlns:mtl':'https://www.w3schools.com/MetaLex'}) 
+        content = balise(cont, u'mtl:metadata') 
         return content
         
         
@@ -171,7 +171,7 @@ def xmlContent(typ=u'xml'):
     if typ == u'xml' :
         for dicart in data :
             for art in dicart.keys() :
-                art = balise(dicart[art], u'mtl:article', art=True)
+                art = balise(dicart[art], u'entry', art=True)
                 content += art
         contentXml = balise(content, u'mtl:content')
         return contentXml
@@ -188,10 +188,9 @@ def htmlInject(template):
       Create HTML prettify file all previous data generated 
       @return: html (prettify by BeautifulSoup)
     """
-    contentxml     = xmlised(typ=u'xml', save=True)
-    #print dir(soupxml)
+    contentxml     = xmlised(typ=u'xml', save=False)
     MetaLex.dicProject.createtemp()
-    etreeXml       = etree.parse('MetaLex-Larousse test for thesis.xml')
+    soupXml        = BeautifulSoup(contentxml, "html5lib")
     projectconf    = MetaLex.dicProject.readConf()
     Hauthor, Hname, Hdate, Hcomment, Hcontrib = projectconf['Author'], projectconf['Projectname'], projectconf['Creationdate'], projectconf['Comment'], projectconf['Contributors']
     filetemplate   = codecs.open(template, 'r', 'utf-8')
@@ -207,20 +206,17 @@ def htmlInject(template):
     contrib.string = 'contributors : '+Hcontrib
     project        = content.find(u'h4', attrs={'id': u'projetname'})
     project.string = Hname
-    
-    articlesxml    = etreeXml.findall(u'mtl:article')
-    print articlesxml
+    contentxml     = soupXml.find(u'mtl:content')
+    articlesxml    = contentxml.findAll(u'entry')
     articleshtml   = souphtml.find(u'div', attrs={'id': u'mtl:articles'})
     for x in articlesxml : articleshtml.append(x)
     listlemme      = souphtml.find(u'ul', attrs={'id': u'list-articles'})
     for x in articlesxml :
-        #print 'x'+x+'\n'
         art     = x.get_text()
         id      = x.get('id')
         lem     = ' '.join(re.split(ur'(\s)',art)[0:3]) 
-        lemme   = BeautifulSoup('<li class="w3-hover-light-grey" ><span class="lemme" onclick="changeImage('+"'"+id+"'"+')">'+lem+'</span><span class="fa fa-plus w3-closebtn" onclick="add('+"'"+id+"'"+')"/></li>', 'html5lib')
-        #print lemme+'\n'
-        listlemme.append(lemme)
+        lemme   = BeautifulSoup(u'<li class="w3-hover-light-grey" ><span class="lemme" onclick="changeImage('+u"'"+id+u"'"+u')">'+lem+u'</span><span class="fa fa-plus w3-closebtn" onclick="add('+u"'"+id+u"'"+u')"/></li>', 'html5lib')
+        listlemme.append(lemme.find(u'li'))
         
     filetemplate.close()
     html = souphtml.prettify("utf-8")
@@ -281,8 +277,14 @@ def chevron(el, attr, openchev=True, art=False):
       @return: tagging element 
     """
     idart = generateID()
-    if art :
-        if openchev     : return u"<"+el+u" id='"+idart+u"' class='data-article'"+u">"
+    if art and attr == None:
+        if openchev     : return u"<"+el+u" id='"+idart+u"' class='data-entry'"+u">"
+        if not openchev : return u"</"+el+u">"
+    if art and attr != None :
+        allattrib = ''
+        for at in attr.keys() :
+            allattrib += ' '+at+'="'+attr[at]+'"'
+        if openchev     : return u"<"+el+u" id='"+idart+u"' class='data-entry'"+u' '+allattrib+u">"
         if not openchev : return u"</"+el+u">"
     elif art == False and attr != None :
         allattrib = ''
