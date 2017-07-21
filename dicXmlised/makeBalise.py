@@ -6,9 +6,9 @@
     It can also generate HTML file for article edition
     
     Packages:
-        >>> apt-get install python-html5lib
-        >>> apt-get install python-lxml
-        >>> apt-get install python-bs4
+        >>> sudo apt-get install python-html5lib
+        >>> sudo apt-get install python-lxml
+        >>> sudo apt-get install python-bs4
     
     Usage:
         >>> from MetaLex.dicXmilised import *
@@ -26,6 +26,7 @@ import re, sys, codecs, os
 from bs4    import BeautifulSoup
 from random import sample
 from shutil import copyfile
+from lxml import etree
 
 # -----Exported Functions-----------------------------------------------------
 
@@ -57,7 +58,33 @@ articles   = []
 
 # ----------------------------------------------------------
 
-
+def dicoHtml(save=False) :
+    """
+      Build HTML editor file of the all articles 
+      @return: MetaLexViewerEditor.html
+    """
+    MetaLex.dicPlugins
+    filepath     = sys.path[-1]+u'/MetaLex-template.html'
+    MetaLex.dicProject.createtemp()
+    if MetaLex.dicProject.inDir('CopyMetaLexTemplate.html') :
+        copyfile(filepath, 'CopyMetaLexTemplate.html')
+        souphtl = htmlInject('CopyMetaLexTemplate.html')
+        if save : 
+            with codecs.open('MetaLexViewerEditor.html', 'w') as htmlresult :
+                htmlresult.write(souphtl)
+            os.remove('CopyMetaLexTemplate.html')
+            message = u"'MetaLexViewerEditor.html' has correctly been generated > Saved in dicTemp folder" 
+            MetaLex.dicLog.manageLog.writelog(message)
+    else :
+        souphtl = htmlInject('CopyMetaLexTemplate.html')
+        if save : 
+            with codecs.open('MetaLexViewerEditor.html', 'w') as htmlresult :
+                htmlresult.write(souphtl)
+            os.remove('CopyMetaLexTemplate.html')
+            message = u"'MetaLexViewerEditor.html' has correctly been generated > Saved in dicTemp folder" 
+            MetaLex.dicLog.manageLog.writelog(message)
+            
+            
 def getDataArticles(typ=u'pickle'):
     """
       Get data article from the store data file depending of the type wanted   
@@ -90,9 +117,8 @@ def xmlised(typ=u'xml', save=False) :
     content    = xmlContent()
     if typ == u'xml' :
         if save :
-            MetaLex.dicProject.createtemp()
             name = u'MetaLex-'+MetaLex.projectName+u'.xml'
-            metalexXml = balise(metadata+content, u'MetaLexProject', typ=u'')
+            metalexXml = balise(metadata+content, u'MetaLexProject', attr={'xmlns:mtl':'https://www.w3schools.com/MetaLex'})
             if MetaLex.dicProject.inDir(name) :
                 with codecs.open(name, 'w', 'utf-8') as fle :
                     fle.write(metalexXml)
@@ -102,8 +128,9 @@ def xmlised(typ=u'xml', save=False) :
                 message = u"'"+name+u"'  is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder"
                 print message
                 #MetaLex.dicLog.manageLog.writelog(message)
+            return metalexXml
         else :
-            metalexXml = balise(metadata+content, u'MetaLexProject', typ=u'')
+            metalexXml = balise(metadata+content, u'MetaLexProject', attr={'xmlns:mtl':'https://www.w3schools.com/MetaLex'})
             return metalexXml
         
     
@@ -116,20 +143,20 @@ def xmlMetadata(typ=u'xml'):
     MetaLex.dicProject.createtemp()
     if typ == u'xml' :
         projectconf = MetaLex.dicProject.readConf()
-        author      = balise(projectconf['Author'], u'mtl:author', typ=u'')
-        name        = balise(projectconf['Projectname'], u'mtl:projectname', typ=u'')
-        date        = balise(projectconf['Creationdate'], u'mtl:date', typ=u'')
-        comment     = balise(projectconf['Comment'], u'mtl:comment', typ=u'')
+        author      = balise(projectconf['Author'], u'mtl:author')
+        name        = balise(projectconf['Projectname'], u'mtl:projectname')
+        date        = balise(projectconf['Creationdate'], u'mtl:date')
+        comment     = balise(projectconf['Comment'], u'mtl:comment')
         contribtab  = projectconf['Contributors'].split(u',') if projectconf['Contributors'].find(u',') else projectconf['Contributors']
         contrib = ''
         if len(contribtab) > 1 :
             for data in contribtab :
-                contrib += balise(data, u'mtl:pers', typ=u'') 
+                contrib += balise(data, u'mtl:pers') 
         else :
-            contrib = balise(''.join(contribtab), u'mtl:pers ', typ=u'') 
-        contrib = balise(contrib, u'mtl:contributors', typ=u'')
+            contrib = balise(''.join(contribtab), u'mtl:pers') 
+        contrib = balise(contrib, u'mtl:contributors')
         cont    = name+author+date+comment+contrib
-        content = balise(cont, u'mtl:metadata', typ=u'') 
+        content = balise(cont, u'mtl:metadata') 
         return content
         
         
@@ -144,9 +171,9 @@ def xmlContent(typ=u'xml'):
     if typ == u'xml' :
         for dicart in data :
             for art in dicart.keys() :
-                art = balise(dicart[art], u'mtl:article', typ=u'', art=True)
+                art = balise(dicart[art], u'entry', art=True)
                 content += art
-        contentXml = balise(content, u'mtl:content', typ=u'', art=True)
+        contentXml = balise(content, u'mtl:content')
         return contentXml
 
     
@@ -154,32 +181,6 @@ def xmlContent(typ=u'xml'):
 def buildStructure(data, typ=u'dtd'):
     return False
 
-
-def dicoHtml(save=False) :
-    """
-      Build HTML editor file of the all articles 
-      @return: MetaLexViewerEditor.html
-    """
-    MetaLex.dicPlugins
-    filepath     = sys.path[-1]+u'/MetaLex-template.html'
-    MetaLex.dicProject.createtemp()
-    if MetaLex.dicProject.inDir('CopyMetaLexTemplate.html') :
-        copyfile(filepath, 'CopyMetaLexTemplate.html')
-        souphtl = htmlInject('CopyMetaLexTemplate.html')
-        if save : 
-            with codecs.open('MetaLexViewerEditor.html', 'w') as htmlresult :
-                htmlresult.write(souphtl)
-            os.remove('CopyMetaLexTemplate.html')
-            message = u"'MetaLexViewerEditor.html' has correctly been generated > Saved in dicTemp folder" 
-            MetaLex.dicLog.manageLog.writelog(message)
-    else :
-        souphtl = htmlInject('CopyMetaLexTemplate.html')
-        if save : 
-            with codecs.open('MetaLexViewerEditor.html', 'w') as htmlresult :
-                htmlresult.write(souphtl)
-            os.remove('CopyMetaLexTemplate.html')
-            message = u"'MetaLexViewerEditor.html' has correctly been generated > Saved in dicTemp folder" 
-            MetaLex.dicLog.manageLog.writelog(message)
     
     
 def htmlInject(template):
@@ -187,8 +188,9 @@ def htmlInject(template):
       Create HTML prettify file all previous data generated 
       @return: html (prettify by BeautifulSoup)
     """
-    MetaLex.dicProject.createtemp()
     contentxml     = xmlised(typ=u'xml', save=False)
+    MetaLex.dicProject.createtemp()
+    soupXml        = BeautifulSoup(contentxml, "html5lib")
     projectconf    = MetaLex.dicProject.readConf()
     Hauthor, Hname, Hdate, Hcomment, Hcontrib = projectconf['Author'], projectconf['Projectname'], projectconf['Creationdate'], projectconf['Comment'], projectconf['Contributors']
     filetemplate   = codecs.open(template, 'r', 'utf-8')
@@ -204,9 +206,8 @@ def htmlInject(template):
     contrib.string = 'contributors : '+Hcontrib
     project        = content.find(u'h4', attrs={'id': u'projetname'})
     project.string = Hname
-    
-    soupxml        = BeautifulSoup(contentxml, "html5lib")
-    articlesxml    = soupxml.findAll(u'mtl:article')
+    contentxml     = soupXml.find(u'mtl:content')
+    articlesxml    = contentxml.findAll(u'entry')
     articleshtml   = souphtml.find(u'div', attrs={'id': u'mtl:articles'})
     for x in articlesxml : articleshtml.append(x)
     listlemme      = souphtml.find(u'ul', attrs={'id': u'list-articles'})
@@ -214,8 +215,8 @@ def htmlInject(template):
         art     = x.get_text()
         id      = x.get('id')
         lem     = ' '.join(re.split(ur'(\s)',art)[0:3]) 
-        lemme   = BeautifulSoup('<li class="w3-hover-light-grey" ><span class="lemme" onclick="changeImage('+"'"+id+"'"+')">'+lem+'</span><span class="fa fa-plus w3-closebtn" onclick="add('+"'"+id+"'"+')"/></li>', 'html5lib')
-        listlemme.append(lemme)
+        lemme   = BeautifulSoup(u'<li class="w3-hover-light-grey" ><span class="lemme" onclick="changeImage('+u"'"+id+u"'"+u')">'+lem+u'</span><span class="fa fa-plus w3-closebtn" onclick="add('+u"'"+id+u"'"+u')"/></li>', 'html5lib')
+        listlemme.append(lemme.find(u'li'))
         
     filetemplate.close()
     html = souphtml.prettify("utf-8")
@@ -223,7 +224,7 @@ def htmlInject(template):
     
         
         
-def balise(element, markup, typ=u'xml', art=False):
+def balise(element, markup, attr=None, typ=u'xml', art=False):
     """
       Markup data with a specific format type (xml|tei|lmf)
       @return: balised element
@@ -232,35 +233,35 @@ def balise(element, markup, typ=u'xml', art=False):
         if markup in components[u'xml'][u'identification'] \
         or components[u'xml'][u'treatment'] :
             if art :
-                element = chevron(markup, art=True)+element+chevron(markup, False)
+                element = chevron(markup, attr, art=True)+element+chevron(markup, attr, False)
                 return element
             else:
-                element = chevron(markup)+element+chevron(markup, False)
+                element = chevron(markup, attr)+element+chevron(markup, attr, False)
                 return element
     elif typ == u'tei' :
         if markup in components[u'tei'][u'identification'] \
         or components[u'xml'][u'treatment'] :
             if art :
-                element = chevron(markup, art=True)+element+chevron(markup, False)
+                element = chevron(markup, attr, art=True)+element+chevron(markup, attr, False)
                 return element
             else:
-                element = chevron(markup)+element+chevron(markup, False)
+                element = chevron(markup, attr)+element+chevron(markup, attr, False)
                 return element
     elif typ == u'lmf' :
         if markup in components[u'lmf'][u'identification'] \
         or components[u'xml'][u'treatment'] :
             if art :
-                element = chevron(markup, art=True)+element+chevron(markup, False)
+                element = chevron(markup, attr, True)+element+chevron(markup, attr, False)
                 return element
             else:
-                element = chevron(markup)+element+chevron(markup, False)
+                element = chevron(markup, attr)+element+chevron(markup, attr, False)
                 return element
     else :
         if art :
-            element = chevron(markup, art=True)+element+chevron(markup, False)
+            element = chevron(markup, attr, True)+element+chevron(markup, attr, False)
             return element
         else:
-            element = chevron(markup)+element+chevron(markup, False)
+            element = chevron(markup, attr)+element+chevron(markup, attr, False)
             return element
     
 
@@ -270,16 +271,28 @@ def generateMetadata():
 
 
     
-def chevron(el, openchev=True, art=False):
+def chevron(el, attr, openchev=True, art=False):
     """
       Put tag around the data element
       @return: tagging element 
     """
     idart = generateID()
-    if art :
-        if openchev     : return u"<"+el+u" id='"+idart+u"' class='data-article'"+u">"
+    if art and attr == None:
+        if openchev     : return u"<"+el+u" id='"+idart+u"' class='data-entry'"+u">"
         if not openchev : return u"</"+el+u">"
-    else :
+    if art and attr != None :
+        allattrib = ''
+        for at in attr.keys() :
+            allattrib += ' '+at+'="'+attr[at]+'"'
+        if openchev     : return u"<"+el+u" id='"+idart+u"' class='data-entry'"+u' '+allattrib+u">"
+        if not openchev : return u"</"+el+u">"
+    elif art == False and attr != None :
+        allattrib = ''
+        for at in attr.keys() :
+            allattrib += ' '+at+'="'+attr[at]+'"'
+        if openchev     : return u"<"+el+u' '+allattrib+u">"
+        if not openchev : return u"</"+el+u">"
+    elif art == False and attr == None :
         if openchev     : return u"<"+el+u">"
         if not openchev : return u"</"+el+u">"
     

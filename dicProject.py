@@ -23,14 +23,14 @@ import MetaLex
 import os, codecs
 import pickle
 
-# -----Exported Functions-----------------------------------------------------
+# -----Exported Functions---------------------------------------------------
 
 __all__ = ['createtemp', 'newProject', 'treat_image_append', 'get_part_file', 'inDir']
 
 # -----Global Variables-----------------------------------------------------
 
 
-# ----------------------------------------------------------
+# --------------------------------------------------------------------------
 
         
 def get_part_file(namefile):
@@ -59,7 +59,7 @@ def treat_ocr_append(namefile) :
       @keyword namefile:str
       @return: ...
     """
-    tempnameLocation =  os.getcwd()+u'/dicTemp/'+namefile
+    tempnameLocation =  os.getcwd()+u'/'+namefile
     MetaLex.resultOcrFiles.append(tempnameLocation)
      
      
@@ -148,28 +148,34 @@ def createtemp():
       Create a 'dicTemp' folder if it doesn't exist at the parent folder at the scope
       @return: place in dicTemp folder
     """
-    
-    name = u'dicTemp'
-    currentdir = os.listdir('.')
-    if u'testDicoParser' in currentdir :
-        os.chdir(u'testDicoParser/')
-        currentdir = os.listdir('.')
-        if name not in currentdir and u'dicLogs' in currentdir :
-            try:
-                os.mkdir(u'dicTemp')
-            except os.error :
-                pass
-            message = u'dicTemp folder' + u'  > is created' 
-            MetaLex.dicLog.manageLog.writelog(message)
-            os.chdir(u'dicTemp/')
-            message = u'Change current directory to  > dicTemp folder'  
-            MetaLex.dicLog.manageLog.writelog(message) 
-            os.chdir(u'dicTemp/')
-        else:
-            os.chdir(u'dicTemp/') 
-    elif u'dicLogs' in currentdir and u'dicTemp' in currentdir :
-        os.chdir(u'dicTemp/') 
+      
+    currentfolder  = os.getcwd()
+    contentdir     = os.listdir('.')
+    parentdir      = os.listdir('..')
+    if 'dicLogs' in contentdir and 'dicTemp' not in contentdir :
+        try:
+            os.mkdir('dicTemp')
+        except os.error :
+            print 'Error :  We can cannot create dicTemp folder in this directory ! It s right exception ?'
+            pass
+        message = u'dicTemp folder' + u'  > is created an initialised' 
+        MetaLex.dicLog.manageLog.writelog(message)
+        os.chdir('dicTemp/')
 
+    elif 'dicLogs' in contentdir and 'dicTemp' in contentdir :
+        os.chdir('dicTemp/') 
+    elif 'dicLogs' not in contentdir and 'dicLogs' in parentdir and 'dicTemp' in parentdir :
+        os.chdir('..')
+        os.chdir('dicTemp/')
+    elif 'dicLogs' not in contentdir and 'dicLogs' in parentdir and 'dicTemp' not in parentdir :
+        os.chdir('..')
+        try:
+            os.mkdir('dicTemp')
+        except os.error :
+            print 'Error :  We can cannot create dicTemp folder in this directory ! It s right exception ?'
+            pass
+        os.chdir('dicTemp/') 
+        
 
 def dicFile(fil):
     """
@@ -203,7 +209,7 @@ class newProject :
         self.lang           = u""
         self.dicoType       = u""
     
-    def setConfproject (self, author, comment, contrib):
+    def setConfProject (self, author, comment, contrib):
         """
           Set parameters of new environment project
           @keyword author:str
@@ -216,7 +222,7 @@ class newProject :
         dateInit = MetaLex.manageLog.getDate()
         Intro    = u'***************** MetaLex project configuration *****************'
         end      = u'*****************************************************************'
-        content  = Intro+'\n\n'+'\Project name  : '+project+'\n'+'\Creation date : '+dateInit+'\n'+'\Author        : '+author+'\n'+'\Contributors  : '+contrib\
+        content  = Intro+'\n\n'+'\Project name  : '+project+'\n'+'\Creation date : '+dateInit+'\n'+'\Author  : '+author+'\n'+'\Contributors  : '+contrib\
         +'\n'+'\Comment       : '+comment+'\n\n'+end
         MetaLex.dicProject.createtemp()
         if MetaLex.dicProject.inDir('MetaLex.cnf') :

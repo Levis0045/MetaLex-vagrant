@@ -5,8 +5,11 @@
 """
     Implémentation des outils d'ocrisation de l'image.
  
-    Package:
-        >>> pip install tesserocr
+    Packages:
+        >>> sudo apt-get install tesseract-ocr-all
+        >>> sudo apt-get install libtesseract-dev libleptonica-dev 
+        >>> sudo pip install Cython
+        >>> sudo CPPFLAGS=-I/usr/local/include pip install tesserocr
         
     Usage:
         >>> import MetaLex as dico
@@ -69,6 +72,7 @@ def imageToText(show=False, save=False, langIn='fra'):
                 imageconcat +=u'_'+i 
             imageconcat = imageconcat.split(u'.')[0]
             tempname = u'text_ocr'+imageconcat+u'.html'
+            
             dicProject.createtemp()
             if dicProject.inDir(tempname) :
                 print u"\n--> Début de la lecture optique de '"+imagefile+u"'\n"
@@ -79,7 +83,6 @@ def imageToText(show=False, save=False, langIn='fra'):
                     with codecs.open(tempname, 'w', "utf-8") as wr :
                         wr.write(textocr)
                     message = u"'"+ imagefile +u"' is Ocrised to > '"+tempname+u"' > Saved in dicTemp folder" 
-                    print u"--> "+message+u"\n"
                     MetaLex.dicLog.manageLog.writelog(message) 
                     MetaLex.resultOcrData[img] = [textocr]
                 elif show :

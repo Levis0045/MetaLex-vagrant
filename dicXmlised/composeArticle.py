@@ -23,7 +23,7 @@ from MetaLex import codifications
 import re, sys, codecs
 from bs4 import BeautifulSoup
 
-# -----Exported Functions-----------------------------------------------------
+# -----Exported Functions---------------------------------------------------
 
 __all__ = ['findArticles', 'formatArticles']
 
@@ -31,8 +31,7 @@ __all__ = ['findArticles', 'formatArticles']
 
 contentDic = codifications.getAllCodifications()
 
-
-# ----------------------------------------------------------
+# --------------------------------------------------------------------------
 
 def findArticles(textart, enhance=False) :
     deb, fin, cat, flex, wcpt  = False, False, False, False, False
