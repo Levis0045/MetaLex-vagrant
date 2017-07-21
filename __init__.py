@@ -10,12 +10,12 @@ __version__ = u"0.0.1"
 
 # ----Internal Modules------------------------------------------------------
 
+import codifications
 from .dicOcrText    import *
 from .dicXmlised    import *
 from .dicLog        import *
 from .dicPlugins    import *
-from dicProject     import *
-import codifications
+from  dicProject    import *
 
 # -----Global Variables-----------------------------------------------------
 
