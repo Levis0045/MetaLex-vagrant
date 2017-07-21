@@ -46,22 +46,31 @@ def logname():
     
     
 def folderlog():
-    name = logname()
-    position = os.getcwd()
-    os.chdir('..')
-    parentdir =  os.listdir('.')
-    if u'dicLogs' not in parentdir :
-        os.chdir(position)
-        currentdir = os.listdir('.')
-        if u'dicLogs' not in currentdir :
+    name       = logname()
+    parentdir  = os.listdir('..')
+    currentdir = os.listdir('.')
+
+    if u'dicLogs' in currentdir :
+        os.chdir(u'dicLogs')        
+    elif u'dicLogs' not in currentdir and u'dicTemp' in currentdir :
+        try :
             os.mkdir(u'dicLogs')
-            os.chdir(u'dicLogs/')
-        else:
-            os.chdir(u'dicLogs/') 
-    else:
-        os.chdir(u'dicLogs/') 
-    
-    currentdirlog = os.listdir('.')
+        except os.error :
+            print 'Error :  We can cannot create dicLogs folder in this directory ! It s right exception ?'
+            pass
+        os.chdir(u'dicLogs/')
+    elif u'dicLogs' not in currentdir and u'dicLogs' in parentdir :
+        os.chdir(u'..')
+        os.chdir(u'dicLogs/')
+    else :
+        try :
+            os.mkdir(u'dicLogs')
+        except os.error :
+            print 'Error :  We can cannot create dicLogs folder in this directory ! It s right exception ?'
+            pass
+        os.chdir(u'dicLogs/')
+       
+    currentdirlog = os.listdir(u'.')
     if name not in currentdirlog :
         logfile = codecs.open(name, 'a', 'utf-8')
         return logfile  
@@ -86,6 +95,5 @@ def writelog(content):
     else:
         pass
     
-    os.chdir('..')
     print u'Log Writing is finish : "'+content+u'"\n'
     
