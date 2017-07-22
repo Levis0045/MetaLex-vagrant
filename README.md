@@ -5,7 +5,7 @@ For current developpement version of this tool, see [MetaLex/Elvis-test](https:/
 [![Build Status](https://travis-ci.org/claroline/Distribution.svg?branch=master)](mteprojet.fr/MetaLex)
 
 # Requirements
-MetaLex is developped in Python 2.7 environment, these packages are required :
+MetaLex is developped in **Python 2.7** environment, these packages are required :
 
 ```
     sudo apt-get install python-html5lib
@@ -25,7 +25,8 @@ MetaLex is developped in Python 2.7 environment, these packages are required :
     import sys 
     sys.path.append('..')
 ```
-- If MetaLex is in the same file, import MetaLex
+
+- If **MetaLex folder** is in the same file or in the system path, import it.
 
 ```
     import MetaLex
@@ -38,7 +39,7 @@ MetaLex is developped in Python 2.7 environment, these packages are required :
     import os, glob
 ``` 
 
-- Generate real path of images dictionaries files. The input images must be scans of monolinguals dictionaries
+- Generate real path of images dictionaries files. The input images must be scans of monolinguals dictionaries.
 
 ```
     imagelist = []
@@ -47,7 +48,7 @@ MetaLex is developped in Python 2.7 environment, these packages are required :
         imagelist.append(name)
 ```
 
-- All steps below must follows as presented. *file_Rule.dic* must be build using the specific structure.
+- All steps below must follows as presented. **file_Rule.dic** must be build using the specific structure.
 
 ```
     project = dico.newProject('Title of the project')
