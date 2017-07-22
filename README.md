@@ -1,6 +1,6 @@
 # MetaLex Tool
 MetaLex is general tool for *lexicographics* and *metalexicographics* activities.
-For other version of this tool, see [MetaLex/Elvis-test](http://github.com/Levis0056/dic)
+For current developpement version of this tool, see [MetaLex/Elvis-test](https://github.com/Levis0045/dic/tree/Elvis-test)
 
 [![Build Status](https://travis-ci.org/claroline/Distribution.svg?branch=master)](mteprojet.fr/MetaLex)
 
@@ -84,6 +84,17 @@ The space between headers served to describe remplacement.
 
 # Reference
 
-
+```
+    @article{Mboning-Elvis,
+        title  = {Quand le TAL s'empare de la métalexicographie : conception d'un outil pour le métalexicographe},
+        author = {Mboning, Elvis},
+        url    = {https://github.com/Levis0045/dic/},
+        date   = {2017-06-20},
+        shool  = {Université de Lille 3},
+        year   = {2017},
+        pages  = {12},
+        keywords = {métalexicographie, TAL, fouille de données, extraction d'information, lecture optique, lexicographie, Xmlisation, DTD}
+    }
+```
 
 
