@@ -58,7 +58,7 @@ MetaLex is developped in **Python 2.7** environment, these packages are required
     images.imageToText(save=True, langIn='fra')
 ```
 
-- MetaLex want **file_Rule.dic** which using  specific structure for enhance text of dictionnary.
+- MetaLex take **file_Rule.dic** file which using  specific structure to enhance output text of OCR data (from image's files dictionnaries).
 
 ```
     \START
