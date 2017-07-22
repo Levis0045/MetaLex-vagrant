@@ -29,7 +29,8 @@ __all__ = ['findArticles', 'formatArticles']
 
 # -----Global Variables-----------------------------------------------------
 
-contentDic = codifications.getAllCodifications()
+codi       = codifications.codificationsStore()
+contentDic = codi.getAllCodifications()
 
 # --------------------------------------------------------------------------
 

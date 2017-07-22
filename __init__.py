@@ -19,13 +19,14 @@ from  dicProject    import *
 
 # -----Global Variables-----------------------------------------------------
 
-projectName           = u''
-projectAuthor         = u''
-allProjectNames       = [] 
-fileImages            = []
-treatImages           = []
-resultOcrFiles        = []
-resultOcrData         = {}
+projectName        = u''
+projectAuthor      = u''
+allProjectNames    = [] 
+fileImages         = []
+treatImages        = []
+resultOcrFiles     = []
+resultOcrData      = {}
+codifications      = {}
 
 # ----------------------------------------------------------
 

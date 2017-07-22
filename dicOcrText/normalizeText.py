@@ -45,6 +45,9 @@ nametxt     = ''
 def makeTextWell(file_rules, okCorrect=False):
     """
       Composed and saved all treatments process to enhance quality of html articles 
+      @keyword file_rules:str
+      @keyword okCorrect:bool
+      @return: file:pickle and text
     """
 
     filerule = fileRule(file_rules, typ=u'rule_wc')
@@ -62,10 +65,14 @@ def makeTextWell(file_rules, okCorrect=False):
     saveNormalize(nametxt, u'text')     
          
                      
-def enhanceText(html_file, data, okCorrect):
+def enhanceText(html_file, rules, okCorrect):
     """
        Enhance quality of text by remove all inconvenients characters and optionally 
        correct malformed words.
+       @keyword html_file:str file
+       @keyword rules:str
+       @keyword okCorrect:bool
+       @return: list:dicArticles
     """
     soup = BeautifulSoup(html_file, "html5lib")
     div = soup.find(u'div', attrs={u'class': u'ocr_page'}) 
@@ -87,8 +94,8 @@ def enhanceText(html_file, data, okCorrect):
                         contentOrigin += span
                         
                     #print '*****  '+span + ' : ' + spanCorrect
-                elif MetaLex.wordReplace(span, data[1], test=True) :
-                    spanR = MetaLex.wordReplace(span, data[1])
+                elif MetaLex.wordReplace(span, rules[1], test=True) :
+                    spanR = MetaLex.wordReplace(span, rules[1])
                     if okCorrect :
                         spanCorrect = MetaLex.correctWord(spanR)
                         contentCorrection += spanCorrect+u' '
@@ -96,8 +103,8 @@ def enhanceText(html_file, data, okCorrect):
                         contentOrigin += spanR+u' '
                         
                     #print '*****  '+span + ' : ' + spanCorrect
-                elif MetaLex.caractReplace(span, data[2], test=True):
-                    spanR = MetaLex.caractReplace(span, data[2])
+                elif MetaLex.caractReplace(span, rules[2], test=True):
+                    spanR = MetaLex.caractReplace(span, rules[2])
                     AllWords.append(spanR)
                     if okCorrect :
                         spanCorrect = MetaLex.correctWord(spanR)
@@ -135,6 +142,9 @@ def enhanceText(html_file, data, okCorrect):
 def saveNormalize(name, typ):
     """
       Saved normalized text in text format (*.art) or in pickle format (*.pickle) 
+      @keyword name:str file
+      @keyword typ:str
+      @return: file:texts extracted
     """
     MetaLex.dicProject.createtemp()
     if typ == u'text' :
@@ -167,6 +177,9 @@ def saveNormalize(name, typ):
 class fileRule():
     """
       Managing of input file rules for text normalization
+      @keyword file_rule:str file
+      @keyword typ:str
+      @return: fileRule instanciation
     """
     
     def __init__(self, file_rule, typ):
@@ -176,6 +189,8 @@ class fileRule():
     def fileRuleUnpack(self):
         """
           Unpack file rule and extract its contents
+          @keyword self:class object
+          @return: dict:metadata, ruleWords, ruleCaracts, ruleRegex
         """
         word, caracter, regex = u'\W', u'\C', u'\R'
         metadata, ruleWords, ruleCaracts, ruleRegex = {}, {}, {}, {}
@@ -212,7 +227,9 @@ class fileRule():
     
     def verify(self, typ):
         """
-          Verified if file rule content respect the norm description of MetaLex  
+          Verified if file rule content respect the norm description of MetaLex 
+          @keyword typ:str
+          @return: True|Fase:boolean
         """
         module, synw, sync, synr, synrw, delimiter = (False for x in range(6))
         fileop = codecs.open(self.file, 'r', 'utf-8').readlines()

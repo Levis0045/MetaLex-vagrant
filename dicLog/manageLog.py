@@ -23,7 +23,7 @@ import codecs, os
 
 # -----Exported Functions-----------------------------------------------------
 
-__all__ = ['writelog', 'logname', 'folderlog']
+__all__ = ['writelog', 'logname', 'folderlog', 'getDate']
 
 # -----Global Variables-----------------------------------------------------
 
