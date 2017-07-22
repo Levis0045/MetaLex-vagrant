@@ -84,6 +84,8 @@ The space between headers served to describe remplacement.
 
 # Reference
 
+Please don't forget to cite this work :
+
 ```
     @article{Mboning-Elvis,
         title  = {Quand le TAL s'empare de la métalexicographie : conception d'un outil pour le métalexicographe},
