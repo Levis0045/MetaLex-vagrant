@@ -28,7 +28,7 @@ MetaLex is developped in Python 2.7 environment, these packages are required :
 - If MetaLex is in the same file, import MetaLex
 
 ```
-import MetaLex
+    import MetaLex
 ```
 
 - Import these standard packages
@@ -58,7 +58,7 @@ import MetaLex
     images.imageToText(save=True, langIn='fra')
 ```
 
-- MetaLex want *file_Rule.dic* which using  specific structure for enhance text of dictionnary.
+- MetaLex want [*file_Rule.dic*] which using  specific structure for enhance text of dictionnary.
 
 ```
     \START
@@ -74,7 +74,7 @@ import MetaLex
     \END
 ```
 
-*\W* for word replacement, *\C* for caracter replacement and *\R*  for regular expression replacement.
+[*\W*] for word replacement, [*\C*] for caracter replacement and [*\R*]  for regular expression replacement.
 The space between headers served to describe remplacement.
 
 ```
