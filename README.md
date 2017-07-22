@@ -1,5 +1,5 @@
 # MetaLex Tool
-MetaLex is general tool for *lexicographics* and *metalexicographics* activities.
+MetaLex is general tool for **lexicographics** and **metalexicographics** activities.
 For current developpement version of this tool, see [MetaLex/Elvis-test](https://github.com/Levis0045/dic/tree/Elvis-test)
 
 [![Build Status](https://travis-ci.org/claroline/Distribution.svg?branch=master)](mteprojet.fr/MetaLex)
@@ -20,7 +20,7 @@ MetaLex is developped in Python 2.7 environment, these packages are required :
 
 # Usage
 
-- Do this if *MetaLex folder* is in the parent of the current folder
+- Do this if **MetaLex folder** is in the parent of the current folder
 ``` 
     import sys 
     sys.path.append('..')
@@ -36,7 +36,6 @@ MetaLex is developped in Python 2.7 environment, these packages are required :
     import ImageFilter as f
     import MetaLex as dico
     import os, glob
-
 ``` 
 
 - Generate real path of images dictionaries files. The input images must be scans of monolinguals dictionaries
@@ -58,7 +57,7 @@ MetaLex is developped in Python 2.7 environment, these packages are required :
     images.imageToText(save=True, langIn='fra')
 ```
 
-- MetaLex want [*file_Rule.dic*] which using  specific structure for enhance text of dictionnary.
+- MetaLex want **file_Rule.dic** which using  specific structure for enhance text of dictionnary.
 
 ```
     \START
@@ -74,7 +73,7 @@ MetaLex is developped in Python 2.7 environment, these packages are required :
     \END
 ```
 
-[*\W*] for word replacement, [*\C*] for caracter replacement and [*\R*]  for regular expression replacement.
+**\W** for word replacement, **\C** for caracter replacement and **\R**  for regular expression replacement.
 The space between headers served to describe remplacement.
 
 ```
