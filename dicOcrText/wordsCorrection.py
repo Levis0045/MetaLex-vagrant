@@ -6,7 +6,7 @@
  
     Usage:
     >>> from DICOparser.wordsCorrection import *
-    >>> dicoNormalize()
+    >>> correctWord(word)
 """
 
 # ----Internal Modules------------------------------------------------------
