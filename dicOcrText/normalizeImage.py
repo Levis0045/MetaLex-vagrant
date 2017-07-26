@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
  
 """
-    Implémentation des outils de normalization de l'image.
+    Normalization tool for images.
  
     Package:
         >>> pip install pillow
@@ -45,7 +45,9 @@ __all__ = ['getImages', 'enhanceImages']
 
 def getImages(images):
     """
-    Take input image list and save it in the scope
+        Take input image list and save it in the scope
+        @param   images:file
+        @return: file:images 
     """
     
     if len(images) >= 1 :
@@ -85,7 +87,9 @@ def getImages(images):
    
 class enhanceImages ():
     """
-    This Class enhance image file and save them to 'dicTemp'
+      This Class enhance image file and save them to 'dicTemp'
+      @param   fileImages:file
+      @return: inst object 
     """
     
     def __init__(self): 
@@ -93,7 +97,11 @@ class enhanceImages ():
         
     def contrast(self, value, show=False, save=False):
         """
-        Enhance image file with the contrast value
+          Enhance image file with the contrast value
+          @param   value:int
+          @param   show:Bool
+          @param   save:Bool
+          @return: file:imagecontrast   
         """
         
         if self.images >= 1 : 
@@ -130,7 +138,11 @@ class enhanceImages ():
             
     def sharp(self, value, show=False, save=False):
         """
-        Enhance image file with the sharp value
+          Enhance image file with the sharp value
+          @param   value:int
+          @param   show:Bool
+          @param   save:Bool
+          @return: file:imagesharp   
         """
         
         if len(self.images) >= 1 :
@@ -170,7 +182,11 @@ class enhanceImages ():
             
     def bright(self, value, show=False, save=False):
         """
-        Enhance image file with the bright value
+          Enhance image file with the bright value
+          @param   value:int
+          @param   show:Bool
+          @param   save:Bool
+          @return: file:imagebright   
         """
         
         if len(self.images) >= 1 :
@@ -209,7 +225,12 @@ class enhanceImages ():
             
     def contrastBright(self, contrast, bright, show=False, save=False):
         """
-        Enhance image file with the contrastBright value
+          Enhance image file with the contrastBright value
+          @param   constrast:int
+          @param   bright:int
+          @param   show:Bool
+          @param   save:Bool
+          @return: file:imagecontrastbright   
         """
         
         if len(self.images) >= 1 :
@@ -259,7 +280,11 @@ class enhanceImages ():
            
     def convert (self, img, show=False, save=False):
         """
-        Convert image file to white/black image
+          Convert image file to white/black image
+          @param   img:file
+          @param   show:Bool
+          @param   save:Bool
+          @return: file:imageconvert  
         """
         num = 1
         if len(self.images) >= 1 :
@@ -286,7 +311,10 @@ class enhanceImages ():
                 
     def filter (self, imgfilter, show=False):
         """
-        Filter image file with specific filter value
+          Filter image file with specific filter value
+          @param   imgfilter:int
+          @param   show:Bool
+          @return: file:imagefilter  
         """
         
         if len(self.images) >= 1 :
@@ -315,7 +343,12 @@ class enhanceImages ():
                 
     def removeColor(self, i, img, show=False, save=False):
         """
-        Remove color in image file to enhance its quality
+          Remove color in image file to enhance its quality
+          @param   i:int
+          @param   img:file
+          @param   show:Bool
+          @param   save:Bool
+          @return: file:imageremovecolor
         """
         
         if img :

@@ -20,6 +20,7 @@ MetaLex is developped in **Python 2.7** environment, these packages are required
 # Usage
 
 - Do this if **MetaLex folder** is in the parent of the current folder
+
 ``` 
     import sys 
     sys.path.append('..')
