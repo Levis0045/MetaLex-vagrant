@@ -11,16 +11,16 @@ MetaLex is developped in **Python 2.7** environment, these packages are required
     sudo apt-get install python-html5lib
     sudo apt-get install python-lxml
     sudo apt-get install python-bs4
-    sudo apt-get install tesseract-ocr-all
     sudo apt-get install libtesseract-dev libleptonica-dev 
     sudo pip install Cython
-    sudo CPPFLAGS=-I/usr/local/include pip install tesserocr
+    sudo CPPFLAGS=-I/usr/local/include pip install tesseract-ocr-all
     pip install pillow
 ```
 
 # Usage
 
 - Do this if **MetaLex folder** is in the parent of the current folder
+
 ``` 
     import sys 
     sys.path.append('..')

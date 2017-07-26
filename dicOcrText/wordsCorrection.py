@@ -5,8 +5,8 @@
     Implémentation des outils de correction orthographique.
  
     Usage:
-    >>> from DICOparser.wordsCorrection import *
-    >>> correctWord(word)
+        >>> from MetaLex.wordsCorrection import *
+        >>> correctWord(word)
 """
 
 # ----Internal Modules------------------------------------------------------
@@ -26,9 +26,14 @@ __all__ = ['correctWord', 'wordReplace', 'caractReplace']
 
 
 
-# --------------------------------------------------------------------
+# -------------------------------------------------------------------------------
 
 def correctWord (word):
+    """
+      Give a good spelling of the input word
+      @param   word:str
+      @return: str:word 
+    """
     correct = wordCorrection()
     if len(word) > 1 :
         word = word.strip()
@@ -67,6 +72,11 @@ def correctWord (word):
 
 
 class wordCorrection :
+    """
+      Give a good spelling of the input word
+      @return: inst:objetwordcorrection
+    """
+    
     def __init__(self):
         MetaLex.dicPlugins
         filepath = sys.path[-1]+'/METALEX_words-corpus.txt'
@@ -105,7 +115,11 @@ class wordCorrection :
         return max(candidates, key=self.WORDS.get)
     
     
+    
 def wordReplace(word, data, test=False):
+    """
+    
+    """
     equiv_words = data
     if test :
         if equiv_words.has_key(word) :
@@ -115,9 +129,11 @@ def wordReplace(word, data, test=False):
     elif word in equiv_words.keys() :
         return equiv_words[word]
         
-    
-    
+       
 def caractReplace(word, data, test=False):
+    """
+    
+    """
     equiv_caract = data
     equiv_keys = equiv_caract.keys()
     if test :
@@ -135,86 +151,3 @@ def caractReplace(word, data, test=False):
             
     
     
-    
-    
-
-"""
-# functions for Word spelling proposed in http://norvig.com/spell-correct.html
-  
-def words(text): 
-    w = text.lower().split()
-    return w
-
-WORDS = Counter(words(open('ressourcesTextuelles/dela-fr.txt').read()))
-
-def P(word, N=sum(WORDS.values())): 
-    "Probability of `word`."
-    return WORDS[word] / N
-
-def correction(word): 
-    "Most probable spelling correction for word."
-    return max(candidates(word), key=P)
-
-def candidates(word): 
-    "Generate possible spelling corrections for word."
-    return (known([word]) or known(edits1(word)) or known(edits2(word)) or [word])
-    print  (known([word]) or known(edits1(word)) or known(edits2(word)) or [word])
-
-def known(words): 
-    "The subset of `words` that appear in the dictionary of WORDS."
-    #print set(w for w in words if w in WORDS)
-    return set(w for w in words if w in WORDS)
-
-def edits1(word):
-    "All edits that are one edit away from `word`."
-    letters    = "abcdefghijklmnopqrstuvwxyzéèêîiïàùûâ'"
-    splits     = [(word[:i], word[i:])    for i in range(len(word) + 1)]
-    deletes    = [L + R[1:]               for L, R in splits if R]
-    transposes = [L + R[1] + R[0] + R[2:] for L, R in splits if len(R)>1]
-    replaces   = [L + c + R[1:]           for L, R in splits if R for c in letters]
-    inserts    = [L + c + R               for L, R in splits for c in letters]
-    #print inserts
-    return set(deletes + transposes + replaces + inserts)
-
-def edits2(word): 
-    "All edits that are two edits away from `word`."
-    return (e2 for e1 in edits1(word) for e2 in edits1(e1))  
-
-class wordCorrection :
-    def __init__(self):
-        self.WORDS = Counter(words(open('big.txt').read()))
-        
-    def words(self, text): return re.findall(r'\w+', text.lower())
-    
-    
-    def P(self, word, N=sum(WORDS.values())): 
-        "Probability of `word`."
-        return self.WORDS[word] / N
-    
-    def correction(self, word): 
-        "Most probable spelling correction for word."
-        return max(self.candidates(word), key=self.P)
-    
-    def candidates(self, word): DICOparser
-        "Generate possible spelling corrections for word."
-        return (self.known([word]) or self.known(self.edits1(word)) or self.known(self.edits2(word)) or [word])
-    
-    def known(self, words): 
-        "The subset of `words` that appear in the dictionary of WORDS."
-        return set(w for w in words if w in self.WORDS)
-    
-    def edits1(self, word):
-        "All edits that are one edit away from `word`."
-        letters    = 'abcdefghijklmnopqrstuvwxyz'
-        splits     = [(word[:i], word[i:])    for i in range(len(word) + 1)]
-        deletes    = [L + R[1:]               for L, R in splits if R]
-        transposes = [L + R[1] + R[0] + R[2:] for L, R in splits if len(R)>1]
-        replaces   = [L + c + R[1:]           for L, R in splits if R for c in letters]
-        inserts    = [L + c + R               for L, R in splits for c in letters]
-        return set(deletes + transposes + replaces + inserts)
-    
-    def edits2(self, word): 
-        "All edits that are two edits away from `word`."
-        return (e2 for e1 in self.edits1(word) for e2 in self.edits1(e1))  
-
-"""

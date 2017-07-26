@@ -44,6 +44,10 @@ __all__ = ['imageToText']
 def imageToText(show=False, save=False, langIn='fra'):
     """
         Take image files, ocrised and save them to 'dicTemp' folder
+        @param   show:Bool
+        @param   save:Bool
+        @param   langIn:str
+        @return: str|file (MetaLex.resultOcrData)
     """
     
     allimages = []

@@ -45,15 +45,14 @@ nametxt     = ''
 def makeTextWell(file_rules, okCorrect=False):
     """
       Composed and saved all treatments process to enhance quality of html articles 
-      @keyword file_rules:str
-      @keyword okCorrect:bool
-      @return: file:pickle and text
+      @param   file_rules:str
+      @param   okCorrect:bool
+      @return: file:pickle and text 
     """
 
     filerule = fileRule(file_rules, typ=u'rule_wc')
     data_rules = filerule.fileRuleUnpack()
     html_ocr_files = MetaLex.resultOcrFiles
-    #html_ocr_files = html_f
     for html in html_ocr_files :
         with open(html, 'r') as html_file :
             enhanceText(html_file, data_rules, okCorrect)
@@ -69,9 +68,9 @@ def enhanceText(html_file, rules, okCorrect):
     """
        Enhance quality of text by remove all inconvenients characters and optionally 
        correct malformed words.
-       @keyword html_file:str file
-       @keyword rules:str
-       @keyword okCorrect:bool
+       @param   html_file:str file
+       @param   rules:str
+       @param   okCorrect:Bool
        @return: list:dicArticles
     """
     soup = BeautifulSoup(html_file, "html5lib")
@@ -82,48 +81,50 @@ def enhanceText(html_file, rules, okCorrect):
         for para in div.findAll(u'p', attrs={u'class': u'ocr_par'}) :
             contentOrigin = u''
             contentCorrection = u''
-            
-            for span in para.stripped_strings:
-                if span[-1] == u'—' or span[-1] == u'-' or span[-1] == u'— ' or span[-1] == u'- ':
-                    span = span[:-1]
-                    AllWords.append(span)
-                    if okCorrect :
-                        spanCorrect = MetaLex.correctWord(span)
-                        contentCorrection += spanCorrect
-                    else :
-                        contentOrigin += span
-                        
-                    #print '*****  '+span + ' : ' + spanCorrect
-                elif MetaLex.wordReplace(span, rules[1], test=True) :
-                    spanR = MetaLex.wordReplace(span, rules[1])
-                    if okCorrect :
-                        spanCorrect = MetaLex.correctWord(spanR)
-                        contentCorrection += spanCorrect+u' '
-                    else :
-                        contentOrigin += spanR+u' '
-                        
-                    #print '*****  '+span + ' : ' + spanCorrect
-                elif MetaLex.caractReplace(span, rules[2], test=True):
-                    spanR = MetaLex.caractReplace(span, rules[2])
-                    AllWords.append(spanR)
-                    if okCorrect :
-                        spanCorrect = MetaLex.correctWord(spanR)
-                        contentCorrection += spanCorrect+u' '
+            if not re.search(ur'(@|>|ÊË|{/)', para.get_text().strip()) and not re.search(ur'(^\d)', para.get_text().strip()):
+                for span in para.stripped_strings:
+                    if span[-1] == u'—' or span[-1] == u'-' or span[-1] == u'— ' or span[-1] == u'- ':
+                        span = span[:-1]
+                        AllWords.append(span)
+                        if okCorrect :
+                            spanCorrect = MetaLex.correctWord(span)
+                            contentCorrection += spanCorrect
+                        else :
+                            contentOrigin += span
+                            
+                        #print '*****  '+span + ' : ' + spanCorrect
+                    elif MetaLex.wordReplace(span, rules[1], test=True) :
+                        spanR = MetaLex.wordReplace(span, rules[1])
+                        if okCorrect :
+                            spanCorrect = MetaLex.correctWord(spanR)
+                            contentCorrection += spanCorrect+u' '
+                        else :
+                            contentOrigin += spanR+u' '
+                            
+                        #print '*****  '+span + ' : ' + spanR
+                    elif MetaLex.caractReplace(span, rules[2], test=True):
+                        spanR = MetaLex.caractReplace(span, rules[2])
+                        AllWords.append(spanR)
+                        if okCorrect :
+                            spanCorrect = MetaLex.correctWord(spanR)
+                            contentCorrection += spanCorrect+u' '
+                        else:
+                            contentOrigin += spanR+u' '
+                            
+                        #print '*****  '+span + ' : ' + spanR
+
                     else:
-                        contentOrigin += spanR+u' '
-                        
-                    #print '*****  '+span + ' : ' + spanR
-                #elif span.count(u'n.') > 1 :
-                    #print span+'\n'
-                else:
-                    if okCorrect :
-                        AllWords.append(span)
-                        spanCorrect = MetaLex.correctWord(span)
-                        contentCorrection += spanCorrect+u' '
-                    else :
-                        AllWords.append(span)
-                        contentOrigin += span+u' '
+                        if okCorrect :
+                            AllWords.append(span)
+                            spanCorrect = MetaLex.correctWord(span)
+                            contentCorrection += spanCorrect+u' '
+                        else :
+                            AllWords.append(span)
+                            contentOrigin += span+u' '
                     #print '*****  '+span + ' : ' + spanCorrect
+            else :
+                pass
+            
             #Xml.findArticles(contentOrigin, enhance=True)
             #print contentOrigin+'\n'
             artnum = u'article_'+str(art)
@@ -142,21 +143,23 @@ def enhanceText(html_file, rules, okCorrect):
 def saveNormalize(name, typ):
     """
       Saved normalized text in text format (*.art) or in pickle format (*.pickle) 
-      @keyword name:str file
-      @keyword typ:str
+      @param   name:str file
+      @param   typ:str
       @return: file:texts extracted
     """
     MetaLex.dicProject.createtemp()
     if typ == u'text' :
         if MetaLex.dicProject.inDir(name) :
             with codecs.open(name, 'a', 'utf-8') as file :
+                num = 1
                 for art in dicArticles :
                     for k, v in art.items() :
                         if k != u'article_1' :
                             file.write('%10s : %s\n' %(k, v))
                         else :
-                            file.write('----------------------------------------------------------------------------\n')
+                            file.write('\n----- FILE: %s ---------------------------------------------------------------------------------\n\n' %num)
                             file.write('%10s : %s\n' %(k, v))
+                            num += 1
             message = name+u' is created and contain all text format data from html files > Saved in dicTemp folder'  
             MetaLex.dicLog.manageLog.writelog(message) 
         else :
@@ -177,9 +180,9 @@ def saveNormalize(name, typ):
 class fileRule():
     """
       Managing of input file rules for text normalization
-      @keyword file_rule:str file
-      @keyword typ:str
-      @return: fileRule instanciation
+      @param   file_rule:str file
+      @param   typ:str
+      @return: obj:fileRule instanciation
     """
     
     def __init__(self, file_rule, typ):
@@ -189,7 +192,7 @@ class fileRule():
     def fileRuleUnpack(self):
         """
           Unpack file rule and extract its contents
-          @keyword self:class object
+          @param   self:class object
           @return: dict:metadata, ruleWords, ruleCaracts, ruleRegex
         """
         word, caracter, regex = u'\W', u'\C', u'\R'
@@ -228,8 +231,8 @@ class fileRule():
     def verify(self, typ):
         """
           Verified if file rule content respect the norm description of MetaLex 
-          @keyword typ:str
-          @return: True|Fase:boolean
+          @param   typ:str
+          @return: Bool:True|Fase
         """
         module, synw, sync, synr, synrw, delimiter = (False for x in range(6))
         fileop = codecs.open(self.file, 'r', 'utf-8').readlines()

@@ -21,7 +21,7 @@ from MetaLex import dicProject
 
 # ----External Modules------------------------------------------------------
 
-import os, codecs
+import codecs
 
 # -----Exported Functions---------------------------------------------------
 
@@ -37,13 +37,14 @@ class codificationsStore() :
     def getCodification(self, typ=None):
         """
           Generate specific means of codification type
-          @keyword typ:text|graph|symb|typo
-          @return: list 
+          @param   typ:text|graph|symb|typo
+          @return: list:allcoditext
         """
         if typ == u'text' :
             cats        = [u'n', u'adj', u'v', u'prép', u'adv', u'loc', 
                            u'Fig', u'tr', u'intr', u'interj', u'art', u'conj', u'pron',
-                           u'loc.conj', u'loc.adv', u'loc.adj', u'pron.relat' ]
+                           u'loc.conj', u'loc.adv', u'loc.adj', u'pron.relat', u'pronom'
+                           u'article']
             genres      = [u'm', u'f']
             marques     = [u'fam', u'anc', u'UK', u'US' , u'PHY', u'LITT', u'ADMIN',
                            u'AERON', u'AGRIC', u'ANAT', u'ANTIQ',  u'ANTIQ.ROM',  
@@ -55,7 +56,7 @@ class codificationsStore() :
             nombres     = [u'plur', u'pl', u'sing', u'sg', u'neutre']
             affixes     = [u'suff', u'préf']
             varLings    = [u'ant', u'contr', u'syn', u'hom', u'fig', u'par_métonymie',
-                            u'par_anal', u'encycl', u'etym', u'abrév']
+                           u'par_anal', u'encycl', u'etym', u'abrév']
             allcoditext = []
             for cat in cats :
                 if len(cat) > 1 : 
@@ -111,8 +112,8 @@ class codificationsStore() :
         
     def getAllCodifications(self) :
         """
-            Get all existing dictionnary codification
-            @keyword self:class object
+            Get all existing dictionary codification
+            @param   self:class object
             @return: dict:allcodifications
         """
         coditext  = self.getCodification(u'text')
@@ -129,9 +130,9 @@ class codificationsStore() :
     
     def exportCodifications(self, namefile, typ='text'):
         """
-            Export dictionnary codification to text file or to serialized pickle object
-            @keyword namefile:str
-            @keyword typ:str
+            Export dictionary codification to text file or to serialized pickle object
+            @param   namefile:str
+            @param   typ:str
             @return: file:allcodifications
         """
         coditext  = self.getCodification(u'text')
