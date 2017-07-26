@@ -20,7 +20,7 @@ import MetaLex
 
 # ----External Modules------------------------------------------------------
 
-import os, codecs
+import os, codecs, re
 import pickle
 
 # -----Exported Functions---------------------------------------------------
@@ -37,7 +37,7 @@ def get_part_file(namefile):
     """
       Extract file image name and file image extension
       @keyword namefile:str
-      @return: list (imageroot, ext)
+      @return: list:(imageroot, ext)
     """
     (imageroot, ext) = os.path.splitext(os.path.basename(namefile))
     return (imageroot, ext)
@@ -66,7 +66,7 @@ def treat_ocr_append(namefile) :
 def inDir(fil):
     """
       Verify if an input file is in a 'dicTemp' folder 
-      @return: boolean
+      @return: Bool
     """
     currentdir = os.listdir('.')
     if fil in currentdir :
@@ -80,7 +80,7 @@ def nameFile(tab, ext):
       Generate name file to saved result of articles extraction  
       @keyword tab:array
       @keyword ext:str
-      @return: namepickle 
+      @return: str:namepickle 
     """
     name  = str(tab[0]).split(u'/')[-1].split(u',')[0].split(u'_')[:-1]
     if ext == u'.art' :
@@ -96,7 +96,7 @@ def filePickle(data, name):
       Create pickle file of the articles data
       @keyword data:dictionary
       @keyword name:str
-      @return: True 
+      @return: Bool:True 
     """
     with codecs.open(name, 'wb') as f :
         pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
@@ -107,7 +107,7 @@ def fileUnpickle(fil):
     """
       Unpack pickle file of articles data
       @keyword fil:str
-      @return: data articles object
+      @return: dict:data articles object
     """
     with codecs.open(fil, 'rb') as f :
         data = pickle.load(f)
@@ -117,20 +117,21 @@ def fileUnpickle(fil):
 def fileGettext(fil):
     """
       Extract articles data into file text
-      @return: data articles text
+      @return: dict:data articles text
     """
     datatext = {}
     with codecs.open(fil, 'r', 'utf-8') as f :
         for line in f :
-            partline = line.split(u':')
-            datatext[partline[0].strip()] = partline[1].strip()
+            if re.search(ur'article_', line) :
+                partline = line.split(u':')
+                datatext[partline[0].strip()] = partline[1].strip()
     return datatext
 
 
 def readConf():
     """
       Extract data configuration of the project
-      @return: data configuration text
+      @return: dict:data configuration text
     """
     confData = {}
     with codecs.open(u'MetaLex.cnf', 'r', 'utf-8') as conf :
@@ -146,10 +147,9 @@ def readConf():
 def createtemp():
     """
       Create a 'dicTemp' folder if it doesn't exist at the parent folder at the scope
-      @return: place in dicTemp folder
+      @return: path:place in dicTemp folder
     """
       
-    currentfolder  = os.getcwd()
     contentdir     = os.listdir('.')
     parentdir      = os.listdir('..')
     if 'dicLogs' in contentdir and 'dicTemp' not in contentdir :
@@ -181,7 +181,7 @@ def dicFile(fil):
     """
       Take the current script path and join it to file path
       @keyword fil:str
-      @return: normalize file path
+      @return: path:normalize file path
     """
     
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -215,7 +215,7 @@ class newProject :
           @keyword author:str
           @keyword comment:str
           @keyword contrib:str
-          @return: normalize file path
+          @return: file:normalize file path
         """
         project  = MetaLex.projectName
         MetaLex.projectAuthor = author
