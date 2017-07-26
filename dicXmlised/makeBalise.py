@@ -62,7 +62,7 @@ articles   = []
 def dicoHtml(save=False) :
     """
       Build HTML editor file of the all articles 
-      @return: MetaLexViewerEditor.html
+      @return: file:MetaLexViewerEditor.html
     """
     MetaLex.dicPlugins
     
@@ -89,7 +89,7 @@ def dicoHtml(save=False) :
     
       
  
-class baliseHTML ():
+class baliseHTML () :
     
     def __init__(self) :
         self.resultHtml = ''
@@ -97,7 +97,7 @@ class baliseHTML ():
     def htmlInject(self, template):
         """
           Create prettify HTML file all previous data generated 
-          @return: html (prettify by BeautifulSoup)
+          @return: str:html (prettify by BeautifulSoup)
         """
         instanceXml    = baliseXML()
         contentxml     = instanceXml.xmlised(typ=u'xml', save=False)
@@ -140,8 +140,8 @@ class baliseHTML ():
 class baliseXML ():
     """
       Build XML file type (xml|tei|lmf) with global metadata of the project
-      @keywords: typ:str 
-      @return: instance of baliseXML
+      @param:   typ:str 
+      @return:  obj:instance of baliseXML
     """
     
     def __init__(self, typ="xml") :
@@ -156,7 +156,7 @@ class baliseXML ():
           @return: metalexXml
         """
         metadata   = self.xmlMetadata()
-        content    = self.xmlContent()
+        content    = self.xmlContent(forme=u'text')
         if typ == u'xml' :
             if save :
                 name = u'MetaLex-'+MetaLex.projectName+u'.xml'
@@ -179,7 +179,7 @@ class baliseXML ():
     def xmlMetadata(self, typ=u'xml'):
         """
           Create xml metadata file with configuration of the project 
-          @return:  content (metadata xml)
+          @return:  str:metadata
         """
         MetaLex.dicProject.createtemp()
         if typ == u'xml' :
@@ -195,35 +195,44 @@ class baliseXML ():
                     contrib += self.balise(data, u'mtl:pers') 
             else :
                 contrib = self.balise(''.join(contribtab), u'mtl:pers') 
-            contrib = self.balise(contrib, u'mtl:contributors')
-            cont    = name+author+date+comment+contrib
-            content = self.balise(cont, u'mtl:metadata') 
-            return content
+            contrib  = self.balise(contrib, u'mtl:contributors')
+            cont     = name+author+date+comment+contrib
+            metadata = self.balise(cont, u'mtl:metadata') 
+            return metadata
         if typ == u'lmf' :
             return False
             
             
-    def xmlContent(self, typ=u'xml'): 
+    def xmlContent(self, forme, typ=u'xml'): 
         """
           Create xml content file (representing articles) with data articles extracting
-          @return: contentXml
+          @return: str:contentXml
         """
-        data        = getDataArticles()
         content     = u''
         contentXml  = u''
-        if typ == u'xml' : 
-            for dicart in data :
-                for art in dicart.keys() :
-                    art = self.balise(dicart[art], u'entry', art=True)
+        if typ == u'xml' :
+            if forme == u'pickle' : 
+                data = getDataArticles(u'pickle')
+                for dicart in data :
+                    for art in dicart.keys() :
+                        art = self.balise(dicart[art], u'entry', art=True)
+                        content += art
+                contentXml = self.balise(content, u'mtl:content')
+                return contentXml
+            if forme == u'text' : 
+                data = getDataArticles(u'text')
+                for art in data.keys() :
+                    art = self.balise(data[art], u'entry', art=True)
                     content += art
-            contentXml = self.balise(content, u'mtl:content')
-            return contentXml
+                contentXml = self.balise(content, u'mtl:content')
+                return contentXml
+        
         
         
     def balise(self, element, markup, attr=None, typ=u'xml', art=False):
         """
           Markup data with a specific format type (xml|tei|lmf)
-          @return: balised element
+          @return: str:balised element
         """
         if type :
             if markup in components[u'xml'][u'identification'] \
@@ -264,7 +273,7 @@ class baliseXML ():
     def chevron(self, el, attr, openchev=True, art=False):
         """
           Put tag around the data element
-          @return: tagging element 
+          @return: str:tagging element 
         """
         idart = generateID()
         if art and attr == None:
