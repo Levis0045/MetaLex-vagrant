@@ -20,28 +20,29 @@ import re, sys, codecs, os
 from random import sample
 from lxml   import etree
 
-# -----Exported Functions-----------------------------------------------------
+# -----Exported Functions---------------------------------------------------
 
 __all__ = ['generateID', 'getDataArticles', 'metalexGenerateXml']
 
 # -----Global Variables-----------------------------------------------------
 
 
-# ----------------------------------------------------------
+# --------------------------------------------------------------------------
 
     
 def generateID():
     """
       Generate ID of 5 characters with alpha numeric characters 
-      @return: id generated
+      @return: str:id generated
     """
     idart = sample([u'1',u'2',u'3',u'4',u'5',u'6',u'7',u'8',u'9',u'0',u'a',u'b',u'c',u'd',u'e',u'f',u'g',u'h',u'i',u'j',u'k',u'l',u'm',u'n',u'o',u'p',u'q',u'r',u's',u't',u'v',u'w',u'y',u'z'], k=5)
     return u''.join(idart)
 
-def getDataArticles(typ=u'pickle'):
+
+def getDataArticles(typ):
     """
       Get data article from the store data file depending of the type wanted   
-      @return: datapickle or datatext
+      @return: dic:datapickle or datatext
     """
     MetaLex.dicProject.createtemp()
     contentdir = os.listdir('.')
@@ -52,7 +53,7 @@ def getDataArticles(typ=u'pickle'):
             filepickle = fil 
         elif fil.split('.')[1] == u'art'    :
             filetext = fil
-    if typ :
+    if typ == u'pickle' :
         datapickle = MetaLex.dicProject.fileUnpickle(filepickle)
         return datapickle
     if typ == u'text' :
