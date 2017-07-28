@@ -98,6 +98,7 @@ class codificationsStore() :
                 allcodisymbs.append(numb+u'.')
                 allcodisymbs.append(numb+u'-')
                 allcodisymbs.append(numb+u')')
+                allcodisymbs.append(u'('+numb+u')')
             for alpha in alphabs :
                 allcodisymbs.append(alpha+u')')
                 allcodisymbs.append(alpha.upper()+u'-')
