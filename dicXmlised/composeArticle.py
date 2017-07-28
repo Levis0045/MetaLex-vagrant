@@ -16,16 +16,18 @@
 
 # ----Internal Modules------------------------------------------------------
 
-from MetaLex import codifications
+from MetaLex    import codifications
+from dicXmlTool import * 
 
 # ----External Modules------------------------------------------------------
 
 import re, sys, codecs
-from bs4 import BeautifulSoup
+from bs4  import BeautifulSoup
+from lxml import etree
 
 # -----Exported Functions---------------------------------------------------
 
-__all__ = ['findArticles', 'formatArticles']
+__all__ = ['parseArticle', 'structuredWithCodif']
 
 # -----Global Variables-----------------------------------------------------
 
@@ -34,156 +36,114 @@ contentDic = codi.getAllCodifications()
 
 # --------------------------------------------------------------------------
 
-def findArticles(textart, enhance=False) :
-    deb, fin, cat, flex, wcpt  = False, False, False, False, False
-    article     = u''
-    allArticles = []
-    coditext    = contentDic['text']
-    codisymb    = contentDic['symb']
-    coditypo    = contentDic['typo']
-    codigraph   = contentDic['graph']
-    
-    print len(coditext)
-    for codi in coditext :
-        if re.search(codi, textart) :
-            replac = u'<cte>'+codi+u'</cte>'
-            artcodi = re.sub(codi, replac, textart) 
-            print artcodi+'\n'
-   
-            
-    
+def parseArticle(textart) :
+    codif = ['text', 'symb', 'typo', 'graph']
+    i, c = 0, 0
+    p = parserCodification()
+    resultext = p.procCodi(textart, i, c, codif, contentDic)
+    return resultext
 
-def findArticlesa(textart, enhance=False) :
-    """
-        Extract all articles in the file input with codification code of language dictionary  
-    """
-    deb, fin, cat, flex, wcpt  = False, False, False, False, False
-    article     = u''
-    allArticles = []
-    wordlists   = re.split(ur'(\s+)', textart.strip())
-    
-    for i, word in enumerate(wordlists) :
-        word = word.strip()
-        if len(word) >= 1 :
-            #print word
-            if  word[-1] != u'.' and fin == False \
-            and next(i, wordlists, u'entry')  and before(i, wordlists, 'entry'):
-            #entry
-                #print word
-                deb, fin, cat, lex  = True, False, False, False
-                article += word+u' '
-            elif before(i, wordlists, u'var') and next(i, wordlists, 'var') and word[-1] != u'.' \
-            and fin == False :
-            #word flexion
-                #print i, word
-                fin, cat, flex, = True, False, False
-                article += word+u' '
-                #print article+'\n'
-                article = u''
-            elif word in contentDic[u'cats']  :
-            #category
-                cat, flex, deb = True, True, False
-                article += word+u' '
-                #print article+'\n'
-                #print word
-            elif word in contentDic[u'genres']  :
-            #genre
-                cat, flex, deb = True, True, False
-                article += word+u' '
-                #print article+'\n'
-                #print word
-            elif word in contentDic[u'flexs'] :
-            #flexion
-                cat, flex, deb = True, True, False
-                article += word+u' '
-                #print article+'\n'
-                #print word
-            elif word[0] == u'[' :
-            #phonetic
-                cat, flex, deb = True, True, False
-                article += word+u' '
-                #print article+'\n'
-                #print word
-            elif before(i, wordlists, u'wordint') and word not in contentDic['forms'] \
-            and next(i, wordlists, u'wordint') :
-            #word int
-                deb, fin, cat, flex  = False, False, False, True
-                article += word+u' '
-                #print word
-            elif next(i, wordlists, u'wordend')  and before(i, wordlists, 'wordend') \
-            and word[-1] == u'.' :
-            #mot de fin
-                #print word
-                fin, cat, flex, = True, False, False
-                article += word+u' '
-                #print article+'\n'
-                article = u''
-            else : 
-                pass
 
-apres = ''
-avant = ''
-def next(i, tab, typ) :
+class parserCodification() :
     """
-        Find an element in its right context 
-    """
-    word       = tab[i]
-    nextpart   = tab[i-1:i+5]
-    #print '***',nextpart
-    """
-    if typ == u'entry' :
-        for el in contentDic[u'forms'] :
-            if el in nextpart : return True
-    if typ == u'wordint' :
-        for el in nextpart :
-            if re.search(ur'(\S+)+', el, re.I) : return True
-    if typ == u'wordend' :
-        for el in contentDic[u'cats'] :
-            if el in nextpart : return True
-    if typ == u'var' :
-        if word[-1] == u',' :
-            for el in contentDic[u'cats'] :
-                if el in nextpart : 
-                    apres = el
-                    #print avant, word, apres
-                    return True
-        else : return False
+       
     """
     
-def before(i, tab, typ) :
+    def __init__(self):
+        self.result = u''
+          
+    def procCodi(self, art, i, c, codif, codifs):
+        num    = i
+        codift = codif[c] 
+        codi   = codifs[codift][num]+' '
+        
+        if  art.find(codi)  != -1 :
+            #print '3'
+            if codift == u'text' : replac = u'<cte>'+codifs[codift][num]+u'</cte> '
+            if codift == u'graph': replac = u'<cgr>'+codifs[codift][num]+u'</cgr> '
+            if codift == u'typo' : replac = u'<cty>'+codifs[codift][num]+u'</cty> '
+            if codift == u'symb' : replac = u'<csy>'+codifs[codift][num]+u'</csy> '
+            artcodi = art.replace(codi, replac)
+            self.result = artcodi
+            num += 1
+            if num < len(codifs[codift]) :
+                #print '4', codifs[codift][num]
+                self.procCodi(artcodi, num, c, codif, codifs)
+            elif c < 3 :
+                c = c + 1
+                num = 0
+                self.procCodi(artcodi, num, c, codif, codifs)
+                #print artcodi, codif[c]
+            if c == 3 and art == None :
+                self.result = art
+        else : 
+            num += 1
+            if num < len(codifs[codift]) :
+                #print '6', codifs[codift][num]
+                self.procCodi(art, num, c, codif, codifs)
+            elif c < 3 :
+                c = c + 1
+                num = 0
+                self.procCodi(art, num, c, codif, codifs)
+            elif c == 3 and art == None :
+                self.result =  art
+        
+        return self.result
+
+
+
+class structuredWithCodif():
     """
-        Find an element in its left context 
+       
     """
-    word  = tab[i]
-    """
-    if i >= 2 :
-        previouspart  = tab[i-5:i-1]
-        print previouspart
-        if typ == u'entry' :
-            for el in contentDic[u'forms'] :
-                if el not in previouspart : return True
-            for el in previouspart :
-                if re.search(r'([a-zéèçêùàï.,]+)', el, re.I) : return True
-        if typ == u'wordint' :
-            for el in contentDic[u'forms'] :
-                if el in previouspart : return True
-            for el in previouspart :
-                if re.search(r'(\S+)', el, re.I) : return True
-        if typ == u'wordend' :
-            for el in contentDic[u'forms'] :
-                if el in previouspart : return True
-            for el in previouspart :
-                if re.search(r'(\S+)', el, re.I) : return True
-        if typ == u'var' :
-            if len(previouspart) >= 1 :
-                if previouspart[0][-1] == u',' :
-                    avant =  previouspart[0]
-                    #print previouspart[0], word, apres
-                    return True
+    
+    def __init__(self, data, output):
+        self.data         = data
+        self.dataCodified = u''
+        self.dataBalised  = u''
+        self.output       = output
+    
+    def normalizeDataToCodif(self):
+        contentall = {}
+     
+        for art in self.data.keys() :
+            content = u''
+            for word in re.split(ur' ', self.data[art]) :
+                if word[-1] == u';' or word[-1] == u':' or word[-1] == u',':
+                    word, caract = word[:-1], word[-1]
+                    content += word+u' {0} '.format(caract)
+                elif word[-1] == u'.' and word not in contentDic['text'] :
+                    word, caract = word[:-1], word[-1]
+                    content += word+u' {0} '.format(caract)
+                elif word[0] == u'(' and word not in contentDic['symb'] :
+                    print word, '----------------'
+                    word, caract = word[:1], word[0]
+                    content += word+u' {0} '.format(caract)
+                elif word[-1] == u')' and word not in contentDic['symb'] :
+                    print word, '----------------'
+                    word, caract = word[:-1], word[-1]
+                    content += word+u' {0} '.format(caract)
+                else :
+                    content += word +u' '
                     
-    """           
+            contentall[art] = content
+            
+        return contentall
+          
+          
+    def codifiedArticles(self):
+        dataArticles = self.normalizeDataToCodif()
+        datacodified = {}
+        for art in dataArticles.keys() :
+            artcodif = parseArticle(dataArticles[art])
+            datacodified[art] = artcodif
                 
-def formatArticles ():
-    return False
-
+        return datacodified
+         
+         
+    def formatArticles(self):
+        return False
+    
+    
+    
 
