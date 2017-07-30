@@ -7,7 +7,7 @@ For current developpement version of this tool, see [MetaLex/Elvis-test](https:/
 # Requirements
 MetaLex is developped in **Python 2.7** environment, these packages are required :
 
-```bash
+```linux
     sudo apt-get install python-html5lib
     sudo apt-get install python-lxml
     sudo apt-get install python-bs4
