@@ -7,7 +7,7 @@ For current developpement version of this tool, see [MetaLex/Elvis-test](https:/
 # Requirements
 MetaLex is developped in **Python 2.7** environment, these packages are required :
 
-```
+```python
     sudo apt-get install python-html5lib
     sudo apt-get install python-lxml
     sudo apt-get install python-bs4
@@ -21,19 +21,19 @@ MetaLex is developped in **Python 2.7** environment, these packages are required
 
 - Do this if **MetaLex folder** is in the parent of the current folder
 
-``` 
+```python
     import sys 
     sys.path.append('..')
 ```
 
 - If **MetaLex folder** is in the same file or in the system path, import it.
 
-```
+```python
     import MetaLex
 ```
 
 - Import these standard packages
-```
+```python
     import ImageFilter as f
     import MetaLex as dico
     import os, glob
@@ -41,7 +41,7 @@ MetaLex is developped in **Python 2.7** environment, these packages are required
 
 - Generate real path of images dictionaries files. The input images must be scans of monolinguals dictionaries.
 
-```
+```python
     imagelist = []
     for imagefile in glob.glob('folder_of_Images/*.jpg') :
         name = os.getcwd()+'/'+imagefile
@@ -50,7 +50,7 @@ MetaLex is developped in **Python 2.7** environment, these packages are required
 
 - All steps below must follows as presented. **file_Rule.dic** must be build using the specific structure.
 
-```
+```python
     project = dico.newProject('Title of the project')
     project.setConfProject('author', 'Comment', 'Contributors')
     images  = project.MetaLex.getImages(imagelist)
@@ -77,7 +77,7 @@ MetaLex is developped in **Python 2.7** environment, these packages are required
 **\W** for word replacement, **\C** for caracter replacement and **\R**  for regular expression replacement.
 The space between headers served to describe remplacement.
 
-```
+```python
    images.makeTextWell('file_Rule.dic')
    images.dicoHtml(save=False)
 ```
@@ -86,7 +86,7 @@ The space between headers served to describe remplacement.
 
 Please don't forget to cite this work :
 
-```
+```bibtex
     @article{Mboning-Elvis,
         title  = {Quand le TAL s'empare de la métalexicographie : conception d'un outil pour le métalexicographe},
         author = {Mboning, Elvis},
