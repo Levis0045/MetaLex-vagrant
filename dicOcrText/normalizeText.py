@@ -91,7 +91,6 @@ def enhanceText(html_file, rules, okCorrect):
                             contentCorrection += spanCorrect
                         else :
                             contentOrigin += span
-                            
                         #print '*****  '+span + ' : ' + spanCorrect
                     elif MetaLex.wordReplace(span, rules[1], test=True) :
                         spanR = MetaLex.wordReplace(span, rules[1])
@@ -100,7 +99,6 @@ def enhanceText(html_file, rules, okCorrect):
                             contentCorrection += spanCorrect+u' '
                         else :
                             contentOrigin += spanR+u' '
-                            
                         #print '*****  '+span + ' : ' + spanR
                     elif MetaLex.caractReplace(span, rules[2], test=True):
                         spanR = MetaLex.caractReplace(span, rules[2])
@@ -110,9 +108,7 @@ def enhanceText(html_file, rules, okCorrect):
                             contentCorrection += spanCorrect+u' '
                         else:
                             contentOrigin += spanR+u' '
-                            
                         #print '*****  '+span + ' : ' + spanR
-
                     else:
                         if okCorrect :
                             AllWords.append(span)
@@ -125,7 +121,6 @@ def enhanceText(html_file, rules, okCorrect):
             else :
                 pass
             
-            #Xml.findArticles(contentOrigin, enhance=True)
             #print contentOrigin+'\n'
             artnum = u'article_'+str(art)
             crtnum = u'correction_'+str(art)
@@ -150,15 +145,15 @@ def saveNormalize(name, typ):
     MetaLex.dicProject.createtemp()
     if typ == u'text' :
         if MetaLex.dicProject.inDir(name) :
-            with codecs.open(name, 'a', 'utf-8') as file :
+            with codecs.open(name, 'a', 'utf-8') as fil :
                 num = 1
                 for art in dicArticles :
                     for k, v in art.items() :
                         if k != u'article_1' :
-                            file.write('%10s : %s\n' %(k, v))
+                            fil.write('%10s : %s\n' %(k, v))
                         else :
-                            file.write('\n----- FILE: %s ---------------------------------------------------------------------------------\n\n' %num)
-                            file.write('%10s : %s\n' %(k, v))
+                            fil.write('\n----- FILE: %s ---------------------------------------------------------------------------------\n\n' %num)
+                            fil.write('%10s : %s\n' %(k, v))
                             num += 1
             message = name+u' is created and contain all text format data from html files > Saved in dicTemp folder'  
             MetaLex.dicLog.manageLog.writelog(message) 
@@ -174,7 +169,6 @@ def saveNormalize(name, typ):
             message = name+u' is created and contain pickle data object from html files > Saved in dicTemp folder'  
             MetaLex.dicLog.manageLog.writelog(message)     
         
-    #findArticle(dicArticles, enhance=True)
  
         
 class fileRule():

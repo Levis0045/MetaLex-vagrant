@@ -8,7 +8,7 @@ __version__ = "0.0.2"
 
 # ----Internal Modules------------------------------------------------------
 
-from composeArticle import findArticles, formatArticles
+from composeArticle import parseArticle, structuredWithCodif
 from handleStat     import *
 from makeBalise     import *
 

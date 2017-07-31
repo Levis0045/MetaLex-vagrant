@@ -221,6 +221,9 @@ class baliseXML ():
                 return contentXml
             if forme == u'text' : 
                 data = getDataArticles(u'text')
+                cod = structuredWithCodif(data, u'xml')
+                co  = cod.codifiedArticles()
+                print co
                 for art in data.keys() :
                     art = self.balise(data[art], u'entry', art=True)
                     content += art

@@ -56,7 +56,7 @@ class codificationsStore() :
             nombres     = [u'plur', u'pl', u'sing', u'sg', u'neutre']
             affixes     = [u'suff', u'préf']
             varLings    = [u'ant', u'contr', u'syn', u'hom', u'fig', u'par_métonymie',
-                           u'par_anal', u'encycl', u'etym', u'abrév']
+                           u'par_anal', u'encycl', u'etym', u'abrév', u'V', u'var']
             allcoditext = []
             for cat in cats :
                 if len(cat) > 1 : 
@@ -66,8 +66,8 @@ class codificationsStore() :
                 else :
                     allcoditext.append(cat.capitalize()+u'.')
                     allcoditext.append(cat+u'.')
-            for genre in genres   : allcoditext.append(genre+u'.')
-            for marque in marques :
+            for genre  in genres   : allcoditext.append(genre+u'.')
+            for marque in marques  :
                 allcoditext.append(marque+u'.')
                 if not marque.isupper() : allcoditext.append(marque.upper()+u'.')
             for varL in varLings :
@@ -78,9 +78,8 @@ class codificationsStore() :
                 allcoditext.append(nombre+u'.')
                 allcoditext.append(nombre.capitalize()+u'.')
                 allcoditext.append(nombre.upper()+u'.')
-            for rection in rections : allcoditext.append(rection+u'.')
-            for genre in genres     : allcoditext.append(genre+u'.')
-            for affixe in affixes   : allcoditext.append(affixe+u'.')
+            for rection in rections  : allcoditext.append(rection+u'.')
+            for affixe  in affixes   : allcoditext.append(affixe+u'.')
             return allcoditext
         
         if typ == u'graph' :
@@ -98,6 +97,7 @@ class codificationsStore() :
                 allcodisymbs.append(numb+u'.')
                 allcodisymbs.append(numb+u'-')
                 allcodisymbs.append(numb+u')')
+                allcodisymbs.append(u'('+numb+u')')
             for alpha in alphabs :
                 allcodisymbs.append(alpha+u')')
                 allcodisymbs.append(alpha.upper()+u'-')
@@ -110,6 +110,82 @@ class codificationsStore() :
             return typograhs
         
         
+    def getCodifTextType(self):
+        cats        = [u'n', u'adj', u'v', u'prép', u'adv', u'loc', 
+                       u'Fig', u'tr', u'intr', u'interj', u'art', u'conj', u'pron',
+                       u'loc.conj', u'loc.adv', u'loc.adj', u'pron.relat', u'pronom',
+                       u'article']
+        genres      = [u'm', u'f']
+        marques     = [u'fam', u'anc', u'UK', u'US' , u'PHY', u'LITT', u'ADMIN',
+                       u'AERON', u'AGRIC', u'ANAT', u'ANTIQ',  u'ANTIQ.ROM',  
+                       u'BIOCHIM', u'BIOL',  u'CHIM.TECHN', u'CONSTR', u'ÉLECTR', 
+                       u'GRAMM', u'GÉOL', u'HIST', u'LING', u'LITURG', u'MATH', 
+                       u'MÉD', u'MÉTALL', u'MUS', u'POLIT', u'RELIG', u'ZOOL'
+                       u'Phys']
+        rections    = [u'tr', u't', u'intr', u't.dir', u't.indir', u'inv']
+        nombres     = [u'plur', u'pl', u'sing', u'sg', u'neutre']
+        affixes     = [u'suff', u'préf']
+        varLings    = [u'ant', u'contr', u'syn', u'hom', u'fig', u'par_métonymie',
+                       u'par_anal', u'encycl', u'etym', u'abrév', u'V', u'var']
+        
+        allcoditype, allcodicats, allcodigenres, allcodirection, allcodinombres = {}, [], [], [], []
+        allcodiaff, allcodivarlings, allcodimarques  = [], [], []
+        for cat in cats :
+            if len(cat) > 1 : 
+                allcodicats.append(cat+u'.')
+                allcodicats.append(cat.capitalize()+u'.')
+                allcodicats.append(cat.upper()+u'.')
+            else :
+                allcodicats.append(cat.capitalize()+u'.')
+                allcodicats.append(cat+u'.')
+        allcoditype[u'cats']  = allcodicats
+        for genre in genres   : 
+            allcodigenres.append(genre+u'.')
+        allcoditype[u'genres'] = allcodigenres
+        for marque in marques :
+            allcodimarques.append(marque+u'.')
+            if not marque.isupper() : allcodimarques.append(marque.upper()+u'.')
+        allcoditype[u'marques'] = allcodimarques
+        for varL in varLings :
+            allcodivarlings.append(varL+u'.')
+            if not varL.isupper() : allcodivarlings.append(varL.capitalize()+u'.')
+            allcodivarlings.append(varL.upper()+u'.')
+        allcoditype[u'varLings'] = allcodivarlings
+        for nombre in nombres :
+            allcodinombres.append(nombre+u'.')
+            allcodinombres.append(nombre.capitalize()+u'.')
+            allcodinombres.append(nombre.upper()+u'.')
+        allcoditype[u'nombres'] = allcodinombres
+        for rection in rections : allcodirection.append(rection+u'.')
+        allcoditype[u'rection'] = allcodirection
+        for affixe in affixes   : allcodiaff.append(affixe+u'.')
+        allcoditype[u'affixe']  = allcodiaff
+        return allcoditype
+    
+    
+    def getCodifSymbType(self):
+        symbs        = [u'||', u'&#9830;', u'--']
+        allnumbers   = [u'1',u'2',u'3',u'4',u'5',u'6',u'7',u'8',u'9',u'0']
+        alphabs      = [u'a',u'b',u'c',u'd',u'e',u'f',u'g',u'h', u'i',u'j',
+                        u'k',u'l',u'm',u'n',u'o',u'q',u'r',u's',u't',u'v',
+                        u'w',u'x', u'y', u'z']
+        allcoditype, allcodisymbs, allcodinumbers, allcodialpha = {}, [], [], []
+        for numb in allnumbers :
+            allcodinumbers.append(numb+u'.')
+            allcodinumbers.append(numb+u'-')
+            allcodinumbers.append(numb+u')')
+            allcodinumbers.append(u'('+numb+u')')
+        allcoditype[u'numbers'] = allcodinumbers
+        for alpha in alphabs :
+            allcodialpha.append(alpha+u')')
+            allcodialpha.append(alpha.upper()+u'-')
+            allcodialpha.append(alpha.upper()+u'.')
+        allcoditype[u'alpha'] = allcodialpha
+        for symb in symbs : allcodisymbs.append(symb)
+        allcoditype[u'symbs'] = allcodisymbs
+        return allcoditype
+    
+    
     def getAllCodifications(self) :
         """
             Get all existing dictionary codification
@@ -141,7 +217,7 @@ class codificationsStore() :
         codisymb  = self.getCodification(u'symb')
         
         date = dicLog.getDate()
-        if typ == 'text' :
+        if typ == u'text' :
             with codecs.open(namefile, 'a', 'utf-8') as f :
                 f.write('***** MetaLex : %s **************************************' %date)
                 f.write('\%10s : %s' %('Textuels', str(coditext)))

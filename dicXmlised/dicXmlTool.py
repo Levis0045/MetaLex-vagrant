@@ -13,19 +13,24 @@
 
 import MetaLex
 from   composeArticle import *
+from   MetaLex        import codifications
+
 
 # ----External Modules------------------------------------------------------
 
 import re, sys, codecs, os
 from random import sample
 from lxml   import etree
+from debian.debtags import output
 
 # -----Exported Functions---------------------------------------------------
 
-__all__ = ['generateID', 'getDataArticles', 'metalexGenerateXml']
+__all__ = ['generateID', 'getDataArticles', 'metalexGenerateXml', 'deSpecialised']
 
 # -----Global Variables-----------------------------------------------------
 
+codi       = codifications.codificationsStore()
+contentDic = codi.getAllCodifications()
 
 # --------------------------------------------------------------------------
 
@@ -59,7 +64,16 @@ def getDataArticles(typ):
     if typ == u'text' :
         datatext = MetaLex.dicProject.fileGettext(filetext)
         return datatext
- 
+
+
+def deSpecialised(strng):
+    if strng.find(')') : 
+        return strng.replace(')', '\)')
+    if strng.find('.') : 
+        return strng.replace('.', '\.')
+
+       
+        
  
 class metalexGenerateXml():
     
