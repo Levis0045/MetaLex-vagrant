@@ -7,14 +7,16 @@ For current developpement version of this tool, see [MetaLex/Elvis-test](https:/
 # Requirements
 MetaLex is developped in **Python 2.7** environment, these packages are required :
 
-```linux
+```sh
+    sudo apt-get install build-essential libssl-dev libffi-dev python-dev
+    sudo pip install Cython
+    sudo apt-get install libtesseract-dev libleptonica-dev 
+    sudo apt-get install tesseract-ocr-all
     sudo apt-get install python-html5lib
     sudo apt-get install python-lxml
     sudo apt-get install python-bs4
-    sudo apt-get install libtesseract-dev libleptonica-dev 
-    sudo pip install Cython
-    sudo CPPFLAGS=-I/usr/local/include pip install tesseract-ocr-all
-    pip install pillow
+    sudo pip install pillow
+    sudo CPPFLAGS=-I/usr/local/include pip install tesserocr
 ```
 
 # Usage
@@ -60,7 +62,7 @@ MetaLex is developped in **Python 2.7** environment, these packages are required
 
 - MetaLex take **file_Rule.dic** file which using  specific structure to enhance output text of OCR data (from image's files dictionnaries).
 
-```
+```md
     \START
     \MetaLex\project_name\type_of_project\lang\author\date
     \W
@@ -86,7 +88,7 @@ The space between headers served to describe remplacement.
 
 Please don't forget to cite this work :
 
-```bibtex
+```latex
     @article{Mboning-Elvis,
         title  = {Quand le TAL s'empare de la métalexicographie : conception d'un outil pour le métalexicographe},
         author = {Mboning, Elvis},
