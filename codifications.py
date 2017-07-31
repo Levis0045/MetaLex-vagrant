@@ -66,8 +66,8 @@ class codificationsStore() :
                 else :
                     allcoditext.append(cat.capitalize()+u'.')
                     allcoditext.append(cat+u'.')
-            for genre in genres   : allcoditext.append(genre+u'.')
-            for marque in marques :
+            for genre  in genres   : allcoditext.append(genre+u'.')
+            for marque in marques  :
                 allcoditext.append(marque+u'.')
                 if not marque.isupper() : allcoditext.append(marque.upper()+u'.')
             for varL in varLings :
@@ -78,8 +78,8 @@ class codificationsStore() :
                 allcoditext.append(nombre+u'.')
                 allcoditext.append(nombre.capitalize()+u'.')
                 allcoditext.append(nombre.upper()+u'.')
-            for rection in rections : allcoditext.append(rection+u'.')
-            for affixe in affixes   : allcoditext.append(affixe+u'.')
+            for rection in rections  : allcoditext.append(rection+u'.')
+            for affixe  in affixes   : allcoditext.append(affixe+u'.')
             return allcoditext
         
         if typ == u'graph' :
@@ -113,7 +113,7 @@ class codificationsStore() :
     def getCodifTextType(self):
         cats        = [u'n', u'adj', u'v', u'prép', u'adv', u'loc', 
                        u'Fig', u'tr', u'intr', u'interj', u'art', u'conj', u'pron',
-                       u'loc.conj', u'loc.adv', u'loc.adj', u'pron.relat', u'pronom'
+                       u'loc.conj', u'loc.adv', u'loc.adj', u'pron.relat', u'pronom',
                        u'article']
         genres      = [u'm', u'f']
         marques     = [u'fam', u'anc', u'UK', u'US' , u'PHY', u'LITT', u'ADMIN',
