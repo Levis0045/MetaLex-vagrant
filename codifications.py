@@ -1,7 +1,5 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # coding: utf8
-from dicProject import nameFile
-
 
 
 """
@@ -83,7 +81,7 @@ class codificationsStore() :
             return allcoditext
         
         if typ == u'graph' :
-            graphs = [u'.', u',', u':', u'-', u';']
+            graphs = [u'.', u',', u':', u'-', u';', u'[', u']', u'(', u')']
             return graphs
         
         if typ == u'symb' :
