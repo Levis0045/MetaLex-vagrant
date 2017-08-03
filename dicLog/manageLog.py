@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # coding: utf8
 
 
@@ -35,14 +35,14 @@ def getDate():
     datefile = os.popen('date').read()
     datetab = datefile.split(',')[0].split(' ')
     for date in datetab[1:] :
-        strdate += date + '-'
-    return strdate.strip(u'-')
+        strdate += date+'-'
+    return strdate.strip('-')
 
 
 def logname():
     strdate = getDate()
     projectName = MetaLex.projectName
-    return projectName+u'_'+strdate+u'.dicLog'
+    return projectName+'_'+strdate+'.dicLog'
     
     
 def folderlog():
