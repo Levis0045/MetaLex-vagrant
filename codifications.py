@@ -112,9 +112,9 @@ class codificationsStore() :
         cats        = [u'n', u'adj', u'v', u'prép', u'adv', u'loc', 
                        u'Fig', u'tr', u'intr', u'interj', u'art', u'conj', u'pron',
                        u'loc.conj', u'loc.adv', u'loc.adj', u'pron.relat', u'pronom',
-                       u'article']
+                       u'article', u'pr. rel']
         genres      = [u'm', u'f']
-        marques     = [u'fam', u'anc', u'UK', u'US' , u'PHY', u'LITT', u'ADMIN',
+        marques     = [u'fam', u'anc', u'UK', u'US' , u'PHY', u'Phys', u'LITT', u'ADMIN',
                        u'AERON', u'AGRIC', u'ANAT', u'ANTIQ',  u'ANTIQ.ROM',  
                        u'BIOCHIM', u'BIOL',  u'CHIM.TECHN', u'CONSTR', u'ÉLECTR', 
                        u'GRAMM', u'GÉOL', u'HIST', u'LING', u'LITURG', u'MATH', 
@@ -143,6 +143,9 @@ class codificationsStore() :
         for marque in marques :
             allcodimarques.append(marque+u'.')
             if not marque.isupper() : allcodimarques.append(marque.upper()+u'.')
+            if not marque.isupper() : allcodimarques.append(marque.capitalize()+u'.')
+            if marque.isupper()     : allcodimarques.append(marque.capitalize()+u'.')
+            #if marque.isupper()     : allcodimarques.append(marque.lower()+u'.')
         allcoditype[u'marques'] = allcodimarques
         for varL in varLings :
             allcodivarlings.append(varL+u'.')
@@ -183,6 +186,19 @@ class codificationsStore() :
         allcoditype[u'symbs'] = allcodisymbs
         return allcoditype
     
+    def getCodifGraphType(self):
+        graphs = [u'.', u',', u':', u'-', u';', u'[', u']', u'(', u')']
+        allcoditype = {}
+        for graph in graphs :
+            if graph == u'.' : allcoditype['point'] = u'.'
+            if graph == u',' : allcoditype['virgule'] = u','
+            if graph == u':' : allcoditype['dpoint'] = u':'
+            if graph == u';' : allcoditype['pointv'] = u';'
+            if graph == u'[' : allcoditype['ocrochet'] = u'['
+            if graph == u']' : allcoditype['fcrochet'] = u']'
+            if graph == u'(' : allcoditype['opara'] = u'('
+            if graph == u')' : allcoditype['fpara'] = u')'
+        return allcoditype
     
     def getAllCodifications(self) :
         """
