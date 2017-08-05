@@ -26,7 +26,6 @@ from dicXmlTool import *
 import re, sys, codecs
 from bs4  import BeautifulSoup
 from lxml import etree
-from wx.lib import art
 
 # -----Exported Functions---------------------------------------------------
 
@@ -38,10 +37,16 @@ codi       = codifications.codificationsStore()
 contentDic = codi.getAllCodifications()
 textCodif  = codi.getCodifTextType()
 symbCodif  = codi.getCodifSymbType()
+graphCodif = codi.getCodifGraphType()
 
 # --------------------------------------------------------------------------
 
 def parseArticle(textart) :
+    """
+      Generate results from Parser codifications types
+      @param:  textart:str
+      @return: dict:resultext
+    """
     codif=[u'text', u'symb', u'typo', u'graph']
     i, c = 0, 0
     p = parserCodification()
@@ -50,27 +55,45 @@ def parseArticle(textart) :
 
 
 def buildReplaceCodif(codif, typ):
+    """
+      Make balise to codifications types 
+      @param  codif:str
+      @param   type:str
+      @return: str:balise codification type
+    """
     for k, v in contentDic.items():
         if typ == u'text' and codif in v and k == typ :
             for i, t in textCodif.items() :
-                if codif in t and i == u'cats'    : return u' <cte:cat>'+codif+u'</cte:cat> '
-                if codif in t and i == u'genres'  : return u' <cte:genre>'+codif+u'</cte:genre> '
-                if codif in t and i == u'marques' : return u' <cte:marque>'+codif+u'</cte:marque> '
-                if codif in t and i == u'varLings': return u' <cte:vLings>'+codif+u'</cte:vLings> '
-                if codif in t and i == u'nombres' : return u' <cte:nbre>'+codif+u'</cte:nbre> '
-                if codif in t and i == u'rection' : return u' <cte:rection>'+codif+u'</cte:rection> '
-                if codif in t and i == u'affixe'  : return u' <cte:affixe>'+codif+u'</cte:affixe> '
+                if codif in t and i == u'cats'    : return u' <cte-cat>'+codif+u'</cte-cat> '
+                if codif in t and i == u'genres'  : return u' <cte-genre>'+codif+u'</cte-genre> '
+                if codif in t and i == u'marques' : return u' <cte-marque>'+codif+u'</cte-marque> '
+                if codif in t and i == u'varLings': return u' <cte-vLings>'+codif+u'</cte-vLings> '
+                if codif in t and i == u'nombres' : return u' <cte-chif>'+codif+u'</cte-chif> '
+                if codif in t and i == u'rection' : return u' <cte-rection>'+codif+u'</cte-rection> '
+                if codif in t and i == u'affixe'  : return u' <cte-affixe>'+codif+u'</cte-affixe> '
         
         elif typ == u'symb' and codif in v and k == typ  :
             for i, t in symbCodif.items() :
-                if codif in t and i == u'numbers' : return u' <csy:nbre>'+codif+u'</cte:nbre> '
-                if codif in t and i == u'alpha'   : return u' <cte:alpha>'+codif+u'</cte:alpha> '
-                if codif in t and i == u'symbs'   : return u' <cte:syb>'+codif+u'</cte:syb> '
+                if codif in t and i == u'numbers' : return u' <csy-chif>'+codif+u'</cte-chif> '
+                if codif in t and i == u'alpha'   : return u' <cte-alpha>'+codif+u'</cte-alpha> '
+                if codif in t and i == u'symbs'   : return u' <cte-syb>'+codif+u'</cte-syb> '
+        
+        elif typ == u'graph' and codif in v and k == typ  :
+            for i, t in graphCodif.items() :
+                if codif == t and i == u'point'    : return u' <cgr-pt>'+codif+u'</cgr-pt> '
+                if codif == t and i == u'virgule'  : return u' <cgr-vrg>'+codif+u'</cgr-vrg> '
+                if codif == t and i == u'pointv'   : return u' <cgr-ptvrg>'+codif+u'</cgr-ptvrg> '
+                if codif == t and i == u'dpoint'   : return u' <cgr-dpt>'+codif+u'</cgr-dpt> '
+                if codif == t and i == u'ocrochet' : return u' <cgr-ocrh>'+codif+u'</cgr-ocrh> '
+                if codif == t and i == u'fcrochet' : return u' <cgr-fcrh>'+codif+u'</cgr-fcrh> '
+                if codif == t and i == u'opara'    : return u' <cgr-opar>'+codif+u'</cgr-opar> '
+                if codif == t and i == u'fpara'    : return u' <cgr-fpar>'+codif+u'</cgr-fpar> '
                 
                 
 class parserCodification() :
     """
-       
+      Parse data article with all type of dictionaries codification
+      @return: dict:resultext
     """
     
     def __init__(self):
@@ -85,7 +108,7 @@ class parserCodification() :
         if  art.find(codi)  != -1 :
             #print '3'
             if codift == u'text' : replac = buildReplaceCodif(codifs[codift][num], u'text')
-            if codift == u'graph': replac = u' <cgr>'+codifs[codift][num]+u'</cgr> '
+            if codift == u'graph': replac = buildReplaceCodif(codifs[codift][num], u'graph')
             if codift == u'typo' : replac = u' <cty>'+codifs[codift][num]+u'</cty> '
             if codift == u'symb' : replac = buildReplaceCodif(codifs[codift][num], u'symb')
             artcodi = art.replace(codi, replac)
@@ -119,38 +142,48 @@ class parserCodification() :
 
 class structuredWithCodif():
     """
-       
+      Extract all single article from date articles codified
+      @return: dict:contentall
     """
     
     def __init__(self, data, output):
-        self.data         = data
-        self.dataCodified = u''
-        self.dataBalised  = u''
-        self.output       = output
-    
+        self.data          = data
+        self.dataCodified  = u''
+        self.dataBalised   = u''
+        self.output        = output
+        self.treatArticles = []
     
     def normalizeDataToCodif(self):
+        """
+          Extract all single article from date articles codified
+          @return: dict:contentall
+        """
         contentall = {}
         for art in self.data.keys() :
             content = u''
             for word in re.split(ur' ', self.data[art]) :
+                word = word.strip() 
                 if word[-1] == u';' or word[-1] == u':' or word[-1] == u',':
                     word, caract = word[:-1], word[-1]
                     content += word+u' {0} '.format(caract)
-                elif word[-1] == u'.' and word not in contentDic['text'] :
+                elif len(word)> 2 and word[-1] == u'.' and word[0] != u'(' and word[-2] != u')' and word not in contentDic['text'] :
                     word, caract = word[:-1], word[-1]
                     content += word+u' {0} '.format(caract)
-                elif word[0] == u'(' and word not in contentDic['symb'] :
-                    print word, '----------------'
-                    word, caract = word[:1], word[0]
-                    content += word+u' {0} '.format(caract)
-                elif word[-1] == u')' and word not in contentDic['symb'] :
-                    print word, '----------------'
-                    word, caract = word[:-1], word[-1]
-                    content += word+u' {0} '.format(caract)
+                elif word[0]  == u'('  and word not in contentDic['symb'] :
+                    #print word, '----------------'
+                    word, caract = word[1:], word[0]
+                    content += caract+u' {0} '.format(word)
+                elif len(word)> 2 and word[-1] == u'.' and word[-2] == u')' and word not in contentDic['symb'] :
+                    #print word, word[-2],'----------------'
+                    word, caract, point = word[:-2], word[-2], word[-1]
+                    content += word+u' {0} {1} '.format(caract, point)
+                elif len(word)> 2 and word[0] == u'[' and word[-1] == u']' and word not in contentDic['symb'] :
+                    #print word, word[-2],'----------------'
+                    word, caract1, caract2 = word[1:-1], word[0], word[-1]
+                    content += u' {0} {1} {2} '.format(caract1, word, caract2)
                 else :
                     content += word +u' '
-            contentall[art] = content
+            contentall[art]  = content
         return contentall
           
           
@@ -158,7 +191,7 @@ class structuredWithCodif():
         dataArticles = self.normalizeDataToCodif()
         datacodified = {}
         for art in dataArticles.keys() :
-            artcodif = parseArticle(dataArticles[art])
+            artcodif          = parseArticle(dataArticles[art])
             datacodified[art] = artcodif
         return datacodified
          
@@ -169,100 +202,42 @@ class structuredWithCodif():
         return elment
     
     
-    def makeComponentsArt(self):
-        dataCodified  = self.codifiedArticles()
-        treatArticles = []
-        for article in dataCodified.keys() :
-            identification, traitement, artComponents = u'', u'', u''
-            cat, genre, treat, ident = False, False, False, True
-            data = dataCodified[article].strip()
-            data1  = re.sub(ur'<entry>(?P<ent>.+)<cgr>,</cgr>(?P<flex>....?.?)<cte:cat>', u'<entry>\g<ent><cgr>,</cgr>\g<flex></entry><cte:cat>', data)
-            data2  = re.sub(ur'^(?P<entry>.+)<cte:cat>', u'<entry>\g<entry></entry><cte:cat>', data1)
-            data3  = re.sub(ur'<entry>(?P<entry>.+)<cgr>,</cgr>', u'<entry>\g<entry></entry><cgr>,</cgr>', data2)
-            #entry2 = re.sub(ur'<cte:cat>n.</cte:cat> <cte:genre>(?P<gr>..)</cte:genre> <cgr>,</cgr>(?P<ent>.+)', u'</entry><cte:cat>n.</cte:cat> <cte:genre>\g<gr></cte:genre> <cgr>,</cgr>\g<ent>', entry)
-            #entry3 = re.sub(ur'<entry>(?P<ent>.+)<cgr>,</cgr>(?P<flex>....?.?)<cte:cat>', u'<entry>\g<ent><cgr>,</cgr>\g<flex></entry><cte:cat>', entry2)
-            #entry4 = re.sub(ur'<entry>(?P<ent>.+) <cte:cat><cgr>,</cgr>', u'<entry>\g<ent><cte:cat>', entry3)
-            print data3+'\n'
-                    
-            print '\n'
-            
-            
-        return treatArticles
-                    
-                    
-    def formatArticles(self):
-        componentsArt = self.makeComponentsArt()    
-        for art in componentsArt :
-            print None+'\n'
-           
-        """
-        if len(art) >= 1 : 
-            if  art.find(u'<cte:cat>') == -1 and treat == False and ident == True:
-                identification += art+u' '
-                print identification+'*******'
-                pass
-            elif art.find(u'<cte:genre>') != -1 and cat == True :
-                identification += art+u' '
-                cat = False
-                pass
-            elif art.find(u'<cte:cat>') != -1 and cat == False :
-                identification += art+u' '
-                cat = True
-                pass
-            elif  art.find(u'<cgr>,</cgr>') != -1 and cat == True :
-                traitement += art+u' '
-                treat, ident = True, False
-                pass
-            elif treat == True and ident == False : 
-                traitement += art+u' '
-                pass
-            if  art.find(u'<cte:cat>') != -1 and treat == False and ident == True:
-                identification += art+u' '
-                print identification+'*******'
-                pass
-            #print identification+'*******'+traitement+'\n'
-        
-        if re.search(ur'<cte:cat>n\.</cte:cat>', data, flags=re.I) :
-            identification = re.search(ur'(.+<cte:cat>n.</cte:cat>.+</cte:genre>).+', data, flags=re.I)
-            traitement     = re.search(ur'.+<cte:cat>n.</cte:cat>.+</cte:genre>(.+)', data, flags=re.I)
-            #if identification and traitement : print identification.group(1)+traitement.group(1)+'\n'
-            if identification and traitement : 
-                artComponents = u'<article><identification>'+identification.group(1)+u'</identification>'+u'<traitement>'+traitement.group(1)+u'</traitement></article>'
-                treatArticles.append(artComponents)
-        if re.search(ur'^.+\s<cte:cat>v\.</cte:cat>(.+</cte:rection>|.+</cgr>|.+</cte:vLings>).+', data, flags=re.I)  :
-            identification = re.search(ur'(.+<cte:cat>v.</cte:cat>(.+</cte:rection>)?).+', data, flags=re.I)
-            traitement     = re.search(ur'.+<cte:cat>v.</cte:cat>(.+)', data, flags=re.I)
-            if identification and traitement : 
-                artComponents = u'<article><identification>'+identification.group(1)+u'</identification>'+u'<traitement>'+traitement.group(1)+u'</traitement></article>'
-                treatArticles.append(artComponents)
-        if re.search(ur'^.+\s<cte:cat>adj\.</cte:cat>.+', data, flags=re.I)  :
-            identification = re.search(ur'(.+<cte:cat>adj.</cte:cat>(.+</cte:rection>)?).+', data, flags=re.I)
-            traitement     = re.search(ur'.+<cte:cat>adj.</cte:cat>(.+)', data, flags=re.I)
-            if identification and traitement : 
-                artComponents = u'<article><identification>'+identification.group(1)+u'</identification>'+u'<traitement>'+traitement.group(1)+u'</traitement></article>'
-                treatArticles.append(artComponents)    
-        if re.search(ur'^.+\s<cte:cat>adv\.</cte:cat>.+', data, flags=re.I)  :
-            identification = re.search(ur'(.+<cte:cat>adv.</cte:cat>(.+</cte:rection>)?).+', data, flags=re.I)
-            traitement     = re.search(ur'.+<cte:cat>adv.</cte:cat>(.+)', data, flags=re.I)
-            if identification and traitement : 
-                artComponents = u'<article><identification>'+identification.group(1)+u'</identification>'+u'<traitement>'+traitement.group(1)+u'</traitement></article>'
-                treatArticles.append(artComponents)
-        if re.search(ur'^.+\s<cte:cat>prép\.</cte:cat>.+', data, flags=re.I)  :
-            identification = re.search(ur'(.+<cte:cat>prép.</cte:cat>(.+</cte:rection>)?).+', data, flags=re.I)
-            traitement     = re.search(ur'.+<cte:cat>prép.</cte:cat>(.+)', data, flags=re.I)
-            #if identification and traitement : print identification.group(1)+traitement.group(1)+'\n'
-            if identification and traitement : 
-                artComponents = u'<article><identification>'+identification.group(1)+u'</identification>'+u'<traitement>'+traitement.group(1)+u'</traitement></article>'
-                treatArticles.append(artComponents)
-        
-         entry  = re.sub(ur'<identification>(?P<entry>.+)<cte:cat>', u'<identification><entry>\g<entry></entry><cte:cat>', art)
-            entry2 = re.sub(ur'<cte:cat>n.</cte:cat> <cte:genre>(?P<gr>..)</cte:genre> <cgr>,</cgr>(?P<ent>.+)</entry>', u'</entry><cte:cat>n.</cte:cat> <cte:genre>\g<gr></cte:genre> <cgr>,</cgr>\g<ent>', entry)
-            entry3 = re.sub(ur'<entry>(?P<ent>.+)<cgr>,</cgr>(?P<flex>....?.?)<cte:cat>', u'<entry>\g<ent><cgr>,</cgr>\g<flex></entry><cte:cat>', entry2)
-            entry4 = re.sub(ur'<identification><entry>(?P<ent>.+) <cte:cat><cgr>,</cgr>', u'<identification><entry>\g<ent><cte:cat>', entry3)
-            print entry4+'\n'
+    def segmentArticles (self, article):
+        if re.search(ur'.+\s<cgr-pt>\.</cgr-pt>\s.+\s<cte-cat>.+', article) : 
+            arts = re.search(ur'(.+\s<cgr-pt>\.</cgr-pt>)(\s.+\s<cte-cat>.+)', article)
+            art1, art2 = arts.group(1), arts.group(2)
+            self.segmentArticles (art1)
+            self.segmentArticles (art2)
+        else :
+            """
+            print '3--------------------------------------'
+            print article
+            print '--------------------------------------\n\n'
+            """
+            self.treatArticles.append(article)
     
-        
-        u'loc', 
-        u'Fig', u'tr', u'intr', u'interj', u'art', u'conj', u'pron',
-        u'loc.conj', u'loc.adv', u'loc.adj', u'pron.relat', u'pronom',
-        """           
+    
+    def formatArticles(self):
+        dataCodified  = self.codifiedArticles()
+        for i, article in dataCodified.items() :
+            if i == 'article1' : self.treatArticles.append('sep')
+            if article.count('<cgr-pt>.</cgr-pt>') >= 2 :
+                if re.search(ur'<cgr-pt>\.</cgr-pt>\s<cte-cat>', article) :
+                    self.treatArticles.append(article)
+                    """
+                    print '1--------------------------------------'
+                    print article
+                    print '--------------------------------------\n\n'
+                    """
+                elif self.segmentArticles (article):
+                    print True
+            else :
+                self.treatArticles.append(article)
+                """
+                print '2--------------------------------------'
+                print article
+                print '--------------------------------------\n\n'
+                """
+        return self.treatArticles
+                    
+                    
