@@ -216,21 +216,22 @@ class newProject :
           @keyword contrib:str
           @return: file:normalize file path
         """
+        MetaLex.projectAuthor = author
         project  = MetaLex.projectName
-        author   = MetaLex.projectAuthor
         dateInit = MetaLex.manageLog.getDate()
         Intro    = u'***************** MetaLex project configuration *****************\n\n'
         end      = u'***************************************************************** \n\n'
         #content  = Intro+'\n\n'+'\Project name  : '+project+'\n'+'\Creation date : '+dateInit+'\n'+'\Author  : '+author+'\n'+'\Contributors  : '+contrib+'\n'+'\Comment       : '+comment+'\n\n'+end
+        #print type(dateInit), dateInit
         MetaLex.dicProject.createtemp()
         if MetaLex.dicProject.inDir('MetaLex.cnf') :
             with codecs.open('MetaLex.cnf', 'w', 'utf-8') as conf :
                 conf.write(Intro)
-                conf.write('%10s : %s \n'   %(u'\Project name', project))
-                conf.write('%10s : %s \n'   %(u'\Creation date', dateInit))
-                conf.write('%10s : %s \n'   %(u'\Author', author))
-                conf.write('%10s : %s \n'   %(u'\Contributors', contrib))
-                conf.write('%10s : %s \n\n' %(u'\Comment', comment))
+                conf.write('%-15s : %-10s \n'   %(u'\Project name', project))
+                conf.write('%10s : %s \n'   %(u'\Creation date', dateInit.decode('ascii')))
+                conf.write('%-15s : %-10s \n'   %(u'\Author', author))
+                conf.write('%-15s : %-10s \n'   %(u'\Contributors', contrib))
+                conf.write('%-15s : %-10s \n\n' %(u'\Comment', comment))
                 conf.write(end)
                 
     def getProjectName(self):

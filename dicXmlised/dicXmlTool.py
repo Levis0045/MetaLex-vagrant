@@ -1,5 +1,5 @@
 #! usr/bin/env python
-# coding: utf8
+# -*- coding: utf8 -*-
 
 """
     Give extra functions for parser of dictionary and XML/HTML generator
@@ -21,7 +21,6 @@ from   MetaLex        import codifications
 import re, sys, codecs, os
 from random import sample
 from lxml   import etree
-from debian.debtags import output
 
 # -----Exported Functions---------------------------------------------------
 
@@ -67,13 +66,12 @@ def getDataArticles(typ):
 
 
 def deSpecialised(strng):
-    if strng.find(')') : 
-        return strng.replace(')', '\)')
-    if strng.find('.') : 
-        return strng.replace('.', '\.')
+    if strng.find(u')') : 
+        return strng.replace(u')', u'\)')
+    if strng.find(u'.') : 
+        return strng.replace(u'.', u'\.')
 
        
-        
  
 class metalexGenerateXml():
     

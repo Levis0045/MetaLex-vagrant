@@ -3,7 +3,6 @@
 
 
 """
-    
     ManageLog registers all operations triggered throughout the process
     Of metalexicographic processing
     
@@ -19,7 +18,9 @@ import MetaLex
 
 # ----External Modules------------------------------------------------------
 
-import codecs, os
+import codecs, os, re
+import unicodedata
+from string import maketrans
 
 # -----Exported Functions-----------------------------------------------------
 
@@ -31,18 +32,21 @@ __all__ = ['writelog', 'logname', 'folderlog', 'getDate']
 # --------------------------------------------------------------------------
 
 def getDate():
-    strdate = ''
+    strdate  = ''
     datefile = os.popen('date').read()
-    datetab = datefile.split(',')[0].split(' ')
+    datetab  = datefile.split(',')[0].split(' ')
     for date in datetab[1:] :
         strdate += date+'-'
-    return strdate.strip('-')
+    date = unicode(strdate.strip('-').translate(maketrans('û', 'u ')))
+    date = unicodedata.normalize('NFKD', date).encode('ascii','ignore')
+    return date
 
 
 def logname():
     strdate = getDate()
     projectName = MetaLex.projectName
-    return projectName+'_'+strdate+'.dicLog'
+    logName = projectName+'_'+strdate+'.dicLog'
+    return logName
     
     
 def folderlog():
