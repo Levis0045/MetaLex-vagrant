@@ -64,30 +64,30 @@ def buildReplaceCodif(codif, typ):
     for k, v in contentDic.items():
         if typ == u'text' and codif in v and k == typ :
             for i, t in textCodif.items() :
-                if codif in t and i == u'cats'    : return u' <cte-cat>'+codif+u'</cte-cat> '
-                if codif in t and i == u'genres'  : return u' <cte-genre>'+codif+u'</cte-genre> '
-                if codif in t and i == u'marques' : return u' <cte-marque>'+codif+u'</cte-marque> '
-                if codif in t and i == u'varLings': return u' <cte-vLings>'+codif+u'</cte-vLings> '
-                if codif in t and i == u'nombres' : return u' <cte-chif>'+codif+u'</cte-chif> '
-                if codif in t and i == u'rection' : return u' <cte-rection>'+codif+u'</cte-rection> '
-                if codif in t and i == u'affixe'  : return u' <cte-affixe>'+codif+u'</cte-affixe> '
+                if codif in t and i == u'cats'    : return u' <cte_cat>'+codif+u'</cte_cat> '
+                if codif in t and i == u'genres'  : return u' <cte_gender>'+codif+u'</cte_gender> '
+                if codif in t and i == u'marques' : return u' <cte_mark>'+codif+u'</cte_mark> '
+                if codif in t and i == u'varLings': return u' <cte_vLings>'+codif+u'</cte_vLings> '
+                if codif in t and i == u'nombres' : return u' <cte_nbre>'+codif+u'</cte_nbre> '
+                if codif in t and i == u'rection' : return u' <cte_rection>'+codif+u'</cte_rection> '
+                if codif in t and i == u'affixe'  : return u' <cte_affix>'+codif+u'</cte_affix> '
         
         elif typ == u'symb' and codif in v and k == typ  :
             for i, t in symbCodif.items() :
-                if codif in t and i == u'numbers' : return u' <csy-chif>'+codif+u'</cte-chif> '
-                if codif in t and i == u'alpha'   : return u' <cte-alpha>'+codif+u'</cte-alpha> '
-                if codif in t and i == u'symbs'   : return u' <cte-syb>'+codif+u'</cte-syb> '
+                if codif in t and i == u'numbers' : return u' <csy_chif>'+codif+u'</cte_chif> '
+                if codif in t and i == u'alpha'   : return u' <cte_alpha>'+codif+u'</cte_alpha> '
+                if codif in t and i == u'symbs'   : return u' <cte_syb>'+codif+u'</cte_syb> '
         
         elif typ == u'graph' and codif in v and k == typ  :
             for i, t in graphCodif.items() :
-                if codif == t and i == u'point'    : return u' <cgr-pt>'+codif+u'</cgr-pt> '
-                if codif == t and i == u'virgule'  : return u' <cgr-vrg>'+codif+u'</cgr-vrg> '
-                if codif == t and i == u'pointv'   : return u' <cgr-ptvrg>'+codif+u'</cgr-ptvrg> '
-                if codif == t and i == u'dpoint'   : return u' <cgr-dpt>'+codif+u'</cgr-dpt> '
-                if codif == t and i == u'ocrochet' : return u' <cgr-ocrh>'+codif+u'</cgr-ocrh> '
-                if codif == t and i == u'fcrochet' : return u' <cgr-fcrh>'+codif+u'</cgr-fcrh> '
-                if codif == t and i == u'opara'    : return u' <cgr-opar>'+codif+u'</cgr-opar> '
-                if codif == t and i == u'fpara'    : return u' <cgr-fpar>'+codif+u'</cgr-fpar> '
+                if codif == t and i == u'point'    : return u' <cgr_pt>'+codif+u'</cgr_pt> '
+                if codif == t and i == u'virgule'  : return u' <cgr_vrg>'+codif+u'</cgr_vrg> '
+                if codif == t and i == u'pointv'   : return u' <cgr_ptvrg>'+codif+u'</cgr_ptvrg> '
+                if codif == t and i == u'dpoint'   : return u' <cgr_dpt>'+codif+u'</cgr_dpt> '
+                if codif == t and i == u'ocrochet' : return u' <cgr_ocrh>'+codif+u'</cgr_ocrh> '
+                if codif == t and i == u'fcrochet' : return u' <cgr_fcrh>'+codif+u'</cgr_fcrh> '
+                if codif == t and i == u'opara'    : return u' <cgr_opar>'+codif+u'</cgr_opar> '
+                if codif == t and i == u'fpara'    : return u' <cgr_fpar>'+codif+u'</cgr_fpar> '
                 
                 
 class parserCodification() :
@@ -203,8 +203,8 @@ class structuredWithCodif():
     
     
     def segmentArticles (self, article):
-        if re.search(ur'.+\s<cgr-pt>\.</cgr-pt>\s.+\s<cte-cat>.+', article) : 
-            arts = re.search(ur'(.+\s<cgr-pt>\.</cgr-pt>)(\s.+\s<cte-cat>.+)', article)
+        if re.search(ur'.+\s<cgr_pt>\.</cgr_pt>\s.+\s<cte_cat>.+', article) : 
+            arts = re.search(ur'(.+\s<cgr_pt>\.</cgr_pt>)(\s.+\s<cte_cat>.+)', article)
             art1, art2 = arts.group(1), arts.group(2)
             self.segmentArticles (art1)
             self.segmentArticles (art2)
@@ -221,8 +221,8 @@ class structuredWithCodif():
         dataCodified  = self.codifiedArticles()
         for i, article in dataCodified.items() :
             if i == 'article1' : self.treatArticles.append('sep')
-            if article.count('<cgr-pt>.</cgr-pt>') >= 2 :
-                if re.search(ur'<cgr-pt>\.</cgr-pt>\s<cte-cat>', article) :
+            if article.count('<cgr_pt>.</cgr_pt>') >= 2 :
+                if re.search(ur'<cgr_pt>\.</cgr_pt>\s<cte_cat>', article) :
                     self.treatArticles.append(article)
                     """
                     print '1--------------------------------------'
