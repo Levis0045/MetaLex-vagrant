@@ -28,6 +28,7 @@ from bs4    import BeautifulSoup
 from random import sample
 from shutil import copyfile
 from lxml   import etree
+from lxml.html.builder import META
 
 # -----Exported Functions-----------------------------------------------------
 
@@ -36,26 +37,29 @@ __all__ = ['baliseXML', 'dicoHtml']
 # -----Global Variables-----------------------------------------------------
 
 components = {
-                u'xml'  :   {
-                              u'metadata'       : [u'projectname', u'author', u'date', u'comment', u'contributors'],
-                              u'identification' : [u'article', u'entry', u'flexion', u'category', u'gender', u'rection', u'phonetic'], 
-                              u'treatment'      : [u'definition', u'contextualisation', u'figured', u'contrary']
-                            },
-                u'tei'  :   {
-                              u'metadata'       : [],
-                              u'identification' : [], 
-                              u'treatment'      : []
-                            },
-                u'lmf'  :   {
-                              u'metadata'       : [],
-                              u'identification' : [], 
-                              u'treatment'      : []
-                            },
-                u'dtd'  :   [u'ELEMENT', u'ATTRIBUTE', u'PCDATA', u'CDATA', u'REQUIRED', u'IMPLIED'],
-                u'xsd'  :   []
-             }
+    u'xml'  :   {
+                  u'MetaLexMetadata'  : [u'MetaLexMetadata', u'projectName', u'author', u'dateCreation', u'comment', u'contributors', u'candidate'],
+                  u'MetaLexContent'   : [u'article', u'definition', u'example', u'figured', u'contrary',
+                                         u'entry', u'flexion', u'category', u'gender', u'rection', u'phonetic',
+                                         u'identificationComponent', u'treatmentComponent', u'cte_cat', u'cte_gender',
+                                         u'processingUnit', u'cgr_pt', u'cgr_vrg', u'cgr_fpar', u'cgr_opar',
+                                         u'cgr_ocrch', u'cgr_fcrch', u'MetaLexContent', u'MetaLexResultDictionary']
+                },
+    u'tei'  :   {
+                  u'teiHeader'      : [u'teiHeader', u'text', u'TEI', u'fileDesc', u'titleStmt', u'title', u'publicationStmt', u'p', u'sourceDesc', u'author'],
+                  u'text'           : [u'body', u'head', u'entry', u'form', u'orth', u'gramGrp', u'sense', 
+                                       u'def', u'cite', u'quote', u'span', u'usg', u'bibl', u'pos', u'genre', u'number',
+                                       u'pron', u'etym']
+                },
+    u'lmf'  :   {
+                  u'GlobalInformation'  : [u'LexicalResource', u'feat', u'p', u'GlobalInformation'],
+                  u'Lexicon'            : [u'Lexicon', u'feat', u'LexicalEntry', u'WordForm', u'Definition', u'Sense', u'Lexicon']
+                },
+    u'dtd'  :   [u'ELEMENT', u'ATTRIBUTE', u'PCDATA', u'CDATA', u'REQUIRED', u'IMPLIED'],
+    u'xsd'  :   []
+}
 
-articles   = []
+codifArticles   = []
 
 # ----------------------------------------------------------
 
@@ -100,7 +104,7 @@ class baliseHTML () :
           @return: str:html (prettify by BeautifulSoup)
         """
         instanceXml    = baliseXML()
-        contentxml     = instanceXml.xmlised(typ=u'xml', save=False)
+        contentxml     = instanceXml.xmlised(typ=u'xml', save=True)
         MetaLex.dicProject.createtemp()
         soupXml        = BeautifulSoup(contentxml, "html5lib")
         projectconf    = MetaLex.dicProject.readConf()
@@ -155,15 +159,17 @@ class baliseXML ():
           Create well formed (xml|tei|lmf) file with metadata and content xml 
           @return: metalexXml
         """
-        metadata   = self.xmlMetadata()
-        content    = self.xmlContent(forme=u'text')
+        metadata   = self.xmlMetadata(typ)
+        content    = self.xmlContent(typ)
         if typ == u'xml' :
             if save :
                 name = u'MetaLex-'+MetaLex.projectName+u'.xml'
-                metalexXml = self.balise(metadata+content, u'MetaLexProject', attr={'xmlns:mtl':'https://www.w3schools.com/MetaLex'})
+                metalexXml = self.balise(metadata+content, u'MetaLexResultDictionary', attr={})
+                metalexXml = u'<?xml version="1.0" encoding="UTF-8" ?>'+metalexXml
+                metalexXmlTree = BeautifulSoup(metalexXml, 'xml')
                 if MetaLex.dicProject.inDir(name) :
                     with codecs.open(name, 'w', 'utf-8') as fle :
-                        fle.write(metalexXml)
+                        fle.write(metalexXmlTree.prettify(formatter=None))
                     message = u"'"+name+u"'  is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder"
                     MetaLex.dicLog.manageLog.writelog(message)
                 else:
@@ -172,9 +178,53 @@ class baliseXML ():
                     #MetaLex.dicLog.manageLog.writelog(message)
                 return metalexXml
             else :
-                metalexXml = self.balise(metadata+content, u'MetaLexProject', attr={'xmlns:mtl':'https://www.w3schools.com/MetaLex'})
+                metalexXml = self.balise(metadata+content, u'MetaLexResultDictionary', attr={})
+                metalexXml = u'<?xml version="1.0" encoding="UTF-8" ?>'+metalexXml
+                metalexXmlTree = BeautifulSoup(metalexXml, 'xml')
+                print metalexXmlTree.prettify(formatter=None)
+        if typ == u'tei' :
+            if save :
+                name = u'MetaLex-'+MetaLex.projectName+u'-TEI.xml'
+                metalexXml = self.balise(metadata+content, u'TEI', typ= u'tei')
+                metalexXml = u'<?xml version="1.0" encoding="UTF-8" ?>'+metalexXml
+                metalexXmlTree = BeautifulSoup(metalexXml, 'xml')
+                if MetaLex.dicProject.inDir(name) :
+                    with codecs.open(name, 'w', 'utf-8') as fle :
+                        fle.write(metalexXmlTree.prettify(formatter=None))
+                    message = u"'"+name+u"'  is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder"
+                    MetaLex.dicLog.manageLog.writelog(message)
+                else:
+                    message = u"'"+name+u"'  is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder"
+                    print message
+                    #MetaLex.dicLog.manageLog.writelog(message)
                 return metalexXml
-            
+            else :
+                metalexXml = self.balise(metadata+content, u'TEI', typ= u'tei')
+                metalexXml = u'<?xml version="1.0" encoding="UTF-8" ?>'+metalexXml
+                metalexXmlTree = BeautifulSoup(metalexXml, 'xml')
+                print metalexXmlTree.prettify(formatter=None)
+        if typ == u'lmf' :
+            if save :
+                name = u'MetaLex-'+MetaLex.projectName+u'-LMF.xml'
+                metalexXml = self.balise(metadata+content, u'LexicalResource', attr={'dtdVersion':'15'}, typ= u'lmf')
+                metalexXml = u'<?xml version="1.0" encoding="UTF-8" ?>'+metalexXml
+                metalexXmlTree = BeautifulSoup(metalexXml, 'xml')
+                if MetaLex.dicProject.inDir(name) :
+                    with codecs.open(name, 'w', 'utf-8') as fle :
+                        fle.write(metalexXmlTree.prettify(formatter=None))
+                    message = u"'"+name+u"'  is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder"
+                    MetaLex.dicLog.manageLog.writelog(message)
+                else:
+                    message = u"'"+name+u"'  is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder"
+                    print message
+                    #MetaLex.dicLog.manageLog.writelog(message)
+                return metalexXml
+            else :
+                metalexXml = self.balise(metadata+content, u'LexicalResource', attr={'dtdVersion':'15'}, typ= u'lmf')
+                metalexXml = u'<?xml version="1.0" encoding="UTF-8" ?>'+metalexXml
+                metalexXmlTree = BeautifulSoup(metalexXml, 'xml')
+                print metalexXmlTree.prettify(formatter=None)
+
 
     def xmlMetadata(self, typ=u'xml'):
         """
@@ -182,98 +232,206 @@ class baliseXML ():
           @return:  str:metadata
         """
         MetaLex.dicProject.createtemp()
+        
+        projectconf = MetaLex.dicProject.readConf()
+        contribtab  = projectconf['Contributors'].split(u',') if projectconf['Contributors'].find(u',') else projectconf['Contributors']
+        contrib = ''
         if typ == u'xml' :
-            projectconf = MetaLex.dicProject.readConf()
-            author      = self.balise(projectconf['Author'], u'mtl:author')
-            name        = self.balise(projectconf['Projectname'], u'mtl:projectname')
-            date        = self.balise(projectconf['Creationdate'], u'mtl:date')
-            comment     = self.balise(projectconf['Comment'], u'mtl:comment')
-            contribtab  = projectconf['Contributors'].split(u',') if projectconf['Contributors'].find(u',') else projectconf['Contributors']
-            contrib = ''
+            author      = self.balise(projectconf['Author'], u'author', typ)
+            name        = self.balise(projectconf['Projectname'].strip(), u'projectName', typ)
+            date        = self.balise(projectconf['Creationdate'].strip(), u'dateCreation', typ)
+            comment     = self.balise(projectconf['Comment'], u'comment', typ)
             if len(contribtab) > 1 :
-                for data in contribtab :
-                    contrib += self.balise(data, u'mtl:pers') 
-            else :
-                contrib = self.balise(''.join(contribtab), u'mtl:pers') 
-            contrib  = self.balise(contrib, u'mtl:contributors')
-            cont     = name+author+date+comment+contrib
-            metadata = self.balise(cont, u'mtl:metadata') 
-            return metadata
+                for data in contribtab : contrib += self.balise(data.strip(), u'candidate', typ) 
+            else : contrib = self.balise(''.join(contribtab), u'candidate', typ)
+            contrib     = self.balise(contrib, u'contributors', typ)
+            cont        = name+author+date+comment+contrib
+            
+            metadataxml = self.balise(cont, u'MetaLexMetadata', typ) 
+            return metadataxml
+        if typ == u'tei' :
+            if len(contribtab) > 1 :
+                for data in contribtab : 
+                    if len(data) > 2 : contrib += self.balise(data.strip(), u'span', attr={'content':'contributor'}, typ=u'tei') 
+            else : contrib = self.balise(''.join(contribtab), u'span', typ=u'tei')
+            author      = self.balise(projectconf['Author'], u'author', typ=u'tei')
+            title       = self.balise(projectconf['Projectname'], u'title', typ=u'tei')
+            RtitleStmt  = self.balise(title, u'titleStmt', typ=u'tei')
+            pdate       = self.balise(projectconf['Creationdate'], u'p', typ=u'tei')
+            pcomment    = self.balise(projectconf['Comment'], u'p', typ=u'tei')
+            pcontrib    = self.balise(contrib, u'p', attr={'content':'contributors'}, typ=u'tei')
+            Rpubli      = self.balise(author+pdate+pcomment+pcontrib, u'publicationStmt', typ=u'tei')
+            sourc       = self.balise('TEI metadata for MetaLex project output', u'p', typ=u'tei')
+            Rsourc      = self.balise(sourc, u'sourceDesc', typ=u'tei')
+            RfilD       = self.balise(RtitleStmt+Rpubli+Rsourc, u'fileDesc', typ=u'tei')
+            metadatatei = self.balise(RfilD, u'teiHeader', typ=u'tei')
+            return metadatatei
         if typ == u'lmf' :
-            return False
+            if len(contribtab) > 1 :
+                for data in contribtab : 
+                    if len(data) > 2 : contrib += data.strip()+', '
+            else : contrib = ', '.join(contribtab)
+            enc         = self.balise('', u'feat', attr={'att':'languageCoding', 'val':'utf-8'}, typ=u'lmf', sclose=True)
+            pauthor     = self.balise('', u'feat', attr={'att':'author', 'val':projectconf['Author'].strip()}, typ=u'lmf', sclose=True)
+            pdate       = self.balise('', u'feat', attr={'att':'dateCreation', 'val':projectconf['Creationdate'].strip()}, typ=u'lmf', sclose=True)
+            pcomment    = self.balise('', u'feat', attr={'att':'comment', 'val':projectconf['Comment'].strip()}, typ=u'lmf', sclose=True)
+            pcontrib    = self.balise('', u'feat', attr={'att':'contributors', 'val':contrib.strip(', ')}, typ=u'lmf', sclose=True)
+            meta        = self.balise('', u'p', attr={'att':'meta', 'val':'TEI metadata for MetaLex project output'}, typ=u'lmf', sclose=True)
+            metadatalmf = self.balise(enc+pauthor+meta+pdate+pcomment+pcontrib, u'GlobalInformation', typ=u'lmf')
+            return metadatalmf
+            
+        
+    def baliseContentArticle (self):
+        data = getDataArticles(u'text')
+        cod  = structuredWithCodif(data, u'xml')
+        resultArticles = []
+        for art in  cod.formatArticles() :
+            articleTypeForm(art)
+            if articleTypeForm(art) == u'1' :
+                partArt = re.search(ur'(([a-zéèàûô]+)\s(<cte_cat>.+</cte_cat>)\s(.+)<cgr_pt>\.</cgr_pt>)', art)
+                ident, entry, cat, treat = partArt.group(1), partArt.group(2), partArt.group(3), partArt.group(4)
+                id    = generateID()
+                entry = self.balise(entry,u'entry', attr={u'id':id})
+                ident = self.balise(entry+cat, u'identificationComponent')
+                treat = self.balise(treat, u'processingUnit')
+                article = self.balise(ident+self.balise(treat, u'treatmentComponent'), u'article')
+                resultArticles.append(article)     
+            if articleTypeForm(art) == u'2' :
+                partArt = re.search(ur'(([a-zéèàûô]+)\s(<cte_cat>.+</cte_cat>\s<cte_gender>..</cte_gender>)\s(.+)<cgr_pt>\.</cgr_pt>)', art)
+                ident, entry, cat, treat = partArt.group(1), partArt.group(2), partArt.group(3), partArt.group(4)
+                id    = generateID()
+                entry = self.balise(entry,u'entry', attr={u'id':id})
+                ident = self.balise(entry+cat, u'identificationComponent')
+                if not re.search(ur'(<cgr_pt>\.</cgr_pt>|<cte_cat>.+</cte_cat>|<cgr_vrg>,</cgr_vrg>)', partArt.group(4), re.I) :
+                    treat = self.balise(treat+u'.', u'processingUnit')
+                    article = self.balise(ident+self.balise(treat, u'treatmentComponent'), u'article')
+                    resultArticles.append(article)
+                elif partArt.group(4).find(u' et ') != -1 :
+                    toi = 'hahaha'
+                    #print art+'\n'
+        
+        return resultArticles
             
             
-    def xmlContent(self, forme, typ=u'xml'): 
+        """
+        if re.search(ur'^.+\s(<cgr-vrg>,</cgr-vrg>\s.+|<cgr-vrg>,</cgr-vrg>\s.+ ou\s.+\s<cgr-vrg>,</cgr-vrg>\s.+)?\s<cte-cat>.+</cte-cat>\s(<cte-genre>..</cte-genre>|<cte-rection>.+</cte-rection>)?\s.+', art) :
+            artpart  = re.search(ur'(^.+)\s(<cgr-vrg>,</cgr-vrg>\s.+|<cgr-vrg>,</cgr-vrg>\s.+ ou\s.+\s<cgr-vrg>,</cgr-vrg>\s.+)?\s<cte-cat>.+</cte-cat>\s(<cte-genre>..</cte-genre>|<cte-rection>.+</cte-rection>)?\s(.+)', art)
+            entry, cat, rest = artpart.group(1), artpart.group(2), artpart.group(3)
+            print entry+'***'+cat+'***'+rest
+            print '------------------------------------------\n'
+        """
+           
+    def xmlContent(self, typ=u'xml', forme=u'text'): 
         """
           Create xml content file (representing articles) with data articles extracting
           @return: str:contentXml
         """
         content     = u''
         contentXml  = u''
+        data = self.baliseContentArticle()
         if typ == u'xml' :
             if forme == u'pickle' : 
                 data = getDataArticles(u'pickle')
                 for dicart in data :
                     for art in dicart.keys() :
-                        art = self.balise(dicart[art], u'entry', art=True)
+                        art = self.balise(dicart[art], u'article', art=True)
                         content += art
-                contentXml = self.balise(content, u'mtl:content')
+                contentXml = self.balise(content, u'MetaLexContent')
                 return contentXml
-            if forme == u'text' : 
-                data = getDataArticles(u'text')
-                cod = structuredWithCodif(data, u'xml')
-                co  = cod.codifiedArticles()
-                print co
-                for art in data.keys() :
-                    art = self.balise(data[art], u'entry', art=True)
+            else : 
+                for art in data :
                     content += art
-                contentXml = self.balise(content, u'mtl:content')
+                contentXml   = self.balise(content, u'MetaLexContent', attr={'totalArticle': str(len(data))})
                 return contentXml
         
+        if typ == u'tei' :
+            for art in data :
+                soupart = BeautifulSoup(art, 'html.parser')
+                orth    = soupart.find('entry').getText()
+                atOrth  = soupart.find('entry').get('id')
+                #pron   = soupart.find('cgr_').getText()
+                #etym   = soupart.find('cgr_etymon').getText()
+                orth    = self.balise(orth, u'orth', {'id': atOrth}, typ=u'tei')
+                formB   = self.balise(orth, u'form', attr={'xml:lang':'fr', 'type':'lemma'}, typ=u'tei')
+                pos     = soupart.find('cte_cat').getText()
+                posB    = self.balise(pos, u'pos', typ=u'tei')
+                genB    = u''
+                if soupart.find('cte_gender') : genB = soupart.find('cte_gender').getText().strip()
+                if genB == u'f.' or genB == u'm.' : genB = self.balise(genB, u'genre', typ=u'tei')
+                gramgrp = self.balise(posB+genB, u'gramGrp', typ=u'tei')
+                sens    = soupart.find('processingunit').getText().replace(u' .', u'.')
+                defi    = self.balise(sens, u'def', typ=u'tei')
+                if sens != None : sens  = self.balise(defi, u'sense', typ=u'tei')
+                entry   = self.balise(formB+gramgrp+sens, u'entry', typ=u'tei')
+                content += entry
+            body  = self.balise(content, u'body', typ=u'tei')
+            contentXml   = self.balise(body, u'text', attr={'totalArticle': str(len(data))}, typ=u'tei')
+            return contentXml
+        
+        if typ == u'lmf' :
+            for art in data :
+                soupart = BeautifulSoup(art, 'html.parser')
+                orth    = soupart.find('entry').getText()
+                atOrth  = soupart.find('entry').get('id')
+                #pron   = soupart.find('cgr_').getText()
+                #etym   = soupart.find('cgr_etymon').getText()
+                orth    = self.balise('', u'feat', attr={'att':'writtenForm','val':orth}, typ=u'lmf', sclose=True)
+                wordF   = self.balise(orth, u'WordForm', attr={'id': atOrth}, typ=u'lmf')
+                pos     = soupart.find('cte_cat').getText()
+                posB    = self.balise('', u'feat', attr={'att':'partOfSpeech','val':pos}, typ=u'lmf', sclose=True)
+                genB    = u''
+                if soupart.find('cte_gender') : genB = soupart.find('cte_gender').getText().strip()
+                if genB == u'f.' or genB == u'm.' : genB = self.balise('', u'feat', attr={'att':'grammaticalNumber','val': genB}, typ=u'lmf', sclose=True)
+                sens    = soupart.find('processingunit').getText().replace(u' .', u'.')
+                sensnb  = self.balise('', u'feat', attr={'att':'sensNumber','val':'1'}, typ=u'lmf', sclose=True)
+                definb  = self.balise('', u'feat', attr={'att':'text','val':sens.strip()}, typ=u'lmf', sclose=True)
+                defi    = self.balise(definb, u'Definition', typ=u'lmf')
+                if sens != None : sens  = self.balise(sensnb+defi, u'Sense', typ=u'lmf')
+                entry   = self.balise(wordF+posB+genB+sens, u'LexicalEntry', typ=u'lmf')
+                content += entry
+            body = self.balise('', u'feat', attr={'att':'language','val':'fra'}, typ=u'lmf', sclose=True)+content
+            contentXml   = self.balise(body, u'Lexicon', attr={'totalArticle': str(len(data))}, typ=u'lmf')
+            return contentXml
         
         
-    def balise(self, element, markup, attr=None, typ=u'xml', art=False):
+        
+    def balise(self, element, markup, sclose=False, attr=None, typ=u'xml', art=False):
         """
           Markup data with a specific format type (xml|tei|lmf)
           @return: str:balised element
         """
-        if type :
-            if markup in components[u'xml'][u'identification'] \
-            or components[u'xml'][u'treatment'] :
+        if typ == u'xml' :
+            if markup in components[u'xml'][u'MetaLexContent'] or markup in components[u'xml'][u'MetaLexMetadata'] :
                 if art :
                     element = self.chevron(markup, attr, art=True)+element+self.chevron(markup, attr, False)
                     return element
                 else:
                     element = self.chevron(markup, attr)+element+self.chevron(markup, attr, False)
                     return element
-        elif typ == u'tei' :
-            if markup in components[u'tei'][u'identification'] \
-            or components[u'xml'][u'treatment'] :
+        if typ == u'tei' :
+            if markup in components[u'tei'][u'text']  or markup in components[u'tei'][u'teiHeader'] :
                 if art :
                     element = self.chevron(markup, attr, art=True)+element+self.chevron(markup, attr, False)
                     return element
                 else:
+                    #print element+'********'
                     element = self.chevron(markup, attr)+element+self.chevron(markup, attr, False)
                     return element
-        elif typ == u'lmf' :
-            if markup in components[u'lmf'][u'identification'] \
-            or components[u'xml'][u'treatment'] :
-                if art :
-                    element = self.chevron(markup, attr, True)+element+self.chevron(markup, attr, False)
+        if typ == u'lmf' :
+            if markup in components[u'lmf'][u'GlobalInformation'] \
+            or components[u'lmf'][u'Lexicon'] :
+                if sclose :
+                    #print '111iiiiiii'
+                    element = self.chevron(markup, attr, True, sclose=True)
                     return element
-                else:
-                    element =self. chevron(markup, attr)+element+self.chevron(markup, attr, False)
+                else : 
+                    #print '222iiiiiii'
+                    element = self.chevron(markup, attr)+element+self.chevron(markup, attr, False)
                     return element
-        else :
-            if art :
-                element = self.chevron(markup, attr, True)+element+self.chevron(markup, attr, False)
-                return element
-            else:
-                element = self.chevron(markup, attr)+element+self.chevron(markup, attr, False)
-                return element
+                
     
     
-    def chevron(self, el, attr, openchev=True, art=False):
+    def chevron(self, el, attr, openchev=True, art=False, sclose=False):
         """
           Put tag around the data element
           @return: str:tagging element 
@@ -282,20 +440,25 @@ class baliseXML ():
         if art and attr == None:
             if openchev     : return u"<"+el+u" id='"+idart+u"' class='data-entry'"+u">"
             if not openchev : return u"</"+el+u">"
+            if sclose       : return u"<"+el+u" id='"+idart+u"'/>"
         if art and attr != None :
             allattrib = ''
             for at in attr.keys() :
                 allattrib += ' '+at+'="'+attr[at]+'"'
-            if openchev     : return u"<"+el+u" id='"+idart+u"' class='data-entry'"+u' '+allattrib+u">"
+            if openchev  and not sclose   : return u"<"+el+u" id='"+idart+u"' class='data-entry'"+u' '+allattrib+u">"
+            if openchev and sclose : return u"<"+el+u" id='"+idart+u"' class='data-entry'"+u' '+allattrib+u"/>"
             if not openchev : return u"</"+el+u">"
         elif art == False and attr != None :
+            #print openchev
             allattrib = ''
             for at in attr.keys() :
                 allattrib += ' '+at+'="'+attr[at]+'"'
-            if openchev     : return u"<"+el+u' '+allattrib+u">"
+            if openchev  and not sclose   : return u"<"+el+u' '+allattrib+u">"
+            if openchev and sclose : return u"<"+el+u' '+allattrib+u"/>"
             if not openchev : return u"</"+el+u">"
         elif art == False and attr == None :
             if openchev     : return u"<"+el+u">"
+            if sclose       : return u"<"+el+u"/>"
             if not openchev : return u"</"+el+u">"
         
         
