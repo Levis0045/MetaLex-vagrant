@@ -106,7 +106,7 @@ class baliseHTML () :
         instanceXml    = baliseXML()
         contentxml     = instanceXml.xmlised(typ=u'xml', save=True)
         MetaLex.dicProject.createtemp()
-        soupXml        = BeautifulSoup(contentxml, "html5lib")
+        soupXml        = BeautifulSoup(contentxml, "html.parser")
         projectconf    = MetaLex.dicProject.readConf()
         Hauthor, Hname, Hdate, Hcomment, Hcontrib = projectconf['Author'], projectconf['Projectname'], projectconf['Creationdate'], projectconf['Comment'], projectconf['Contributors']
         filetemplate   = codecs.open(template, 'r', 'utf-8')
@@ -122,21 +122,25 @@ class baliseHTML () :
         contrib.string = 'contributors : '+Hcontrib
         project        = content.find(u'h4', attrs={'id': u'projetname'})
         project.string = Hname
-        contentxml     = soupXml.find(u'mtl:content')
-        articlesxml    = contentxml.findAll(u'entry')
+        articlesxml    = soupXml.findAll(u'article')
         articleshtml   = souphtml.find(u'div', attrs={'id': u'mtl:articles'})
-        for x in articlesxml : articleshtml.append(x)
-        listlemme      = souphtml.find(u'ul', attrs={'id': u'list-articles'})
+        elementart     = BeautifulSoup(u'<article id=""></article>', 'html5lib')
+        for x in articlesxml : 
+            idart   = x.find('entry').get('id')
+            artlem  = x.get_text()
+            elementart.article.append(artlem)
+            elementart.article['id'] = idart
+            articleshtml.append(elementart.find(u'article'))  
+        listlemme   = souphtml.find(u'ul', attrs={'id': u'list-articles'})
         for x in articlesxml :
             art     = x.get_text()
-            idart   = x.get('id')
-            lem     = ' '.join(re.split(ur'(\s)',art)[0:3]) 
-            
-            lemme   = BeautifulSoup(u'<li class="w3-hover-light-grey" ><span class="lemme" onclick="changeImage('+u"'"+idart+u"'"+u')">'+lem+u'</span><span class="fa fa-plus w3-closebtn" onclick="add('+u"'"+idart+u"'"+u')"/></li>', 'html5lib')
+            idart   = x.find('entry').get('id')
+            lem     = x.find('entry').get_text()
+            lemme   = BeautifulSoup(u'<li class="w3-hover-light-grey"><span class="lemme" onclick="changeImage('+u"'"+idart+u"'"+u')">'+lem+u'</span><span class="fa fa-plus w3-closebtn" onclick="add('+u"'"+idart+u"'"+u')"/></li>', 'html5lib')
             listlemme.append(lemme.find(u'li'))
             
         filetemplate.close()
-        self.resultHtml = souphtml.prettify("utf-8")
+        self.resultHtml = souphtml.prettify('utf-8')
         return self.resultHtml
     
      
@@ -164,7 +168,9 @@ class baliseXML ():
         if typ == u'xml' :
             if save :
                 name = u'MetaLex-'+MetaLex.projectName+u'.xml'
-                metalexXml = self.balise(metadata+content, u'MetaLexResultDictionary', attr={})
+                metalexXml = self.balise(metadata+content, u'MetaLexResultDictionary', attr={'xmlns':'https://www.w3schools.com', 
+                                                                                             'xmlns:xsi':'http://www.w3.org/2001/XMLSchema-in', 
+                                                                                             'xsi:schemaLocation':'MetaLexSchemaXML.xsd'})
                 metalexXml = u'<?xml version="1.0" encoding="UTF-8" ?>'+metalexXml
                 metalexXmlTree = BeautifulSoup(metalexXml, 'xml')
                 if MetaLex.dicProject.inDir(name) :
@@ -288,7 +294,7 @@ class baliseXML ():
         for art in  cod.formatArticles() :
             articleTypeForm(art)
             if articleTypeForm(art) == u'1' :
-                partArt = re.search(ur'(([a-zéèàûô]+)\s(<cte_cat>.+</cte_cat>)\s(.+)<cgr_pt>\.</cgr_pt>)', art)
+                partArt = re.search(ur'(([a-zéèàûô]+)\s(<cte_cat>.+</cte_cat>)\s(.+)<cgr_pt>\.</cgr_pt>)', art, re.I)
                 ident, entry, cat, treat = partArt.group(1), partArt.group(2), partArt.group(3), partArt.group(4)
                 id    = generateID()
                 entry = self.balise(entry,u'entry', attr={u'id':id})
@@ -297,10 +303,10 @@ class baliseXML ():
                 article = self.balise(ident+self.balise(treat, u'treatmentComponent'), u'article')
                 resultArticles.append(article)     
             if articleTypeForm(art) == u'2' :
-                partArt = re.search(ur'(([a-zéèàûô]+)\s(<cte_cat>.+</cte_cat>\s<cte_gender>..</cte_gender>)\s(.+)<cgr_pt>\.</cgr_pt>)', art)
+                partArt = re.search(ur'(([a-zéèàûô]+)\s(<cte_cat>.+</cte_cat>\s<cte_gender>..</cte_gender>)\s(.+)<cgr_pt>\.</cgr_pt>)', art, re.I)
                 ident, entry, cat, treat = partArt.group(1), partArt.group(2), partArt.group(3), partArt.group(4)
                 id    = generateID()
-                entry = self.balise(entry,u'entry', attr={u'id':id})
+                entry = self.balise(entry, u'entry', attr={u'id':id})
                 ident = self.balise(entry+cat, u'identificationComponent')
                 if not re.search(ur'(<cgr_pt>\.</cgr_pt>|<cte_cat>.+</cte_cat>|<cgr_vrg>,</cgr_vrg>)', partArt.group(4), re.I) :
                     treat = self.balise(treat+u'.', u'processingUnit')
