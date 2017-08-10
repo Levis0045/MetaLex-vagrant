@@ -124,8 +124,8 @@ class baliseHTML () :
         project.string = Hname
         articlesxml    = soupXml.findAll(u'article')
         articleshtml   = souphtml.find(u'div', attrs={'id': u'mtl:articles'})
-        elementart     = BeautifulSoup(u'<article id=""></article>', 'html5lib')
         for x in articlesxml : 
+            elementart = BeautifulSoup(u'<article id=""></article>', 'html5lib')
             idart   = x.find('entry').get('id')
             artlem  = x.get_text()
             elementart.article.append(artlem)
@@ -295,26 +295,28 @@ class baliseXML ():
             articleTypeForm(art)
             if articleTypeForm(art) == u'1' :
                 partArt = re.search(ur'(([a-zéèàûô]+)\s(<cte_cat>.+</cte_cat>)\s(.+)<cgr_pt>\.</cgr_pt>)', art, re.I)
-                ident, entry, cat, treat = partArt.group(1), partArt.group(2), partArt.group(3), partArt.group(4)
-                id    = generateID()
-                entry = self.balise(entry,u'entry', attr={u'id':id})
-                ident = self.balise(entry+cat, u'identificationComponent')
-                treat = self.balise(treat, u'processingUnit')
-                article = self.balise(ident+self.balise(treat, u'treatmentComponent'), u'article')
-                resultArticles.append(article)     
+                if partArt != None :
+                    ident, entry, cat, treat = partArt.group(1), partArt.group(2), partArt.group(3), partArt.group(4)
+                    id    = generateID()
+                    entry = self.balise(entry,u'entry', attr={u'id':id})
+                    ident = self.balise(entry+cat, u'identificationComponent')
+                    treat = self.balise(treat, u'processingUnit')
+                    article = self.balise(ident+self.balise(treat, u'treatmentComponent'), u'article')
+                    resultArticles.append(article)     
             if articleTypeForm(art) == u'2' :
                 partArt = re.search(ur'(([a-zéèàûô]+)\s(<cte_cat>.+</cte_cat>\s<cte_gender>..</cte_gender>)\s(.+)<cgr_pt>\.</cgr_pt>)', art, re.I)
-                ident, entry, cat, treat = partArt.group(1), partArt.group(2), partArt.group(3), partArt.group(4)
-                id    = generateID()
-                entry = self.balise(entry, u'entry', attr={u'id':id})
-                ident = self.balise(entry+cat, u'identificationComponent')
-                if not re.search(ur'(<cgr_pt>\.</cgr_pt>|<cte_cat>.+</cte_cat>|<cgr_vrg>,</cgr_vrg>)', partArt.group(4), re.I) :
-                    treat = self.balise(treat+u'.', u'processingUnit')
-                    article = self.balise(ident+self.balise(treat, u'treatmentComponent'), u'article')
-                    resultArticles.append(article)
-                elif partArt.group(4).find(u' et ') != -1 :
-                    toi = 'hahaha'
-                    #print art+'\n'
+                if partArt != None :
+                    ident, entry, cat, treat = partArt.group(1), partArt.group(2), partArt.group(3), partArt.group(4)
+                    id    = generateID()
+                    entry = self.balise(entry, u'entry', attr={u'id':id})
+                    ident = self.balise(entry+cat, u'identificationComponent')
+                    if not re.search(ur'(<cgr_pt>\.</cgr_pt>|<cte_cat>.+</cte_cat>|<cgr_vrg>,</cgr_vrg>)', partArt.group(4), re.I) :
+                        treat = self.balise(treat+u'.', u'processingUnit')
+                        article = self.balise(ident+self.balise(treat, u'treatmentComponent'), u'article')
+                        resultArticles.append(article)
+                    elif partArt.group(4).find(u' et ') != -1 :
+                        toi = 'hahaha'
+                        #print art+'\n'
         
         return resultArticles
             
