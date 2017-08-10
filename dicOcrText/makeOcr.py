@@ -89,6 +89,7 @@ def imageToText(show=False, save=False, langIn='fra'):
                     message = u"'"+ imagefile +u"' is Ocrised to > '"+tempname+u"' > Saved in dicTemp folder" 
                     MetaLex.dicLog.manageLog.writelog(message) 
                     MetaLex.resultOcrData[img] = [textocr]
+                    #os.chdir('..')
                 elif show :
                     print u"\n\n*********************************************************\n\n"
                     print textocr
