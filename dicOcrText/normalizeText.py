@@ -24,7 +24,7 @@ from MetaLex import codifications
 # ----External Modules------------------------------------------------------
 
 from bs4 import BeautifulSoup
-import re, sys, codecs, os
+import re, sys, codecs, os, time
 import warnings
 #import ipdb
 
@@ -42,16 +42,18 @@ nametxt     = ''
 # ----------------------------------------------------------
 
 
-def makeTextWell(file_rules, okCorrect=False):
+def makeTextWell(file_rules, okCorrect=False, log=False):
     """
       Composed and saved all treatments process to enhance quality of html articles 
       @param   file_rules:str
       @param   okCorrect:bool
       @return: file:pickle and text 
     """
-
+    debut = time.time()
     filerule = fileRule(file_rules, typ=u'rule_wc')
     data_rules = filerule.fileRuleUnpack()
+    dfilerule = time.time() - debut
+    
     html_ocr_files = MetaLex.resultOcrFiles
     for html in html_ocr_files :
         with open(html, 'r') as html_file :
@@ -62,8 +64,10 @@ def makeTextWell(file_rules, okCorrect=False):
     
     saveNormalize(namepickle, u'pickle')
     saveNormalize(nametxt, u'text')     
-         
-                     
+       
+    if log : print "--> %30s : %10.5f seconds\n" %("Durée d'extraction du fichier des règles", dfilerule)
+    
+              
 def enhanceText(html_file, rules, okCorrect):
     """
        Enhance quality of text by remove all inconvenients characters and optionally 
