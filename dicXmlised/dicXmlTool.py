@@ -46,6 +46,11 @@ def generateID():
 
 
 def articleTypeForm(art):
+    """
+      Find type form of article depending on their codification  
+      @param art:str 
+      @return: str:int of type found
+    """
     soup = BeautifulSoup(art, 'html.parser')
     #print soup.contents[8]
     if re.search(ur'<cte_cat>', unicode(soup.contents[1])) :
@@ -57,7 +62,6 @@ def articleTypeForm(art):
         elif re.search(ur'<cte_rection>', unicode(soup.contents[3])) :
             return u'4' #cat and rection
             #print '*****rection*** '+art+'*****\n'
-        
         else:
             return u'1' #cat
             #print '*****cat*** '+art+'*****\n'
