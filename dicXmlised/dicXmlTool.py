@@ -52,36 +52,36 @@ def articleTypeForm(art):
       @return: str:int of type found
     """
     soup = BeautifulSoup(art, 'html.parser')
-    #print soup.contents[8]
-    if re.search(ur'<cte_cat>', unicode(soup.contents[1])) :
-        if re.search(ur'<cte_gender>', unicode(soup.contents[3])) :
-            if re.search(ur'<cte_rection>', unicode(soup.contents[5])) :
-                return u'7' #cat, gender and rection
-                #print '****gender**** '+art+'*****\n'
-            else: return u'2' #cat and gender
-        elif re.search(ur'<cte_rection>', unicode(soup.contents[3])) :
-            return u'4' #cat and rection
-            #print '*****rection*** '+art+'*****\n'
-        else:
-            return u'1' #cat
-            #print '*****cat*** '+art+'*****\n'
-    elif re.search(ur'<cgr_vrg>', unicode(soup.contents[1])) : 
-        if re.search(ur'<cgr_vrg>', unicode(soup.contents[3])) : 
-            return u'3' #vrg, vrg and cat
-            #print '*****cat*** '+art+'*****\n'  
+    try : 
+        if re.search(ur'<cte_cat>', unicode(soup.contents[1])) :
+            if re.search(ur'<cte_gender>', unicode(soup.contents[3])) :
+                if re.search(ur'<cte_rection>', unicode(soup.contents[5])) :
+                    return u'7' #cat, gender and rection
+                    #print '****gender**** '+art+'*****\n'
+                else: return u'2' #cat and gender
+            elif re.search(ur'<cte_rection>', unicode(soup.contents[3])) :
+                return u'4' #cat and rection
+                #print '*****rection*** '+art+'*****\n'
+            else:
+                return u'1' #cat
+                #print '*****cat*** '+art+'*****\n'
+        elif re.search(ur'<cgr_vrg>', unicode(soup.contents[1])) : 
+            if re.search(ur'<cgr_vrg>', unicode(soup.contents[3])) : 
+                return u'3' #vrg, vrg and cat
+                #print '*****cat*** '+art+'*****\n'  
+            else :
+                return u'8' #vrg and cat
+                #print '*****cat*** '+art+'*****\n'
+        elif re.search(ur'<cgr_ocrh>', unicode(soup.contents[1])) : 
+            if re.search(ur'<cte_gender>', unicode(soup.contents[7])) : 
+                return u'6' #crh, crh, cat and gender
+                #print '*****cat*** '+art+'*****\n'
+            else :
+                return u'5' #crh, crh, cat and rection
         else :
-            return u'8' #vrg and cat
+            return u'9' #Problematic case
             #print '*****cat*** '+art+'*****\n'
-    elif re.search(ur'<cgr_ocrh>', unicode(soup.contents[1])) : 
-        if re.search(ur'<cte_gender>', unicode(soup.contents[7])) : 
-            return u'6' #crh, crh, cat and gender
-            #print '*****cat*** '+art+'*****\n'
-        else :
-            return u'5' #crh, crh, cat and rection
-    else :
-        return u'9' #Problematic case
-        #print '*****cat*** '+art+'*****\n'
-    
+    except IndexError : pass
     
     
 def getDataArticles(typ):
