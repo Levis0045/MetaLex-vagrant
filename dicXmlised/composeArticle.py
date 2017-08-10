@@ -23,7 +23,7 @@ from dicXmlTool import *
 
 # ----External Modules------------------------------------------------------
 
-import re, sys, codecs
+import re, sys, codecs, time
 from bs4  import BeautifulSoup
 from lxml import etree
 
@@ -164,7 +164,6 @@ class structuredWithCodif():
             for word in re.split(ur' ', self.data[art]) :
                 word = word.strip()
                 if re.search(ur"[a-z.éèùàê,]+", word, re.I):
-                    print word
                     if word.isalnum() and word[-1] == u';' or word[-1] == u':' or word[-1] == u',':
                         word, caract = word[:-1], word[-1]
                         content += word+u' {0} '.format(caract)
@@ -191,16 +190,24 @@ class structuredWithCodif():
         return contentall
           
           
-    def codifiedArticles(self):
+    def codifiedArticles(self, log=False):
         """
           Get all normalize articles and parse its content codifications types
           @return: dict:datacodified
         """
+        debut = time.time()
+
         dataArticles = self.normalizeDataToCodif()
+        dnormal = time.time() - debut
+        debut   = time.time()
         datacodified = {}
         for art in dataArticles.keys() :
             artcodif          = parseArticle(dataArticles[art])
             datacodified[art] = artcodif
+        dcodif  = time.time() - debut
+        if log :
+            print "Durée normalisation texte pour codif : %10.3f seconds\n" %dnormal
+            print "Durée parsage codif texte : %10.3f seconds\n" %dcodif
         return datacodified
          
          
