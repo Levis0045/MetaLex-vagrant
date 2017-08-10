@@ -162,32 +162,40 @@ class structuredWithCodif():
         for art in self.data.keys() :
             content = u''
             for word in re.split(ur' ', self.data[art]) :
-                word = word.strip() 
-                if word[-1] == u';' or word[-1] == u':' or word[-1] == u',':
-                    word, caract = word[:-1], word[-1]
-                    content += word+u' {0} '.format(caract)
-                elif len(word)> 2 and word[-1] == u'.' and word[0] != u'(' and word[-2] != u')' and word not in contentDic['text'] :
-                    word, caract = word[:-1], word[-1]
-                    content += word+u' {0} '.format(caract)
-                elif word[0]  == u'('  and word not in contentDic['symb'] :
-                    #print word, '----------------'
-                    word, caract = word[1:], word[0]
-                    content += caract+u' {0} '.format(word)
-                elif len(word)> 2 and word[-1] == u'.' and word[-2] == u')' and word not in contentDic['symb'] :
-                    #print word, word[-2],'----------------'
-                    word, caract, point = word[:-2], word[-2], word[-1]
-                    content += word+u' {0} {1} '.format(caract, point)
-                elif len(word)> 2 and word[0] == u'[' and word[-1] == u']' and word not in contentDic['symb'] :
-                    #print word, word[-2],'----------------'
-                    word, caract1, caract2 = word[1:-1], word[0], word[-1]
-                    content += u' {0} {1} {2} '.format(caract1, word, caract2)
+                word = word.strip()
+                if re.search(ur"[a-z.éèùàê,]+", word, re.I):
+                    print word
+                    if word.isalnum() and word[-1] == u';' or word[-1] == u':' or word[-1] == u',':
+                        word, caract = word[:-1], word[-1]
+                        content += word+u' {0} '.format(caract)
+                    elif len(word)> 2 and word[-1] == u'.' and word[0] != u'(' and word[-2] != u')' and word not in contentDic['text'] :
+                        word, caract = word[:-1], word[-1]
+                        content += word+u' {0} '.format(caract)
+                    elif word[0]  == u'('  and word not in contentDic['symb'] :
+                        #print word, '----------------'
+                        word, caract = word[1:], word[0]
+                        content += caract+u' {0} '.format(word)
+                    elif len(word)> 2 and word[-1] == u'.' and word[-2] == u')' and word not in contentDic['symb'] :
+                        #print word, word[-2],'----------------'
+                        word, caract, point = word[:-2], word[-2], word[-1]
+                        content += word+u' {0} {1} '.format(caract, point)
+                    elif len(word)> 2 and word[0] == u'[' and word[-1] == u']' and word not in contentDic['symb'] :
+                        #print word, word[-2],'----------------'
+                        word, caract1, caract2 = word[1:-1], word[0], word[-1]
+                        content += u' {0} {1} {2} '.format(caract1, word, caract2)
+                    else :
+                        content += word +u' '
                 else :
-                    content += word +u' '
+                    content += word+u''
             contentall[art]  = content
         return contentall
           
           
     def codifiedArticles(self):
+        """
+          Get all normalize articles and parse its content codifications types
+          @return: dict:datacodified
+        """
         dataArticles = self.normalizeDataToCodif()
         datacodified = {}
         for art in dataArticles.keys() :
@@ -197,6 +205,11 @@ class structuredWithCodif():
          
          
     def readTag(self, tag):
+        """
+          Read content of tag element
+          @param tag:str 
+          @return: str:element (content of tag)
+        """
         elsearch = re.search(ur'<.+>(.+)</.+>', tag)
         elment   = elsearch.group(1)
         return elment
@@ -209,35 +222,27 @@ class structuredWithCodif():
             self.segmentArticles (art1)
             self.segmentArticles (art2)
         else :
-            """
-            print '3--------------------------------------'
-            print article
-            print '--------------------------------------\n\n'
-            """
+            #print '3-----------------------------\n'+article+'---------------------------\n\n'
             self.treatArticles.append(article)
     
     
     def formatArticles(self):
+        """
+          Get all articles from one compact string article
+          @return: list:treatArticles
+        """
         dataCodified  = self.codifiedArticles()
         for i, article in dataCodified.items() :
             if i == 'article1' : self.treatArticles.append('sep')
             if article.count('<cgr_pt>.</cgr_pt>') >= 2 :
                 if re.search(ur'<cgr_pt>\.</cgr_pt>\s<cte_cat>', article) :
                     self.treatArticles.append(article)
-                    """
-                    print '1--------------------------------------'
-                    print article
-                    print '--------------------------------------\n\n'
-                    """
+                    #print '1-----------------------------\n'+article+'---------------------------\n\n'
                 elif self.segmentArticles (article):
                     print True
             else :
                 self.treatArticles.append(article)
-                """
-                print '2--------------------------------------'
-                print article
-                print '--------------------------------------\n\n'
-                """
+                #print '2-----------------------------\n'+article+'---------------------------\n\n'
         return self.treatArticles
                     
                     
