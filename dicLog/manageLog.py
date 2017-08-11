@@ -60,7 +60,7 @@ def folderlog():
         try :
             os.mkdir(u'dicLogs')
         except os.error :
-            print 'Error :  We can cannot create dicLogs folder in this directory ! It s right exception ?'
+            print 'Error :  We can cannot create dicLogs folder in this directory ! It is right exception ?'
             pass
         os.chdir(u'dicLogs/')
     elif u'dicLogs' not in currentdir and u'dicLogs' in parentdir :
@@ -91,13 +91,13 @@ def writelog(content):
     folderlog()      
     currentdirlog = os.listdir('.')
     if name in currentdirlog :
-        with codecs.open(name, 'a', 'utf-8') as file :
+        with codecs.open(name, 'a', 'utf-8') as log :
             header = u'\n***** MetaLex : '+hour+u' ********************************************** \n\n'
             message = u'--> '+content+u'\n'
-            file.write(header)
-            file.write(message) 
+            log.write(header)
+            log.write(message) 
     else:
         pass
-    
-    print u'Log Writing is finish : "'+content+u'"\n'
+    #os.chdir('..')
+    print u'Log writing is finish : "'+content+u'"\n'
     

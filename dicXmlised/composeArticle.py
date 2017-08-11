@@ -23,7 +23,7 @@ from dicXmlTool import *
 
 # ----External Modules------------------------------------------------------
 
-import re, sys, codecs
+import re, sys, codecs, time
 from bs4  import BeautifulSoup
 from lxml import etree
 
@@ -64,30 +64,30 @@ def buildReplaceCodif(codif, typ):
     for k, v in contentDic.items():
         if typ == u'text' and codif in v and k == typ :
             for i, t in textCodif.items() :
-                if codif in t and i == u'cats'    : return u' <cte-cat>'+codif+u'</cte-cat> '
-                if codif in t and i == u'genres'  : return u' <cte-genre>'+codif+u'</cte-genre> '
-                if codif in t and i == u'marques' : return u' <cte-marque>'+codif+u'</cte-marque> '
-                if codif in t and i == u'varLings': return u' <cte-vLings>'+codif+u'</cte-vLings> '
-                if codif in t and i == u'nombres' : return u' <cte-chif>'+codif+u'</cte-chif> '
-                if codif in t and i == u'rection' : return u' <cte-rection>'+codif+u'</cte-rection> '
-                if codif in t and i == u'affixe'  : return u' <cte-affixe>'+codif+u'</cte-affixe> '
+                if codif in t and i == u'cats'    : return u' <cte_cat>'+codif+u'</cte_cat> '
+                if codif in t and i == u'genres'  : return u' <cte_gender>'+codif+u'</cte_gender> '
+                if codif in t and i == u'marques' : return u' <cte_mark>'+codif+u'</cte_mark> '
+                if codif in t and i == u'varLings': return u' <cte_vLings>'+codif+u'</cte_vLings> '
+                if codif in t and i == u'nombres' : return u' <cte_nbre>'+codif+u'</cte_nbre> '
+                if codif in t and i == u'rection' : return u' <cte_rection>'+codif+u'</cte_rection> '
+                if codif in t and i == u'affixe'  : return u' <cte_affix>'+codif+u'</cte_affix> '
         
         elif typ == u'symb' and codif in v and k == typ  :
             for i, t in symbCodif.items() :
-                if codif in t and i == u'numbers' : return u' <csy-chif>'+codif+u'</cte-chif> '
-                if codif in t and i == u'alpha'   : return u' <cte-alpha>'+codif+u'</cte-alpha> '
-                if codif in t and i == u'symbs'   : return u' <cte-syb>'+codif+u'</cte-syb> '
+                if codif in t and i == u'numbers' : return u' <csy_chif>'+codif+u'</cte_chif> '
+                if codif in t and i == u'alpha'   : return u' <cte_alpha>'+codif+u'</cte_alpha> '
+                if codif in t and i == u'symbs'   : return u' <cte_syb>'+codif+u'</cte_syb> '
         
         elif typ == u'graph' and codif in v and k == typ  :
             for i, t in graphCodif.items() :
-                if codif == t and i == u'point'    : return u' <cgr-pt>'+codif+u'</cgr-pt> '
-                if codif == t and i == u'virgule'  : return u' <cgr-vrg>'+codif+u'</cgr-vrg> '
-                if codif == t and i == u'pointv'   : return u' <cgr-ptvrg>'+codif+u'</cgr-ptvrg> '
-                if codif == t and i == u'dpoint'   : return u' <cgr-dpt>'+codif+u'</cgr-dpt> '
-                if codif == t and i == u'ocrochet' : return u' <cgr-ocrh>'+codif+u'</cgr-ocrh> '
-                if codif == t and i == u'fcrochet' : return u' <cgr-fcrh>'+codif+u'</cgr-fcrh> '
-                if codif == t and i == u'opara'    : return u' <cgr-opar>'+codif+u'</cgr-opar> '
-                if codif == t and i == u'fpara'    : return u' <cgr-fpar>'+codif+u'</cgr-fpar> '
+                if codif == t and i == u'point'    : return u' <cgr_pt>'+codif+u'</cgr_pt> '
+                if codif == t and i == u'virgule'  : return u' <cgr_vrg>'+codif+u'</cgr_vrg> '
+                if codif == t and i == u'pointv'   : return u' <cgr_ptvrg>'+codif+u'</cgr_ptvrg> '
+                if codif == t and i == u'dpoint'   : return u' <cgr_dpt>'+codif+u'</cgr_dpt> '
+                if codif == t and i == u'ocrochet' : return u' <cgr_ocrh>'+codif+u'</cgr_ocrh> '
+                if codif == t and i == u'fcrochet' : return u' <cgr_fcrh>'+codif+u'</cgr_fcrh> '
+                if codif == t and i == u'opara'    : return u' <cgr_opar>'+codif+u'</cgr_opar> '
+                if codif == t and i == u'fpara'    : return u' <cgr_fpar>'+codif+u'</cgr_fpar> '
                 
                 
 class parserCodification() :
@@ -162,82 +162,94 @@ class structuredWithCodif():
         for art in self.data.keys() :
             content = u''
             for word in re.split(ur' ', self.data[art]) :
-                word = word.strip() 
-                if word[-1] == u';' or word[-1] == u':' or word[-1] == u',':
-                    word, caract = word[:-1], word[-1]
-                    content += word+u' {0} '.format(caract)
-                elif len(word)> 2 and word[-1] == u'.' and word[0] != u'(' and word[-2] != u')' and word not in contentDic['text'] :
-                    word, caract = word[:-1], word[-1]
-                    content += word+u' {0} '.format(caract)
-                elif word[0]  == u'('  and word not in contentDic['symb'] :
-                    #print word, '----------------'
-                    word, caract = word[1:], word[0]
-                    content += caract+u' {0} '.format(word)
-                elif len(word)> 2 and word[-1] == u'.' and word[-2] == u')' and word not in contentDic['symb'] :
-                    #print word, word[-2],'----------------'
-                    word, caract, point = word[:-2], word[-2], word[-1]
-                    content += word+u' {0} {1} '.format(caract, point)
-                elif len(word)> 2 and word[0] == u'[' and word[-1] == u']' and word not in contentDic['symb'] :
-                    #print word, word[-2],'----------------'
-                    word, caract1, caract2 = word[1:-1], word[0], word[-1]
-                    content += u' {0} {1} {2} '.format(caract1, word, caract2)
+                word = word.strip()
+                if re.search(ur"[a-z.éèùàê,]+", word, re.I):
+                    if word.isalnum() and word[-1] == u';' or word[-1] == u':' or word[-1] == u',':
+                        word, caract = word[:-1], word[-1]
+                        content += word+u' {0} '.format(caract)
+                    elif len(word)> 2 and word[-1] == u'.' and word[0] != u'(' and word[-2] != u')' and word not in contentDic['text'] :
+                        word, caract = word[:-1], word[-1]
+                        content += word+u' {0} '.format(caract)
+                    elif word[0]  == u'('  and word not in contentDic['symb'] :
+                        #print word, '----------------'
+                        word, caract = word[1:], word[0]
+                        content += caract+u' {0} '.format(word)
+                    elif len(word)> 2 and word[-1] == u'.' and word[-2] == u')' and word not in contentDic['symb'] :
+                        #print word, word[-2],'----------------'
+                        word, caract, point = word[:-2], word[-2], word[-1]
+                        content += word+u' {0} {1} '.format(caract, point)
+                    elif len(word)> 2 and word[0] == u'[' and word[-1] == u']' and word not in contentDic['symb'] :
+                        #print word, word[-2],'----------------'
+                        word, caract1, caract2 = word[1:-1], word[0], word[-1]
+                        content += u' {0} {1} {2} '.format(caract1, word, caract2)
+                    else :
+                        content += word +u' '
                 else :
-                    content += word +u' '
+                    content += word+u''
             contentall[art]  = content
         return contentall
           
           
-    def codifiedArticles(self):
+    def codifiedArticles(self, log=False):
+        """
+          Get all normalize articles and parse its content codifications types
+          @return: dict:datacodified
+        """
+        debut = time.time()
+
         dataArticles = self.normalizeDataToCodif()
+        dnormal = time.time() - debut
+        debut   = time.time()
         datacodified = {}
         for art in dataArticles.keys() :
             artcodif          = parseArticle(dataArticles[art])
             datacodified[art] = artcodif
+        dcodif  = time.time() - debut
+        if log :
+            print "Durée normalisation texte pour codif : %10.3f seconds\n" %dnormal
+            print "Durée parsage codif texte : %10.3f seconds\n" %dcodif
         return datacodified
          
          
     def readTag(self, tag):
+        """
+          Read content of tag element
+          @param tag:str 
+          @return: str:element (content of tag)
+        """
         elsearch = re.search(ur'<.+>(.+)</.+>', tag)
         elment   = elsearch.group(1)
         return elment
     
     
     def segmentArticles (self, article):
-        if re.search(ur'.+\s<cgr-pt>\.</cgr-pt>\s.+\s<cte-cat>.+', article) : 
-            arts = re.search(ur'(.+\s<cgr-pt>\.</cgr-pt>)(\s.+\s<cte-cat>.+)', article)
+        if re.search(ur'.+\s<cgr_pt>\.</cgr_pt>\s.+\s<cte_cat>.+', article) : 
+            arts = re.search(ur'(.+\s<cgr_pt>\.</cgr_pt>)(\s.+\s<cte_cat>.+)', article)
             art1, art2 = arts.group(1), arts.group(2)
             self.segmentArticles (art1)
             self.segmentArticles (art2)
         else :
-            """
-            print '3--------------------------------------'
-            print article
-            print '--------------------------------------\n\n'
-            """
+            #print '3-----------------------------\n'+article+'---------------------------\n\n'
             self.treatArticles.append(article)
     
     
     def formatArticles(self):
+        """
+          Get all articles from one compact string article
+          @return: list:treatArticles
+        """
         dataCodified  = self.codifiedArticles()
         for i, article in dataCodified.items() :
             if i == 'article1' : self.treatArticles.append('sep')
-            if article.count('<cgr-pt>.</cgr-pt>') >= 2 :
-                if re.search(ur'<cgr-pt>\.</cgr-pt>\s<cte-cat>', article) :
+            if article.count('<cgr_pt>.</cgr_pt>') >= 2 :
+                if re.search(ur'<cgr_pt>\.</cgr_pt>\s<cte_cat>', article) :
                     self.treatArticles.append(article)
-                    """
-                    print '1--------------------------------------'
-                    print article
-                    print '--------------------------------------\n\n'
-                    """
+                    #print '1-----------------------------\n'+article+'---------------------------\n\n'
                 elif self.segmentArticles (article):
                     print True
             else :
                 self.treatArticles.append(article)
-                """
-                print '2--------------------------------------'
-                print article
-                print '--------------------------------------\n\n'
-                """
+                #print '2-----------------------------\n'+article+'---------------------------\n\n'
         return self.treatArticles
                     
                     

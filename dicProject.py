@@ -58,8 +58,14 @@ def treat_ocr_append(namefile) :
       @keyword namefile:str
       @return: ...
     """
-    tempnameLocation =  os.getcwd()+u'/'+namefile
-    MetaLex.resultOcrFiles.append(tempnameLocation)
+    parentdir = os.listdir('..')
+    if u'dicLogs' in parentdir :
+        os.chdir('../dicTemp')
+        tempnameLocation =  os.getcwd()+u'/'+namefile
+        MetaLex.resultOcrFiles.append(tempnameLocation)
+    else :
+        tempnameLocation =  os.getcwd()+u'/'+namefile
+        MetaLex.resultOcrFiles.append(tempnameLocation)
      
      
 def inDir(fil):
