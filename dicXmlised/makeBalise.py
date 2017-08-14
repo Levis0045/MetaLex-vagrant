@@ -126,7 +126,7 @@ class baliseHTML () :
         articleshtml   = souphtml.find(u'div', attrs={'id': u'mtl:articles'})
         for x in articlesxml : 
             elementart = BeautifulSoup(u'<article id=""></article>', 'html5lib')
-            idart   = x.find('entry').get('id')
+            idart   = x.get('id')
             artlem  = x.get_text()
             elementart.article.append(artlem)
             elementart.article['id'] = idart
@@ -134,7 +134,7 @@ class baliseHTML () :
         listlemme   = souphtml.find(u'ul', attrs={'id': u'list-articles'})
         for x in articlesxml :
             art     = x.get_text()
-            idart   = x.find('entry').get('id')
+            idart   = x.get('id')
             lem     = x.find('entry').get_text()
             lemme   = BeautifulSoup(u'<li class="w3-hover-light-grey"><span class="lemme" onclick="changeImage('+u"'"+idart+u"'"+u')">'+lem+u'</span><span class="fa fa-plus w3-closebtn" onclick="add('+u"'"+idart+u"'"+u')"/></li>', 'html5lib')
             listlemme.append(lemme.find(u'li'))
@@ -298,21 +298,21 @@ class baliseXML ():
                 if partArt != None :
                     ident, entry, cat, treat = partArt.group(1), partArt.group(2), partArt.group(3), partArt.group(4)
                     id    = generateID()
-                    entry = self.balise(entry,u'entry', attr={u'id':id})
+                    entry = self.balise(entry, u'entry')
                     ident = self.balise(entry+cat, u'identificationComponent')
-                    treat = self.balise(treat, u'processingUnit')
-                    article = self.balise(ident+self.balise(treat, u'treatmentComponent'), u'article')
+                    treat = self.balise(self.balise(treat, u'definition'), u'processingUnit')
+                    article = self.balise(ident+self.balise(treat, u'treatmentComponent'), u'article', attr={u'id':id})
                     resultArticles.append(article)     
             if articleTypeForm(art) == u'2' :
                 partArt = re.search(ur'(([a-zéèàûô]+)\s(<cte_cat>.+</cte_cat>\s<cte_gender>..</cte_gender>)\s(.+)<cgr_pt>\.</cgr_pt>)', art, re.I)
                 if partArt != None :
                     ident, entry, cat, treat = partArt.group(1), partArt.group(2), partArt.group(3), partArt.group(4)
                     id    = generateID()
-                    entry = self.balise(entry, u'entry', attr={u'id':id})
+                    entry = self.balise(entry, u'entry')
                     ident = self.balise(entry+cat, u'identificationComponent')
                     if not re.search(ur'(<cgr_pt>\.</cgr_pt>|<cte_cat>.+</cte_cat>|<cgr_vrg>,</cgr_vrg>)', partArt.group(4), re.I) :
-                        treat = self.balise(treat+u'.', u'processingUnit')
-                        article = self.balise(ident+self.balise(treat, u'treatmentComponent'), u'article')
+                        treat = self.balise(self.balise(treat+u'.', u'definition'), u'processingUnit')
+                        article = self.balise(ident+self.balise(treat, u'treatmentComponent'), u'article', attr={u'id':id})
                         resultArticles.append(article)
                     elif partArt.group(4).find(u' et ') != -1 :
                         toi = 'hahaha'
@@ -356,7 +356,7 @@ class baliseXML ():
             for art in data :
                 soupart = BeautifulSoup(art, 'html.parser')
                 orth    = soupart.find('entry').getText()
-                atOrth  = soupart.find('entry').get('id')
+                atOrth  = soupart.find('article').get('id')
                 #pron   = soupart.find('cgr_').getText()
                 #etym   = soupart.find('cgr_etymon').getText()
                 orth    = self.balise(orth, u'orth', {'id': atOrth}, typ=u'tei')
@@ -380,7 +380,7 @@ class baliseXML ():
             for art in data :
                 soupart = BeautifulSoup(art, 'html.parser')
                 orth    = soupart.find('entry').getText()
-                atOrth  = soupart.find('entry').get('id')
+                atOrth  = soupart.find('article').get('id')
                 #pron   = soupart.find('cgr_').getText()
                 #etym   = soupart.find('cgr_etymon').getText()
                 orth    = self.balise('', u'feat', attr={'att':'writtenForm','val':orth}, typ=u'lmf', sclose=True)
