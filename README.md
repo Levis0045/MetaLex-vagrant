@@ -10,7 +10,7 @@ MetaLex is developped in **Python 2.7** environment, these packages are required
 ```sh
     sudo apt-get install build-essential libssl-dev libffi-dev python-dev
     sudo pip install Cython
-    sudo apt-get install libtesseract-dev libleptonica-dev 
+    sudo apt-get install libtesseract-dev libleptonica-dev libjpeg-dev zlib1g-dev libpng-dev
     sudo apt-get install tesseract-ocr-all
     sudo apt-get install python-html5lib
     sudo apt-get install python-lxml
