@@ -280,10 +280,11 @@ class baliseXML ():
             enc         = self.balise('', u'feat', attr={'att':'languageCoding', 'val':'utf-8'}, typ=u'lmf', sclose=True)
             pauthor     = self.balise('', u'feat', attr={'att':'author', 'val':projectconf['Author'].strip()}, typ=u'lmf', sclose=True)
             pdate       = self.balise('', u'feat', attr={'att':'dateCreation', 'val':projectconf['Creationdate'].strip()}, typ=u'lmf', sclose=True)
+            pname       = self.balise('', u'feat', attr={'att':'projectName', 'val':projectconf['Projectname'].strip()}, typ=u'lmf', sclose=True)
             pcomment    = self.balise('', u'feat', attr={'att':'comment', 'val':projectconf['Comment'].strip()}, typ=u'lmf', sclose=True)
             pcontrib    = self.balise('', u'feat', attr={'att':'contributors', 'val':contrib.strip(', ')}, typ=u'lmf', sclose=True)
             meta        = self.balise('', u'p', attr={'att':'meta', 'val':'TEI metadata for MetaLex project output'}, typ=u'lmf', sclose=True)
-            metadatalmf = self.balise(enc+pauthor+meta+pdate+pcomment+pcontrib, u'GlobalInformation', typ=u'lmf')
+            metadatalmf = self.balise(enc+pauthor+pname+meta+pdate+pcomment+pcontrib, u'GlobalInformation', typ=u'lmf')
             return metadatalmf
             
         
