@@ -27,14 +27,12 @@
 # ----Internal Modules------------------------------------------------------
 
 import MetaLex
-from MetaLex import dicProject
 
 # ----External Modules------------------------------------------------------
 
-import Image, os
-import ImageEnhance
+from PIL import Image, ImageEnhance
 from shutil import copyfile
-import warnings
+import warnings, os
 
 # ----Exported Functions-----------------------------------------------------
 
@@ -54,7 +52,7 @@ def getImages(images):
         num = 1
         for image in images : 
             exts = (u'.png', u'.jpg', u'.JPG', u'.jpeg', u'.PNG', u'.JPEG', u'.tif', u'.gif')
-            imageroot, ext = dicProject.get_part_file(image)
+            imageroot, ext = MetaLex.MetaLex.dicProject.get_part_file(image)
             if os.path.isfile(image) and ext in exts:
                 imagedir = os.path.dirname(image)
                 
@@ -108,22 +106,22 @@ class enhanceImages ():
             num = 1
             for image in  self.images :
                 img = Image.open(image)
-                imagename, ext = dicProject.get_part_file(image)
+                imagename, ext = MetaLex.dicProject.get_part_file(image)
                 tempname = u'img_contrast_'+str(num)+ext
                 enh = ImageEnhance.Contrast(img)
                 
                 if show :
                     enh.enhance(value).show()
                 elif save :
-                    dicProject.createtemp()
-                    if dicProject.inDir(tempname) :
+                    MetaLex.dicProject.createtemp()
+                    if MetaLex.dicProject.inDir(tempname) :
                         enh.enhance(value).save(tempname)
-                        dicProject.treat_image_append(tempname)
+                        MetaLex.dicProject.treat_image_append(tempname)
                         message = imagename + u'is modified with contrast (' +str(value)+ u') > '+tempname+u' > Saved in dicTemp folder'  
                         MetaLex.dicLog.manageLog.writelog(message) 
                         num += 1
                     else :
-                        dicProject.treat_image_append(tempname)
+                        MetaLex.dicProject.treat_image_append(tempname)
                         message = imagename + u'is modified with contrast (' +str(value)+ u') > '+tempname+u' > Saved in dicTemp folder'  
                         MetaLex.dicLog.manageLog.writelog(message) 
                         num += 1
@@ -150,23 +148,23 @@ class enhanceImages ():
             for image in  self.images :
                 img_conv = self.convert(image, save=True)
                 img = Image.open(img_conv)
-                imagename, ext = dicProject.get_part_file(image)
+                imagename, ext = MetaLex.dicProject.get_part_file(image)
                 tempname = u'img_sharp_'+str(num)+ext
                 enh = ImageEnhance.Sharpness(img)
 
                 if show :
                     enh.enhance(value).show()
                 elif save :
-                    dicProject.createtemp()
-                    if dicProject.inDir(tempname) :
+                    MetaLex.dicProject.createtemp()
+                    if MetaLex.dicProject.inDir(tempname) :
                         enh.enhance(value).save(tempname)
-                        dicProject.treat_image_append(tempname)
+                        MetaLex.dicProject.treat_image_append(tempname)
                         os.remove(img_conv)
                         message = imagename + u'is modified with sharp ( ' +str(value)+ ') > '+tempname+' > Saved in dicTemp folder'  
                         MetaLex.dicLog.manageLog.writelog(message) 
                         num += 1 
                     else :
-                        dicProject.treat_image_append(tempname)
+                        MetaLex.dicProject.treat_image_append(tempname)
                         os.remove(img_conv)
                         message = imagename + u'is modified with contrast (' +str(value)+ u') > '+tempname+u' > Saved in dicTemp folder'  
                         MetaLex.dicLog.manageLog.writelog(message) 
@@ -194,23 +192,23 @@ class enhanceImages ():
             for image in  self.images :
                 img_conv = self.convert(image, save=True)
                 img = Image.open(img_conv)
-                imagename, ext = dicProject.get_part_file(image)
+                imagename, ext = MetaLex.dicProject.get_part_file(image)
                 tempname = u'img_bright_'+str(num)+ext
                 enh = ImageEnhance.Brightness(img)
 
                 if show :
                     enh.enhance(value).show()
                 elif save :
-                    dicProject.createtemp()
-                    if dicProject.inDir(tempname) :
+                    MetaLex.dicProject.createtemp()
+                    if MetaLex.dicProject.inDir(tempname) :
                         enh.enhance(value).save(tempname)
-                        dicProject.treat_image_append(tempname)
+                        MetaLex.dicProject.treat_image_append(tempname)
                         os.remove(img_conv)
                         message = imagename + u' is modified with bright (' +str(value)+ ') > '+tempname+' > Saved in dicTemp folder'  
                         MetaLex.dicLog.manageLog.writelog(message) 
                         num += 1 
                     else :
-                        dicProject.treat_image_append(tempname)
+                        MetaLex.dicProject.treat_image_append(tempname)
                         os.remove(img_conv)
                         message = imagename + u' is modified with contrast (' +str(value)+ u') > '+tempname+u' > Saved in dicTemp folder'  
                         MetaLex.dicLog.manageLog.writelog(message) 
@@ -238,28 +236,28 @@ class enhanceImages ():
             for i, image in  enumerate(self.images) :
                 img_conv = self.removeColor(i, image, save=True)
                 imgpil = Image.open(img_conv)
-                imagename, ext = dicProject.get_part_file(image)
+                imagename, ext = MetaLex.dicProject.get_part_file(image)
                 tempname = u'img_bright_'+str(num)+ext
                 enhbright = ImageEnhance.Brightness(imgpil)
-                dicProject.createtemp()
+                MetaLex.dicProject.createtemp()
                 enhbright.enhance(bright).save(tempname)
                 img2 = Image.open(tempname)
                 enhconst = ImageEnhance.Contrast(img2)
-                img_conv_part = dicProject.get_part_file(img_conv)
+                img_conv_part = MetaLex.dicProject.get_part_file(img_conv)
                 img_conv_file = img_conv_part[0]+img_conv_part[1]
                 if show :
                     enhconst.enhance(contrast).show()
-                    dicProject.createtemp()
+                    MetaLex.dicProject.createtemp()
                     os.remove(tempname)
                     os.remove(img_conv_file)
                 if save :
                     tempname2 = u'img_contrast_bright_'+str(num)+ext
-                    dicProject.createtemp()
-                    if dicProject.inDir(tempname2) :
+                    MetaLex.dicProject.createtemp()
+                    if MetaLex.dicProject.inDir(tempname2) :
                         enhconst.enhance(contrast).save(tempname2)
                         os.remove(tempname)
                         os.remove(img_conv_file)
-                        dicProject.treat_image_append(tempname2)
+                        MetaLex.dicProject.treat_image_append(tempname2)
                         message = imagename + u' is modified with  contrast (' +str(contrast)+ ') and  bright ('+str(bright)+') > '+tempname2+' > Saved in dicTemp folder'  
                         MetaLex.dicLog.manageLog.writelog(message) 
                         imgpil.close()
@@ -267,7 +265,7 @@ class enhanceImages ():
                     else :
                         os.remove(img_conv_file)
                         os.remove(tempname)
-                        dicProject.treat_image_append(tempname2)
+                        MetaLex.dicProject.treat_image_append(tempname2)
                         message = imagename + u' is modified with  contrast (' +str(contrast)+ ') and  bright ('+str(bright)+') > '+tempname2+' > Saved in dicTemp folder'  
                         MetaLex.dicLog.manageLog.writelog(message) 
                         imgpil.close()
@@ -290,13 +288,13 @@ class enhanceImages ():
         if len(self.images) >= 1 :
             for image in  self.images :
                 img = Image.open(image)
-                imagepart = dicProject.get_part_file(image)
+                imagepart = MetaLex.dicProject.get_part_file(image)
                 tempname = u'img_convert_'+str(num)+imagepart[1]
                 if show : 
                     img.convert("L").show()
                 if save :
-                    dicProject.createtemp()
-                    if dicProject.inDir(tempname) :
+                    MetaLex.dicProject.createtemp()
+                    if MetaLex.dicProject.inDir(tempname) :
                         img.convert("L").save(tempname)
                         return tempname
                     else: 
@@ -322,14 +320,14 @@ class enhanceImages ():
             for image in  self.images :
                 img_conv = self.convert(image, save=True)
                 img = Image.open(img_conv)
-                imagename, ext = dicProject.get_part_file(image)
+                imagename, ext = MetaLex.dicProject.get_part_file(image)
                 tempname = u'img_filter_'+str(num)+ext
-                dicProject.createtemp()
+                MetaLex.dicProject.createtemp()
                 if show :
                     img.filter(imgfilter).show()
-                elif not show and dicProject.inDir(tempname) :
+                elif not show and MetaLex.dicProject.inDir(tempname) :
                     img.filter(imgfilter).save(tempname)
-                dicProject.treat_image_append(tempname)
+                MetaLex.dicProject.treat_image_append(tempname)
                 message = imagename + u' is modified with  filter (' +str(imgfilter)+ u')  > '+tempname+u' > Saved in dicTemp folder'  
                 MetaLex.dicLog.manageLog.writelog(message)
                 img.close()
@@ -352,7 +350,7 @@ class enhanceImages ():
         """
         
         if img :
-            imagepart = dicProject.get_part_file(img)
+            imagepart = MetaLex.dicProject.get_part_file(img)
             tempname = u'img_color_remove_'+str(i)+imagepart[1]
             
             imgpil = Image.open(img)
@@ -374,8 +372,8 @@ class enhanceImages ():
             if show :
                 imgpil.show()
             if save :
-                dicProject.createtemp()
-                if dicProject.inDir(tempname) : 
+                MetaLex.dicProject.createtemp()
+                if MetaLex.dicProject.inDir(tempname) : 
                     imgpil.save(tempname)
                     return namestore
                 else :

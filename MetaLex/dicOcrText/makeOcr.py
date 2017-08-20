@@ -24,7 +24,6 @@
 # ----Internal Modules------------------------------------------------------
 
 import MetaLex
-from MetaLex import dicProject
 
 # ----External Modules------------------------------------------------------
 
@@ -67,7 +66,7 @@ def imageToText(show=False, save=False, langIn='fra'):
             api.Init(lang=langIn)
             api.SetImageFile(img)
             
-            image, ext = dicProject.get_part_file(img)
+            image, ext = MetaLex.dicProject.get_part_file(img)
             imagepart = image.split('_')[:3]
             imagefile = image+ext
             
@@ -77,8 +76,8 @@ def imageToText(show=False, save=False, langIn='fra'):
             imageconcat = imageconcat.split(u'.')[0]
             tempname = u'text_ocr'+imageconcat+u'.html'
             
-            dicProject.createtemp()
-            if dicProject.inDir(tempname) :
+            MetaLex.dicProject.createtemp()
+            if MetaLex.dicProject.inDir(tempname) :
                 print u"\n--> Début de la lecture optique de '"+imagefile+u"'\n"
                 textocr = api.GetHOCRText(2)
                 print u"\n--> Fin de la lecture optique de '"+imagefile+u"'\n"
@@ -100,7 +99,7 @@ def imageToText(show=False, save=False, langIn='fra'):
             else :
                 print u"\n--> Fin de la lecture optique de '"+imagefile+u"'\n"
             
-            dicProject.treat_ocr_append(tempname)
+            MetaLex.dicProject.treat_ocr_append(tempname)
             os.chdir('..')
               
             
