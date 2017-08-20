@@ -29,7 +29,7 @@ import MetaLex as dico
 
 # ----External Modules------------------------------------------------------
 
-import ImageFilter as f
+from PIL import ImageFilter as f
 import os, glob
 
 # ----Generate real path of images------------------------------------------
