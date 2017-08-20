@@ -233,7 +233,7 @@ class codificationsStore() :
         date = dicLog.getDate()
         if typ == u'text' :
             with codecs.open(namefile, 'a', 'utf-8') as f :
-                f.write('***** MetaLex : %s **************************************' %date)
+                f.write('***** MetaLex codifications file : %s **************************************' %date)
                 f.write('\%10s : %s' %('Textuels', str(coditext)))
                 f.write('\%10s : %s' %('Graphematiques', str(codigraph)))
                 f.write('\%10s : %s' %('Symboliques', str(codisymb)))
