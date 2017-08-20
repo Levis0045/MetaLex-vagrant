@@ -1,22 +1,21 @@
-# MetaLex Tool
+# MetaLex-vagrant 
 MetaLex is general tool for **lexicographics** and **metalexicographics** activities.
 For current developpement version of this tool, see [MetaLex/Elvis-test](https://github.com/Levis0045/dic/tree/Elvis-test)
 
 [![Build Status](https://travis-ci.org/claroline/Distribution.svg?branch=master)](mteprojet.fr/MetaLex)
 
 # Requirements
-MetaLex is developped in **Python 2.7** environment, these packages are required :
+MetaLex-vagrant is developped in **Python 2.7** and vagrant environment, these packages are required :
 
 ```sh
-    sudo apt-get install build-essential libssl-dev libffi-dev python-dev
-    sudo pip install Cython
-    sudo apt-get install libtesseract-dev libleptonica-dev libjpeg-dev zlib1g-dev libpng-dev
-    sudo apt-get install tesseract-ocr-all
-    sudo apt-get install python-html5lib
-    sudo apt-get install python-lxml
-    sudo apt-get install python-bs4
-    sudo pip install pillow
-    sudo CPPFLAGS=-I/usr/local/include pip install tesserocr
+    sudo apt-get install vagrant
+    sudo apt-get install virtualbox
+    git clone git@github.com:Levis0045/MetaLex-vagrant.git
+    cd MetaLex-vagrant
+    vagrant up   #Build vagrant machine with all dependencies
+    vagrant ssh  #Connect to ubuntu xenia development
+    cd /vagrant
+    cd Metalex-vagrant
 ```
 
 # Usage
