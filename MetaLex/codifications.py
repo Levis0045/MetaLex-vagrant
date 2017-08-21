@@ -13,9 +13,8 @@
 """
 
 # ----Internal Modules------------------------------------------------------
-
+import MetaLex
 from MetaLex import dicLog
-from MetaLex import dicProject
 
 # ----External Modules------------------------------------------------------
 

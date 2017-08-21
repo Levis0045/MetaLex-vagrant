@@ -8,8 +8,8 @@
 
 
 #-----If MetaLex is in the same file, import MetaLex------------------------
-import MetaLex as dico
 
+import MetaLex as dico
 
 # ----External Modules------------------------------------------------------
 
@@ -19,7 +19,7 @@ import os, glob
 # ----Generate real path of images------------------------------------------
 
 imagelist = []
-for imagefile in glob.glob('folder_of_Images/*.jpg') :
+for imagefile in glob.glob('imagesInputFiles/*.jpg') :
     name = os.getcwd()+'/'+imagefile
     imagelist.append(name)
 
@@ -32,5 +32,5 @@ images  = project.MetaLex.getImages(imagelist)
 images.enhanceImages().filter(f.DETAIL)
 images.imageToText(save=True, langIn='fra')
 images.makeTextWell('file_Rule.dic')
-images.dicoHtml(save=False)
+images.dicoHtml(save=True)
 

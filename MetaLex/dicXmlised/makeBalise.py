@@ -176,10 +176,10 @@ class baliseXML ():
                 if MetaLex.dicProject.inDir(name) :
                     with codecs.open(name, 'w', 'utf-8') as fle :
                         fle.write(metalexXmlTree.prettify(formatter=None))
-                    message = u"'"+name+u"'  is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder"
+                    message = u"'"+name+u"'  is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder\n"
                     MetaLex.dicLog.manageLog.writelog(message)
                 else:
-                    message = u"'"+name+u"'  is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder"
+                    message = u"'"+name+u"'  is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder\n"
                     print message
                     #MetaLex.dicLog.manageLog.writelog(message)
                 return metalexXml
@@ -197,10 +197,10 @@ class baliseXML ():
                 if MetaLex.dicProject.inDir(name) :
                     with codecs.open(name, 'w', 'utf-8') as fle :
                         fle.write(metalexXmlTree.prettify(formatter=None))
-                    message = u"'"+name+u"'  is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder"
+                    message = u"'"+name+u"'  is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder\n"
                     MetaLex.dicLog.manageLog.writelog(message)
                 else:
-                    message = u"'"+name+u"'  is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder"
+                    message = u"'"+name+u"'  is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder\n"
                     print message
                     #MetaLex.dicLog.manageLog.writelog(message)
                 return metalexXml
@@ -237,9 +237,9 @@ class baliseXML ():
           Create xml metadata file with configuration of the project 
           @return:  str:metadata
         """
-        MetaLex.dicProject.createtemp()
-        
         projectconf = MetaLex.dicProject.readConf()
+        
+        MetaLex.dicProject.createtemp()
         contribtab  = projectconf['Contributors'].split(u',') if projectconf['Contributors'].find(u',') else projectconf['Contributors']
         contrib = ''
         if typ == u'xml' :
