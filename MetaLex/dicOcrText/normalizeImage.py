@@ -52,7 +52,7 @@ def getImages(images):
         num = 1
         for image in images : 
             exts = (u'.png', u'.jpg', u'.JPG', u'.jpeg', u'.PNG', u'.JPEG', u'.tif', u'.gif')
-            imageroot, ext = MetaLex.MetaLex.dicProject.get_part_file(image)
+            imageroot, ext = MetaLex.dicProject.get_part_file(image)
             if os.path.isfile(image) and ext in exts:
                 imagedir = os.path.dirname(image)
                 
