@@ -20,9 +20,6 @@
 # Do this if MetaLex folder is in the parent of the current folder
 
 import sys
-from Crypto.Random.random import choice
-from duplicity.tempdir import default
-from numpy import require
 sys.path.append('..')
 
 
