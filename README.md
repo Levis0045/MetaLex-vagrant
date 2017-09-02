@@ -7,6 +7,7 @@ For current developpement version of this tool, see [MetaLex/Elvis-test](https:/
 # Requirements
 MetaLex-vagrant is developped in **Python 2.7** and vagrant environment, these packages are required :
 
+
 ```sh
     sudo apt-get install vagrant
     sudo apt-get install virtualbox
@@ -20,7 +21,8 @@ MetaLex-vagrant is developped in **Python 2.7** and vagrant environment, these p
 
 # Usage
 
-- Global commands line
+- Global usage commands line
+
 
 ```md
    MetaLex arguments :
@@ -44,7 +46,9 @@ MetaLex-vagrant is developped in **Python 2.7** and vagrant environment, these p
   -t, --terminal        Show result of the current treatment in the terminal
 ```
 
+
 - Go to the  **Test** folder and build the file rule. 
+
 
 MetaLex take **file_Rule.dic** file which using  specific structure to enhance output text of OCR data (from image's files dictionnaries). **\W** for word replacement, **\C** for caracter replacement and **\R**  for regular expression replacement. The space between headers served to describe remplacement.
 
@@ -62,7 +66,8 @@ MetaLex take **file_Rule.dic** file which using  specific structure to enhance o
     \END
 ```
 
-- Run your project with your own set parameters or with the defaults
+- Run your project with your own set parameters or with the default
+
 
 ```sh
     python fileTestMetaLex.py -p 'projectname' -c 'author' 'comment' 'contributors" -d 'imagesInputFiles' -r 'file_Rule.dic' -l fra
@@ -71,6 +76,7 @@ MetaLex take **file_Rule.dic** file which using  specific structure to enhance o
 # Contributors
 
 Special thank to [Bill](https://github.com/billmetangmo) for this version
+
 
 # Reference
 
