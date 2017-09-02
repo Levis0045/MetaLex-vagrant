@@ -10,6 +10,7 @@
         >>> sudo apt-get install libtesseract-dev libleptonica-dev 
         >>> sudo pip install Cython
         >>> sudo CPPFLAGS=-I/usr/local/include pip install tesserocr
+        >>> sudo pip termcolor
         
     Usage:
         >>> import MetaLex as dico
@@ -29,6 +30,7 @@ import MetaLex
 
 from tesserocr import PyTessBaseAPI
 import codecs, os
+from termcolor import colored
 
 # -----Exported Functions-----------------------------------------------------
 
@@ -48,15 +50,18 @@ def imageToText(show=False, save=False, langIn='fra'):
         @param   langIn:str
         @return: str|file (MetaLex.resultOcrData)
     """
-    
+    hour = MetaLex.dicProject.getHour()
+        
+    log = u'[MetaLexLog - '+hour+u']'
     allimages = []
     if len(MetaLex.fileImages) >= 1 and not len(MetaLex.treatImages) >= 1 :
-        print u"\n Vous avez aucun(s) fichier(s) image traité(s), veuillez les traiter avant la lecture optique \n"
+        contentPrint = u"Vous avez aucun(s) fichier(s) image traité(s), veuillez les traiter avant la lecture optique"
+        print u'\n%-10s  %-30s\n' %(colored(log, u'red', attrs=['reverse', 'blink', 'bold']), contentPrint)
         os.chdir('..')
         return None
     elif not len(MetaLex.fileImages) >= 1 :
-        print u" \n Vous n'avez aucun(s) fichier(s) image à traiter"
-    
+        contentPrint = u"Vous n'avez aucun(s) fichier(s) image à traiter"
+        print u'\n%-10s %-30s\n' %(colored(log, u'red', attrs=['reverse', 'blink', 'bold']), contentPrint)
     else:
         allimages = MetaLex.treatImages
          
@@ -78,9 +83,11 @@ def imageToText(show=False, save=False, langIn='fra'):
             
             MetaLex.dicProject.createtemp()
             if MetaLex.dicProject.inDir(tempname) :
-                print u"\n--> Début de la lecture optique de '"+imagefile+u"'\n"
+                message = u"Début de la lecture optique de"
+                print u'\n%-10s  %s %s \n' %(colored(log, u'green', attrs=['reverse', 'blink', 'bold']), message, imagefile.strip())
                 textocr = api.GetHOCRText(2)
-                print u"\n--> Fin de la lecture optique de '"+imagefile+u"'\n"
+                messag = u"Fin de la lecture optique de"
+                print u'\n%-10s  %s %s \n' %(colored(log, u'green', attrs=['reverse', 'blink', 'bold']), messag, imagefile.strip())
                 
                 if save:
                     with codecs.open(tempname, 'w', "utf-8") as wr :
@@ -97,8 +104,9 @@ def imageToText(show=False, save=False, langIn='fra'):
                     message = u" Warning : imageToText(show=False, save=False) >> precise the action 'show=False or save=False'"
                     MetaLex.dicLog.manageLog.writelog(message) 
             else :
-                print u"\n--> Fin de la lecture optique de '"+imagefile+u"'\n"
-            
+                messag =  u"Fin de la lecture optique de \n"
+                print u'\n%-10s  %s %s \n' %(colored(log, u'green', attrs=['reverse', 'blink', 'bold']), messag, imagefile)
+                 
             MetaLex.dicProject.treat_ocr_append(tempname)
             os.chdir('..')
               
