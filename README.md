@@ -23,6 +23,9 @@ MetaLex-vagrant is developped in **Python 2.7** and vagrant environment, these p
 
 - Global usage commands line
 
+```sh
+    python fileTestMetaLex.py -h
+```
 
 ```md
    MetaLex arguments :
@@ -44,6 +47,7 @@ MetaLex-vagrant is developped in **Python 2.7** and vagrant environment, these p
                         others MetaLex treatment
   -s, --save            Save output result of the current project in files
   -t, --terminal        Show result of the current treatment in the terminal
+  
 ```
 
 
@@ -70,7 +74,7 @@ MetaLex take **file_Rule.dic** file which using  specific structure to enhance o
 
 
 ```sh
-    python fileTestMetaLex.py -p 'projectname' -c 'author' 'comment' 'contributors" -d 'imagesInputFiles' -r 'file_Rule.dic' -l fra
+    python fileTestMetaLex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInputFiles' -r 'file_Rule.dic' -l fra
 ```
 
 # Contributors

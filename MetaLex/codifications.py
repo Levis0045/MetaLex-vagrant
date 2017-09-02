@@ -13,8 +13,9 @@
 """
 
 # ----Internal Modules------------------------------------------------------
-import MetaLex
+
 from MetaLex import dicLog
+from MetaLex import dicProject
 
 # ----External Modules------------------------------------------------------
 
@@ -38,15 +39,15 @@ class codificationsStore() :
           @return: list:allcoditext
         """
         if typ == u'text' :
-            cats        = [u'n', u'adj', u'v', u'prép', u'adv', u'loc', 
+            cats        = [u'n', u'adj', u'v', u'prép', u'adv', u'loc',
                            u'Fig', u'tr', u'intr', u'interj', u'art', u'conj', u'pron',
                            u'loc.conj', u'loc.adv', u'loc.adj', u'pron.relat', u'pronom'
                            u'article']
             genres      = [u'm', u'f']
             marques     = [u'fam', u'anc', u'UK', u'US' , u'PHY', u'LITT', u'ADMIN',
-                           u'AERON', u'AGRIC', u'ANAT', u'ANTIQ',  u'ANTIQ.ROM',  
-                           u'BIOCHIM', u'BIOL',  u'CHIM.TECHN', u'CONSTR', u'ÉLECTR', 
-                           u'GRAMM', u'GÉOL', u'HIST', u'LING', u'LITURG', u'MATH', 
+                           u'AERON', u'AGRIC', u'ANAT', u'ANTIQ',  u'ANTIQ.ROM',
+                           u'BIOCHIM', u'BIOL',  u'CHIM.TECHN', u'CONSTR', u'ÉLECTR',
+                           u'GRAMM', u'GÉOL', u'HIST', u'LING', u'LITURG', u'MATH',
                            u'MÉD', u'MÉTALL', u'MUS', u'POLIT', u'RELIG', u'ZOOL'
                            u'Phys']
             rections    = [u'tr', u't', u'intr', u't.dir', u't.indir', u'inv']
@@ -56,7 +57,7 @@ class codificationsStore() :
                            u'par_anal', u'encycl', u'etym', u'abrév', u'V', u'var']
             allcoditext = []
             for cat in cats :
-                if len(cat) > 1 : 
+                if len(cat) > 1 :
                     allcoditext.append(cat+u'.')
                     allcoditext.append(cat.capitalize()+u'.')
                     allcoditext.append(cat.upper()+u'.')
@@ -78,11 +79,11 @@ class codificationsStore() :
             for rection in rections  : allcoditext.append(rection+u'.')
             for affixe  in affixes   : allcoditext.append(affixe+u'.')
             return allcoditext
-        
+
         if typ == u'graph' :
             graphs = [u'.', u',', u':', u'-', u';', u'[', u']', u'(', u')']
             return graphs
-        
+
         if typ == u'symb' :
             symbs        = [u'||', u'&#9830;', u'--']
             allnumbers   = [u'1',u'2',u'3',u'4',u'5',u'6',u'7',u'8',u'9',u'0']
@@ -101,22 +102,22 @@ class codificationsStore() :
                 allcodisymbs.append(alpha.upper()+u'.')
             for symb in symbs : allcodisymbs.append(symb)
             return allcodisymbs
-        
+
         if typ == u'typo' :
             typograhs = [u'(I)', u'(G)', u'(B)', u'(P)']
             return typograhs
-        
-        
+
+
     def getCodifTextType(self):
-        cats        = [u'n', u'adj', u'v', u'prép', u'adv', u'loc', 
+        cats        = [u'n', u'adj', u'v', u'prép', u'adv', u'loc',
                        u'Fig', u'tr', u'intr', u'interj', u'art', u'conj', u'pron',
                        u'loc.conj', u'loc.adv', u'loc.adj', u'pron.relat', u'pronom',
                        u'article', u'pr. rel']
         genres      = [u'm', u'f']
         marques     = [u'fam', u'anc', u'UK', u'US' , u'PHY', u'Phys', u'LITT', u'ADMIN',
-                       u'AERON', u'AGRIC', u'ANAT', u'ANTIQ',  u'ANTIQ.ROM',  
-                       u'BIOCHIM', u'BIOL',  u'CHIM.TECHN', u'CONSTR', u'ÉLECTR', 
-                       u'GRAMM', u'GÉOL', u'HIST', u'LING', u'LITURG', u'MATH', 
+                       u'AERON', u'AGRIC', u'ANAT', u'ANTIQ',  u'ANTIQ.ROM',
+                       u'BIOCHIM', u'BIOL',  u'CHIM.TECHN', u'CONSTR', u'ÉLECTR',
+                       u'GRAMM', u'GÉOL', u'HIST', u'LING', u'LITURG', u'MATH',
                        u'MÉD', u'MÉTALL', u'MUS', u'POLIT', u'RELIG', u'ZOOL'
                        u'Phys']
         rections    = [u'tr', u't', u'intr', u't.dir', u't.indir', u'inv']
@@ -124,11 +125,11 @@ class codificationsStore() :
         affixes     = [u'suff', u'préf']
         varLings    = [u'ant', u'contr', u'syn', u'hom', u'fig', u'par_métonymie',
                        u'par_anal', u'encycl', u'etym', u'abrév', u'V', u'var']
-        
+
         allcoditype, allcodicats, allcodigenres, allcodirection, allcodinombres = {}, [], [], [], []
         allcodiaff, allcodivarlings, allcodimarques  = [], [], []
         for cat in cats :
-            if len(cat) > 1 : 
+            if len(cat) > 1 :
                 allcodicats.append(cat+u'.')
                 allcodicats.append(cat.capitalize()+u'.')
                 allcodicats.append(cat.upper()+u'.')
@@ -136,7 +137,7 @@ class codificationsStore() :
                 allcodicats.append(cat.capitalize()+u'.')
                 allcodicats.append(cat+u'.')
         allcoditype[u'cats']  = allcodicats
-        for genre in genres   : 
+        for genre in genres   :
             allcodigenres.append(genre+u'.')
         allcoditype[u'genres'] = allcodigenres
         for marque in marques :
@@ -161,8 +162,8 @@ class codificationsStore() :
         for affixe in affixes   : allcodiaff.append(affixe+u'.')
         allcoditype[u'affixe']  = allcodiaff
         return allcoditype
-    
-    
+
+
     def getCodifSymbType(self):
         symbs        = [u'||', u'&#9830;', u'--']
         allnumbers   = [u'1',u'2',u'3',u'4',u'5',u'6',u'7',u'8',u'9',u'0']
@@ -184,7 +185,7 @@ class codificationsStore() :
         for symb in symbs : allcodisymbs.append(symb)
         allcoditype[u'symbs'] = allcodisymbs
         return allcoditype
-    
+
     def getCodifGraphType(self):
         graphs = [u'.', u',', u':', u'-', u';', u'[', u']', u'(', u')']
         allcoditype = {}
@@ -198,7 +199,7 @@ class codificationsStore() :
             if graph == u'(' : allcoditype['opara'] = u'('
             if graph == u')' : allcoditype['fpara'] = u')'
         return allcoditype
-    
+
     def getAllCodifications(self) :
         """
             Get all existing dictionary codification
@@ -215,8 +216,8 @@ class codificationsStore() :
         allcodifications[u'typo']  = coditypo
         allcodifications[u'symb']  = codisymb
         return allcodifications
-        
-    
+
+
     def exportCodifications(self, namefile, typ='text'):
         """
             Export dictionary codification to text file or to serialized pickle object
@@ -228,11 +229,11 @@ class codificationsStore() :
         codigraph = self.getCodification(u'graph')
         coditypo  = self.getCodification(u'typo')
         codisymb  = self.getCodification(u'symb')
-        
+
         date = dicLog.getDate()
         if typ == u'text' :
             with codecs.open(namefile, 'a', 'utf-8') as f :
-                f.write('***** MetaLex codifications file : %s **************************************' %date)
+                f.write('******************** MetaLex codifications file : %s *********************************' %date)
                 f.write('\%10s : %s' %('Textuels', str(coditext)))
                 f.write('\%10s : %s' %('Graphematiques', str(codigraph)))
                 f.write('\%10s : %s' %('Symboliques', str(codisymb)))
@@ -240,9 +241,9 @@ class codificationsStore() :
         if typ == 'pickle' :
             allcodi = self.getAllCodifications()
             dicProject.filePickle(allcodi, namefile)
-    
-    
+
+
     def importCodifications(self, namefile):
         return False
-    
-        
+
+

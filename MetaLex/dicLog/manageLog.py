@@ -66,17 +66,17 @@ def folderlog():
     parentdir  = os.listdir('..')
     currentdir = os.listdir('.')
 
-    if u'dicLogs' in currentdir :
-        os.chdir(u'dicLogs')
-    elif u'dicLogs' not in currentdir and u'dicTemp' in currentdir :
+    if 'dicLogs' in currentdir :
+        os.chdir('dicLogs')
+    elif 'dicLogs' not in currentdir and 'dicTemp' in currentdir :
         try :
-            os.mkdir(u'dicLogs')
+            os.mkdir('dicLogs')
         except os.error :
             message = 'We can cannot create dicLogs folder in this directory ! It s right exception ?'
             print u'%-8s : %-30s\n' %(colored(u'[MetaLexLog]', u'red', attrs=['reverse', 'blink', 'bold']), message)
             pass
         os.chdir(u'dicLogs/')
-    elif u'dicLogs' not in currentdir and u'dicLogs' in parentdir :
+    elif 'dicLogs' not in currentdir and 'dicLogs' in parentdir :
         os.chdir(u'..')
         os.chdir(u'dicLogs/')
     else :
@@ -96,28 +96,28 @@ def folderlog():
         pass
 
 
-def writelog(content):
+
+def writelog(content, typ='ok'):
     name = logname()
-    datefile = os.popen('date').read()
-    try :
-        datetab = datefile.split(',')[1].split(' ')
-        hour = datetab[1]
-    except :
-        datetab = datefile.split(' ')[3]
-        hour = datetab
+    hour = MetaLex.dicProject.getHour()
 
     folderlog()
     currentdirlog = os.listdir('.')
     if name in currentdirlog :
         with codecs.open(name, 'a', 'utf-8') as log :
-            header = u'\n***** MetaLex : '+hour+u' ********************************************** \n\n'
-            message = u'--> '+content+u'\n'
-            log.write(header)
+            message = u'[MetaLex - '+hour+u'] '+content+u'\n\n'
             log.write(message)
     else:
         pass
     #os.chdir('..')
-    print u'%-8s : %-30s\n' %(colored(u'[MetaLexLog]', u'green', attrs=['reverse', 'blink', 'bold']), content)
+    message = u'[MetaLexLog - '+hour+u']'
+    if typ == 'warm' :
+        print u'%-10s  %-30s\n' %(colored(message, u'yellow', attrs=['reverse', 'blink', 'bold']), content)
+    elif typ == 'error' :
+        print u'%-10s  %-30s\n' %(colored(message, u'red', attrs=['reverse', 'blink', 'bold']), content)
+    else :
+        print u'%-10s  %-30s\n' %(colored(message, u'green', attrs=['reverse', 'blink', 'bold']), content)
+    
     
     
     
