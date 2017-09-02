@@ -5,7 +5,10 @@
 """
     ManageLog registers all operations triggered throughout the process
     Of metalexicographic processing
-
+    
+    Package :
+        >>> sudo pip install termcolor
+        
     Usage:
         >>> from MetaLex import manageLog
         >>> manageLog.writelog()
@@ -21,6 +24,7 @@ import MetaLex
 import codecs, os, re
 import unicodedata
 from string import maketrans
+from termcolor import colored, cprint
 
 # -----Exported Functions-----------------------------------------------------
 
@@ -47,7 +51,8 @@ def getDate():
         for date in datetab :
             strdate += date+'-'
         date = unicode(strdate.strip('-'))
-        return date
+        return date  
+
 
 def logname():
     strdate = getDate()
@@ -67,7 +72,8 @@ def folderlog():
         try :
             os.mkdir(u'dicLogs')
         except os.error :
-            print 'Error :  We can cannot create dicLogs folder in this directory ! It is right exception ?'
+            message = 'We can cannot create dicLogs folder in this directory ! It s right exception ?'
+            print u'%-8s : %-30s\n' %(colored(u'[MetaLexLog]', u'red', attrs=['reverse', 'blink', 'bold']), message)
             pass
         os.chdir(u'dicLogs/')
     elif u'dicLogs' not in currentdir and u'dicLogs' in parentdir :
@@ -77,7 +83,8 @@ def folderlog():
         try :
             os.mkdir(u'dicLogs')
         except os.error :
-            print 'Error :  We can cannot create dicLogs folder in this directory ! It s right exception ?'
+            message = 'We can cannot create dicLogs folder in this directory ! It s right exception ?'
+            print u'%-8s : %-30s\n' %(colored(u'[MetaLexLog]', u'red', attrs=['reverse', 'blink', 'bold']), message)
             pass
         os.chdir(u'dicLogs/')
 
@@ -110,4 +117,9 @@ def writelog(content):
     else:
         pass
     #os.chdir('..')
-    print u'Log writing is finish : "'+content+u'"\n'
+    print u'%-8s : %-30s\n' %(colored(u'[MetaLexLog]', u'green', attrs=['reverse', 'blink', 'bold']), content)
+    
+    
+    
+    
+    
