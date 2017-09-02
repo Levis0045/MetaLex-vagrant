@@ -19,6 +19,7 @@ sudo apt-get -y install cython
 sudo pip install Cython
 
 sudo pip install pillow
+sudo pip install termcolor
 
 sudo CPPFLAGS=-I/usr/local/include pip install tesserocr
 

@@ -7,6 +7,7 @@ For current developpement version of this tool, see [MetaLex/Elvis-test](https:/
 # Requirements
 MetaLex-vagrant is developped in **Python 2.7** and vagrant environment, these packages are required :
 
+
 ```sh
     sudo apt-get install vagrant
     sudo apt-get install virtualbox
@@ -20,46 +21,36 @@ MetaLex-vagrant is developped in **Python 2.7** and vagrant environment, these p
 
 # Usage
 
-- Do this if **MetaLex folder** is in the parent of the current folder
+- Global usage commands line
 
-```python
-    import sys 
-    sys.path.append('..')
+
+```md
+   MetaLex arguments :
+   
+  -h, --help            show this help message and exit
+  -v, --version         show program's version number and exit
+  -p PROJECTNAME, --project PROJECTNAME
+                        Defined MetaLex project name
+  -c author comment contributors, --confproject author comment contributors
+                        Defined MetaLex configuration for the current project
+  -i [IMAGEFILE], --dicimage [IMAGEFILE]
+                        Input one or multiple dictionary image(s) file(s) for
+                        current MetaLex project
+  -d IMAGESDIR, --imagedir IMAGESDIR
+                        Input folder name of dictionary image files for
+                        current MetaLex project
+  -r FILERULE, --filerule FILERULE
+  -l LANG, --lang LANG  Set language for optical characters recognition and
+                        others MetaLex treatment
+  -s, --save            Save output result of the current project in files
+  -t, --terminal        Show result of the current treatment in the terminal
 ```
 
-- If **MetaLex folder** is in the same file or in the system path, import it.
 
-```python
-    import MetaLex
-```
+- Go to the  **Test** folder and build the file rule. 
 
-- Import these standard packages
-```python
-    import ImageFilter as f
-    import MetaLex as dico
-    import os, glob
-``` 
 
-- Generate real path of images dictionaries files. The input images must be scans of monolinguals dictionaries.
-
-```python
-    imagelist = []
-    for imagefile in glob.glob('folder_of_Images/*.jpg') :
-        name = os.getcwd()+'/'+imagefile
-        imagelist.append(name)
-```
-
-- All steps below must follows as presented. **file_Rule.dic** must be build using the specific structure.
-
-```python
-    project = dico.newProject('Title of the project')
-    project.setConfProject('author', 'Comment', 'Contributors')
-    images  = project.MetaLex.getImages(imagelist)
-    images.enhanceImages().filter(f.DETAIL)
-    images.imageToText(save=True, langIn='fra')
-```
-
-- MetaLex take **file_Rule.dic** file which using  specific structure to enhance output text of OCR data (from image's files dictionnaries).
+MetaLex take **file_Rule.dic** file which using  specific structure to enhance output text of OCR data (from image's files dictionnaries). **\W** for word replacement, **\C** for caracter replacement and **\R**  for regular expression replacement. The space between headers served to describe remplacement.
 
 ```md
     \START
@@ -75,13 +66,17 @@ MetaLex-vagrant is developped in **Python 2.7** and vagrant environment, these p
     \END
 ```
 
-**\W** for word replacement, **\C** for caracter replacement and **\R**  for regular expression replacement.
-The space between headers served to describe remplacement.
+- Run your project with your own set parameters or with the default
 
-```python
-   images.makeTextWell('file_Rule.dic')
-   images.dicoHtml(save=False)
+
+```sh
+    python fileTestMetaLex.py -p 'projectname' -c 'author' 'comment' 'contributors" -d 'imagesInputFiles' -r 'file_Rule.dic' -l fra
 ```
+
+# Contributors
+
+Special thank to [Bill](https://github.com/billmetangmo) for this version
+
 
 # Reference
 

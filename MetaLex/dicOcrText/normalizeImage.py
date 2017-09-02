@@ -73,7 +73,7 @@ def getImages(images):
                 print u" Error : getImages(images) >> The input image '"+imageroot+ext+u"' is not a file image"
                 
         imagestr = str(images)
-        message  = imagestr + u' > are append for the current treatment' 
+        message  = imagestr + u' are append for the current treatment' 
         MetaLex.dicLog.manageLog.writelog(message)
     else: 
         message = u' Error : getImages(images) >> They are not images for the current treatment : input images !!' 
@@ -130,7 +130,6 @@ class enhanceImages ():
                     
         else:
             message = u' Error : getImages(images) >> They are not images for the current treatment : please input images !! ' 
-            print u"--> "+message+u"\n"
             MetaLex.dicLog.manageLog.writelog(message)
             
             
