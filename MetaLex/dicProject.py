@@ -41,7 +41,18 @@ def get_part_file(namefile):
     (imageroot, ext) = os.path.splitext(os.path.basename(namefile))
     return (imageroot, ext)
 
-
+def getHour():
+    datefile = os.popen('date').read()
+    try :
+        datetab = datefile.split(',')[1].split(' ')
+        hour = datetab[1]
+        return hour
+    except :
+        datetab = datefile.split(' ')[3]
+        hour = datetab
+        return hour
+    
+    
 def treat_image_append(namefile) :
     """
       Append image result files to the global variable at the scope
