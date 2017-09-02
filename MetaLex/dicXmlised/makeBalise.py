@@ -180,8 +180,7 @@ class baliseXML ():
                     MetaLex.dicLog.manageLog.writelog(message)
                 else:
                     message = u"'"+name+u"'  is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder\n"
-                    print message
-                    #MetaLex.dicLog.manageLog.writelog(message)
+                    MetaLex.dicLog.manageLog.writelog(message)
                 return metalexXml
             else :
                 metalexXml = self.balise(metadata+content, u'MetaLexResultDictionary', attr={})
@@ -201,8 +200,7 @@ class baliseXML ():
                     MetaLex.dicLog.manageLog.writelog(message)
                 else:
                     message = u"'"+name+u"'  is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder\n"
-                    print message
-                    #MetaLex.dicLog.manageLog.writelog(message)
+                    MetaLex.dicLog.manageLog.writelog(message)
                 return metalexXml
             else :
                 metalexXml = self.balise(metadata+content, u'TEI', typ= u'tei')
@@ -222,8 +220,7 @@ class baliseXML ():
                     MetaLex.dicLog.manageLog.writelog(message)
                 else:
                     message = u"'"+name+u"'  is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder"
-                    print message
-                    #MetaLex.dicLog.manageLog.writelog(message)
+                    MetaLex.dicLog.manageLog.writelog(message)
                 return metalexXml
             else :
                 metalexXml = self.balise(metadata+content, u'LexicalResource', attr={'dtdVersion':'15'}, typ= u'lmf')
@@ -316,7 +313,7 @@ class baliseXML ():
                         article = self.balise(ident+self.balise(treat, u'treatmentComponent'), u'article', attr={u'id':id})
                         resultArticles.append(article)
                     elif partArt.group(4).find(u' et ') != -1 :
-                        toi = 'hahaha'
+                        suite = 'hahaha'
                         #print art+'\n'
         
         return resultArticles
@@ -382,8 +379,6 @@ class baliseXML ():
                 soupart = BeautifulSoup(art, 'html.parser')
                 orth    = soupart.find('entry').getText()
                 atOrth  = soupart.find('article').get('id')
-                #pron   = soupart.find('cgr_').getText()
-                #etym   = soupart.find('cgr_etymon').getText()
                 orth    = self.balise('', u'feat', attr={'att':'writtenForm','val':orth}, typ=u'lmf', sclose=True)
                 wordF   = self.balise(orth, u'WordForm', attr={'id': atOrth}, typ=u'lmf')
                 pos     = soupart.find('cte_cat').getText()
@@ -430,11 +425,9 @@ class baliseXML ():
             if markup in components[u'lmf'][u'GlobalInformation'] \
             or components[u'lmf'][u'Lexicon'] :
                 if sclose :
-                    #print '111iiiiiii'
                     element = self.chevron(markup, attr, True, sclose=True)
                     return element
                 else : 
-                    #print '222iiiiiii'
                     element = self.chevron(markup, attr)+element+self.chevron(markup, attr, False)
                     return element
                 
