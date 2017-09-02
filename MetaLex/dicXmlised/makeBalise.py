@@ -176,10 +176,10 @@ class baliseXML ():
                 if MetaLex.dicProject.inDir(name) :
                     with codecs.open(name, 'w', 'utf-8') as fle :
                         fle.write(metalexXmlTree.prettify(formatter=None))
-                    message = u"'"+name+u"'  is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder\n"
+                    message = u"'"+name+u"'  is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder"
                     MetaLex.dicLog.manageLog.writelog(message)
                 else:
-                    message = u"'"+name+u"'  is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder\n"
+                    message = u"'"+name+u"'  is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder"
                     MetaLex.dicLog.manageLog.writelog(message)
                 return metalexXml
             else :
@@ -196,10 +196,10 @@ class baliseXML ():
                 if MetaLex.dicProject.inDir(name) :
                     with codecs.open(name, 'w', 'utf-8') as fle :
                         fle.write(metalexXmlTree.prettify(formatter=None))
-                    message = u"'"+name+u"'  is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder\n"
+                    message = u"'"+name+u"'  is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder"
                     MetaLex.dicLog.manageLog.writelog(message)
                 else:
-                    message = u"'"+name+u"'  is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder\n"
+                    message = u"'"+name+u"'  is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder"
                     MetaLex.dicLog.manageLog.writelog(message)
                 return metalexXml
             else :
@@ -234,9 +234,9 @@ class baliseXML ():
           Create xml metadata file with configuration of the project 
           @return:  str:metadata
         """
-        projectconf = MetaLex.dicProject.readConf()
-        
         MetaLex.dicProject.createtemp()
+        
+        projectconf = MetaLex.dicProject.readConf()
         contribtab  = projectconf['Contributors'].split(u',') if projectconf['Contributors'].find(u',') else projectconf['Contributors']
         contrib = ''
         if typ == u'xml' :
@@ -379,6 +379,8 @@ class baliseXML ():
                 soupart = BeautifulSoup(art, 'html.parser')
                 orth    = soupart.find('entry').getText()
                 atOrth  = soupart.find('article').get('id')
+                #pron   = soupart.find('cgr_').getText()
+                #etym   = soupart.find('cgr_etymon').getText()
                 orth    = self.balise('', u'feat', attr={'att':'writtenForm','val':orth}, typ=u'lmf', sclose=True)
                 wordF   = self.balise(orth, u'WordForm', attr={'id': atOrth}, typ=u'lmf')
                 pos     = soupart.find('cte_cat').getText()
@@ -425,9 +427,11 @@ class baliseXML ():
             if markup in components[u'lmf'][u'GlobalInformation'] \
             or components[u'lmf'][u'Lexicon'] :
                 if sclose :
+                    #print '111iiiiiii'
                     element = self.chevron(markup, attr, True, sclose=True)
                     return element
                 else : 
+                    #print '222iiiiiii'
                     element = self.chevron(markup, attr)+element+self.chevron(markup, attr, False)
                     return element
                 
