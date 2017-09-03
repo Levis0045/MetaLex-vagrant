@@ -22,7 +22,7 @@ MetaLex-vagrant is developped in **Python 2.7** and vagrant environment, these p
 # Usage
 
 - Global usage commands line
-
+  
 ```sh
     python fileTestMetaLex.py -h
 ```
