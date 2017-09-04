@@ -1,8 +1,8 @@
 # MetaLex-vagrant 
 MetaLex is general tool for **lexicographics** and **metalexicographics** activities.
-For current developpement version of this tool, see [MetaLex/v0.3](https://github.com/Levis0045/MetaLex/tree/v0.3)
+For current developpement version of this tool, see [MetaLex-vagrant/v0.2](https://github.com/Levis0045/MetaLex-vagrant/tree/v0.2)
 
-[![Build Status](https://travis-ci.org/claroline/Distribution.svg?branch=master)](mteprojet.fr/MetaLex)
+[![Build Status](https://travis-ci.org/claroline/Distribution.svg?branch=master)](mteprojet.fr/MetaLex-vagrant)
 
 # Requirements
 MetaLex-vagrant is developped in **Python 2.7** and vagrant environment, these packages are required :
