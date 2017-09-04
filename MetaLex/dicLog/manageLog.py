@@ -97,12 +97,12 @@ def folderlog():
 
 
 
-def writelog(content, typ='ok'):
+def writelog(content, typ=u'ok'):
     name = logname()
     hour = MetaLex.dicProject.getHour()
 
     folderlog()
-    currentdirlog = os.listdir('.')
+    currentdirlog = os.listdir(u'.')
     if name in currentdirlog :
         with codecs.open(name, 'a', 'utf-8') as log :
             message = u'[MetaLex - '+hour+u'] '+content+u'\n\n'
