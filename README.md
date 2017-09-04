@@ -70,7 +70,14 @@ MetaLex take **file_Rule.dic** file which using  specific structure to enhance o
     \END
 ```
 
-- Run your project with your own set parameters or with the default
+- Run your project with the default parameters
+
+
+```sh
+    python fileTestMetaLex.py  -d 'imagesInputFiles' -s
+```
+
+- Run your project with your own set parameters
 
 
 ```sh
