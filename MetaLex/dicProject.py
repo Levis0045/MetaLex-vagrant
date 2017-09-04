@@ -174,7 +174,7 @@ def createtemp():
         except os.error :
             print 'Error :  We can cannot create dicTemp folder in this directory ! It s right exception ?'
             pass
-        message = u'dicTemp folder' + u'  > is created an initialised' 
+        message = u'dicTemp folder  > is created an initialised' 
         MetaLex.dicLog.manageLog.writelog(message)
         os.chdir('dicTemp/')
 
