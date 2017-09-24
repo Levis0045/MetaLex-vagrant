@@ -106,7 +106,8 @@ MetaLex take **file_Rule.dic** file which using  specific structure to enhance o
 
 
 ```sh
-    python MetaLex.py  -d 'imagesInput' -s
+    python MetaLex.py  -d 'imagesInput' -s   # We defined a folder containing dictionnary images for current treatment 
+    python MetaLex.py  -i 'imagedic.png' -s  # Or you can also defined a single dictionnary image
 ```
 
 - Run your project with your own set of parameters and save results
