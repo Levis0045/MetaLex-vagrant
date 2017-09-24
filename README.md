@@ -42,7 +42,7 @@ MetaLex-vagrant is developped in **Python 2.7** and vagrant environment, these p
 ```
 
 
-- Global usage commands line
+- Virtually, go to the  **Test/** folder and build documentation 
   
 ```sh
 
@@ -81,7 +81,7 @@ MetaLex-vagrant is developped in **Python 2.7** and vagrant environment, these p
 ```
 
 
-- Virtually, go to the  **Test** folder and build the file rule. 
+- Build the file rules of the project. 
 
 
 MetaLex take **file_Rule.dic** file which using  specific structure to enhance output text of OCR data (from image's files dictionnaries). **\W** for word replacement, **\C** for caracter replacement and **\R**  for regular expression replacement. The space between headers served to describe remplacement.
@@ -106,14 +106,14 @@ MetaLex take **file_Rule.dic** file which using  specific structure to enhance o
 
 
 ```sh
-    python MetaLex.py  -d 'imagesInputFiles' -s
+    python MetaLex.py  -d 'imagesInput' -s
 ```
 
-- Run your project with your own set of parameters 
+- Run your project with your own set of parameters and save results
 
 
 ```sh
-    python MetaLex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInputFiles' -r 'file_Rule.dic' -l fra -s
+    python MetaLex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInput' -r 'file_Rule.dic' -l fra -s
 ```
 
 # Contributors
