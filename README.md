@@ -18,7 +18,7 @@ For current developpement version of this tool, see [MetaLex-vagrant/v0.2](https
     Traditionally or at best, the contemporary metalexicographer (according to our point of view)
     would apply the following methodology :
 
-    1- Scanning of printed materials (Scan)
+    1- Scanning of printed materials (Scan) and enhance its qualities
         2- Optical reading of the pictures (Ocrisation) 
             3- Manual Error Corrections                     
                 4- Marking of the articles                      
