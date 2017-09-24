@@ -21,6 +21,27 @@ MetaLex-vagrant is developped in **Python 2.7** and vagrant environment, these p
 
 # Usage
 
+
+- Usage situation
+
+```
+    I am a metalexicographer or linguist and I have printed dictionaries. I wish to make a diachronic metalexicographics studies to
+    the evolution of the formulations of the definitions of a collection of dictionaries available from period A to period B.
+    
+    Traditionally or at best, the contemporary metalexicographer(according to our point of view) would apply successively the following methodology:
+    
+    - Scanning of printed materials (Scan)
+    - Optical reading of the supports (Ocrisation)
+    - Manual Error Corrections
+    - Marking of the articles obtained
+    - Metalexographical analysis / decryption of articles
+    
+    
+    This is an example of process used with MetaLex ! Some other more complex process can be done !
+
+```
+
+
 - Global usage commands line
   
 ```sh
@@ -59,24 +80,6 @@ MetaLex-vagrant is developped in **Python 2.7** and vagrant environment, these p
 
 ```
 
-- Usage situation
-
-```
-    I am a metalexicographer or linguist and I have printed dictionaries. I wish to make a diachronic metalexicographics studies to
-    the evolution of the formulations of the definitions of a collection of dictionaries available from period A to period B.
-    
-    Traditionally or at best, the contemporary metalexicographer(according to our point of view) would apply successively the following methodology:
-    
-    - Scanning of printed materials (Scan)
-    - Optical reading of the supports (Ocrisation)
-    - Manual Error Corrections
-    - Marking of the articles obtained
-    - Metalexographical analysis / decryption of articles
-    
-    This is the same kind of process of MetaLex !
-
-```
-
 
 - Virtually, go to the  **Test** folder and build the file rule. 
 
@@ -110,7 +113,7 @@ MetaLex take **file_Rule.dic** file which using  specific structure to enhance o
 
 
 ```sh
-    python MetaLex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInputFiles' -r 'file_Rule.dic' -l fra
+    python MetaLex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInputFiles' -r 'file_Rule.dic' -l fra -s
 ```
 
 # Contributors
