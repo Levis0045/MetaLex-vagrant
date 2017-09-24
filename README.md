@@ -84,7 +84,7 @@ MetaLex-vagrant is developped in **Python 2.7** and vagrant environment, these p
 - Build the file rules of the project. 
 
 
-MetaLex take **file_Rule.dic** file which using  specific structure to enhance output text of OCR data (from image's files dictionnaries). **\W** for word replacement, **\C** for caracter replacement and **\R**  for regular expression replacement. The space between headers served to describe remplacement.
+MetaLex takes **file_Rule.dic** file which using  specific structure to enhance output text of OCR data (from dictionnary images files). **\W** for words replacement, **\C** for caracters replacement and **\R**  for regular expressions replacement. The spaces between headers served to describe remplacement.
 
 ```md
 
