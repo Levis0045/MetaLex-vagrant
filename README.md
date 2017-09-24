@@ -4,6 +4,41 @@ For current developpement version of this tool, see [MetaLex-vagrant/v0.2](https
 
 [![Build Status](https://travis-ci.org/claroline/Distribution.svg?branch=master)](mteprojet.fr/MetaLex-vagrant)
 
+
+# Usage
+
+
+- Usage situation
+
+
+```md
+    # This is an example of process used with MetaLex 
+    
+    I am a metalexicographer or linguist and I have paper dictionaries. 
+    I want to perform a diachronic study of the evolution of the wording of 
+    definitions in a collection of dictionaries available from period A to period B.
+
+    Traditionally or at best, the contemporary metalexicographer (according to our point of view)
+    would apply the following methodology :
+
+    1- Scanning of printed materials (Scan)
+        2- Optical reading of the pictures (Ocrisation) 
+            3- Manual Error Corrections                     
+                4- Marking of the articles                      
+                    5- Metalexographical analysis / decryption of articles 
+
+    MetaLex through its modules operates in the same way by successively executing each of these tasks automatically.
+    
+    1 = MetaLex.dicOcrText.normalizeImage.enhanceImages().filter(f.DETAIL)
+        2 = MetaLex.dicOcrText.makeOcr.imageToText()
+            3 = MetaLex.dicOcrText.makeTextwell()
+                4 = MetaLex.dicXmlised.xmlised('tei') or MetaLex.dicXmlised.xmlised('lmf')
+                    5 = MetaLex.dicXmlised.handleStat()
+                
+    Some other more complex processes can be done !
+
+```
+
 # Requirements
 MetaLex-vagrant is developped in **Python 2.7** and vagrant environment, these packages are required :
 
@@ -19,34 +54,12 @@ MetaLex-vagrant is developped in **Python 2.7** and vagrant environment, these p
     cd Metalex-vagrant
 ```
 
-# Usage
-
-
-- Usage situation
-
-```
-    I am a metalexicographer or linguist and I have printed dictionaries. I wish to make a diachronic metalexicographics studies to
-    the evolution of the formulations of the definitions of a collection of dictionaries available from period A to period B.
-    
-    Traditionally or at best, the contemporary metalexicographer(according to our point of view) would apply successively the following methodology:
-    
-    - Scanning of printed materials (Scan)
-    - Optical reading of the supports (Ocrisation)
-    - Manual Error Corrections
-    - Marking of the articles obtained
-    - Metalexographical analysis / decryption of articles
-    
-    
-    This is an example of process used with MetaLex ! Some other more complex process can be done !
-
-```
-
 
 - Virtually, go to the  **Test/** folder and build documentation 
   
 ```sh
 
-    python MetaLex.py -h
+    python runMetaLex.py -h
     
 ```
 
@@ -106,15 +119,15 @@ MetaLex takes **file_Rule.dic** file which using  specific structure to enhance 
 
 
 ```sh
-    python MetaLex.py  -d 'imagesInput' -s   # We defined a folder containing dictionnary images for current treatment 
-    python MetaLex.py  -i 'imagedic.png' -s  # Or you can also defined a single dictionnary image
+    python runMetaLex.py  -d 'imagesInput' -s   # We defined a folder containing dictionnary images for current treatment 
+    python runMetaLex.py  -i 'imagedic.png' -s  # Or you can also defined a single dictionnary image
 ```
 
 - Run your project with your own set of parameters and save results
 
 
 ```sh
-    python MetaLex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInput' -r 'file_Rule.dic' -l fra -s
+    python runMetaLex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInput' -r 'file_Rule.dic' -l fra -s
 ```
 
 # Contributors
