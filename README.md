@@ -5,10 +5,7 @@ For current developpement version of this tool, see [MetaLex-vagrant/v0.2](https
 [![Build Status](https://travis-ci.org/claroline/Distribution.svg?branch=master)](mteprojet.fr/MetaLex-vagrant)
 
 
-# Usage
-
-
-- Usage situation
+#  Usage situation
 
 
 ```md
@@ -40,6 +37,7 @@ For current developpement version of this tool, see [MetaLex-vagrant/v0.2](https
 ```
 
 # Requirements
+
 MetaLex-vagrant is developped in **Python 2.7** and vagrant environment, these packages are required :
 
 
@@ -54,6 +52,7 @@ MetaLex-vagrant is developped in **Python 2.7** and vagrant environment, these p
     cd Metalex-vagrant
 ```
 
+# How to run MetaLex ?
 
 - Virtually, go to the  **Test/** folder and build documentation 
   
