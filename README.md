@@ -135,7 +135,7 @@ MetaLex takes **file_Rule.dic** file which using  specific structure to enhance 
 
 
 ```sh
-    python runMetaLex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInput' -r 'file_Rule.dic' -l fra -s
+    python runMetaLex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInput' -r 'file_Rule.dic' -l 'fra' -s
 ```
 
 # Contributors
