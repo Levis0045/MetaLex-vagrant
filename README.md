@@ -54,7 +54,7 @@ MetaLex-vagrant is developped in **Python 2.7** and vagrant environment, these p
 ```sh
     sudo apt-get install vagrant
     sudo apt-get install virtualbox
-    git clone git@github.com:Levis0045/MetaLex-vagrant.git
+    git clone git@github.com/Levis0045/MetaLex-vagrant.git
     cd MetaLex-vagrant
     vagrant up   #Build vagrant machine with all dependencies
     vagrant ssh  #Connect to ubuntu xenia development
