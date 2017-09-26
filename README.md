@@ -5,42 +5,46 @@ For current developpement version of this tool, see [MetaLex-vagrant/v0.2](https
 [![Build Status](https://travis-ci.org/claroline/Distribution.svg?branch=master)](mteprojet.fr/MetaLex-vagrant)
 
 
-#  Usage situation
+# Usage
 
 
-```md
-    # This is an example of process used with MetaLex 
-    
+- This is an example of process used with MetaLex 
+
+```
     I am a metalexicographer or linguist and I have paper dictionaries. 
     I want to perform a diachronic study of the evolution of the wording of 
     definitions in a collection of dictionaries available from period A to period B.
-
-    # Traditionally or at best, the contemporary metalexicographer (according to our point of view)
-    would apply the following methodology :
-
-    1- Scanning of printed materials (Scan) and enhance its qualities
-        2- Optical reading of the pictures (Ocrisation) = extract articles content 
-            3- Manual Error Corrections  of text articles                   
-                4- Marking of the articles with regular standard                 
-                    5- Metalexographical analysis / decryption of articles 
-
-    # MetaLex through its modules operates in the same way by successively executing 
-    each of these tasks automatically.
-    
-    1 = MetaLex enhances the quality of dictionary images 
-      - MetaLex.dicOcrText.normalizeImage.enhanceImages().filter(f.DETAIL)
-        2 = MetaLex extract from dictionary images all dictionary articles 
-          - MetaLex.dicOcrText.makeOcr.imageToText()
-            3 = MetaLex corrects dictionary articles 
-              - MetaLex.dicOcrText.makeTextwell()
-                4 = MetaLex marking dictionary articles depending of some standard 
-                  - MetaLex.dicXmlised.xmlised('tei') or MetaLex.dicXmlised.xmlised('lmf')
-                    5 = MetaLex generates some metalexicographics analysis of part of content dictionary 
-                      - MetaLex.dicXmlised.handleStat()
-                
-    Some other more complex processes can be done !
-
 ```
+
+- Traditionally or at best, the contemporary metalexicographer (according to our point of view)
+  would apply the following methodology :
+  
+```
+    1- Scanning of printed materials (Scan) and enhance its qualities
+    2- Optical reading of the pictures (Ocrisation) = extract articles content 
+    3- Manual Error Corrections  of text articles                   
+    4- Marking of the articles with regular standard                 
+    5- Metalexographical analysis / decryption of articles 
+```
+
+- MetaLex through its modules operates in the same way by successively executing 
+  each of these tasks automatically.
+  
+```
+    1 = MetaLex enhances the quality of dictionary images 
+        **MetaLex.dicOcrText.normalizeImage.enhanceImages().filter(f.DETAIL)**
+    2 = MetaLex extract from dictionary images all dictionary articles 
+        **MetaLex.dicOcrText.makeOcr.imageToText()**
+    3 = MetaLex corrects dictionary articles 
+        **MetaLex.dicOcrText.makeTextwell()**
+    4 = MetaLex marking dictionary articles depending of some standard 
+        **MetaLex.dicXmlised.xmlised('tei') or MetaLex.dicXmlised.xmlised('lmf')**
+    5 = MetaLex generates some metalexicographics analysis of part of content dictionary 
+        **MetaLex.dicXmlised.handleStat()**
+```
+
+- Some other more complex processes can be done !
+
 
 # Requirements
 
@@ -50,7 +54,7 @@ MetaLex-vagrant is developped in **Python 2.7** and vagrant environment, these p
 ```sh
     sudo apt-get install vagrant
     sudo apt-get install virtualbox
-    git clone git@github.com:Levis0045/MetaLex-vagrant.git
+    git clone git@github.com/Levis0045/MetaLex-vagrant.git
     cd MetaLex-vagrant
     vagrant up   #Build vagrant machine with all dependencies
     vagrant ssh  #Connect to ubuntu xenia development
@@ -63,9 +67,8 @@ MetaLex-vagrant is developped in **Python 2.7** and vagrant environment, these p
 - Virtually, go to the  **Test/** folder and build documentation 
   
 ```sh
-
     python runMetaLex.py -h
-    
+
 ```
 
 ```md
@@ -132,7 +135,7 @@ MetaLex takes **file_Rule.dic** file which using  specific structure to enhance 
 
 
 ```sh
-    python runMetaLex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInput' -r 'file_Rule.dic' -l fra -s
+    python runMetaLex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInput' -r 'file_Rule.dic' -l 'fra' -s
 ```
 
 # Contributors
