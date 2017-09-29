@@ -9,6 +9,7 @@ sudo apt-get -y install build-essential libssl-dev libffi-dev
 
 # install python dev libs
 sudo apt-get -y install python-dev python-pip python-setuptools
+sudo pip install --upgrade pip
 
 sudo apt-get -y install libtesseract-dev libleptonica-dev
 sudo apt-get -y  install tesseract-ocr-all
