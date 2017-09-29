@@ -56,10 +56,13 @@ MetaLex-vagrant is developped in **Python 2.7** and vagrant environment, these p
     sudo apt-get install virtualbox
     git clone git@github.com:Levis0045/MetaLex-vagrant.git
     cd MetaLex-vagrant
+    git clone git@github.com:Levis0045/MetaLex.git
     vagrant up   #Build vagrant machine with all dependencies
+    vagrant box update #Update the vagrant box
     vagrant ssh  #Connect to ubuntu xenia development
     cd /vagrant
     cd Metalex-vagrant
+    
 ```
 
 # How to run MetaLex ?
