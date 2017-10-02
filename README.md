@@ -1,6 +1,7 @@
 # MetaLex-vagrant 
-MetaLex is general tool for **lexicographics** and **metalexicographics** activities.
-For current developpement version of this tool, see [MetaLex-vagrant/v0.2](https://github.com/Levis0045/MetaLex-vagrant/tree/v0.2)
+MetaLex is general tool in AGPL Licence for `lexicographics` and `metalexicographics` activities.
+For current developpement version of this tool, see [MetaLex/v0.3](https://github.com/Levis0045/MetaLex/tree/v0.3)
+
 
 [![Build Status](https://travis-ci.org/claroline/Distribution.svg?branch=master)](mteprojet.fr/MetaLex-vagrant)
 
@@ -48,8 +49,9 @@ For current developpement version of this tool, see [MetaLex-vagrant/v0.2](https
 
 # Requirements
 
-MetaLex-vagrant is developped in **Python 2.7** and vagrant environment, these packages are required :
+MetaLex-vagrant is developped in `Python 2.7` and vagrant environment, these packages are required :
 
+- Install manually packages
 
 ```sh
     sudo apt-get install vagrant
@@ -65,9 +67,17 @@ MetaLex-vagrant is developped in **Python 2.7** and vagrant environment, these p
     
 ```
 
+- Install with `setup.sh`
+  
+```sh
+    sudo chmod +x setup.sh
+    ./setup.sh
+    
+```
+
 # How to run MetaLex ?
 
-- Virtually, go to the  **Test/** folder and build documentation 
+- Virtually, go to the  `Test/` folder and build documentation 
   
 ```sh
     python runMetaLex.py -h
@@ -108,7 +118,7 @@ MetaLex-vagrant is developped in **Python 2.7** and vagrant environment, these p
 - Build the file rules of the project. 
 
 
-MetaLex takes **file_Rule.dic** file which using  specific structure to enhance output text of OCR data (from dictionnary images files). **\W** for words replacement, **\C** for caracters replacement and **\R**  for regular expressions replacement. The spaces between headers served to describe remplacement.
+MetaLex takes `file_Rule.dic` file which using  specific structure to enhance output text of OCR data (from dictionnary images files). `\W` for words replacement, `\C` for caracters replacement and `\R`  for regular expressions replacement. The spaces between headers served to describe remplacement.
 
 ```md
 
@@ -155,7 +165,7 @@ Please don't forget to cite this work :
     @article{Mboning-Elvis,
         title  = {Quand le TAL s'empare de la métalexicographie : conception d'un outil pour le métalexicographe},
         author = {Mboning, Elvis},
-        url    = {https://github.com/Levis0045/MetaLex},
+        url    = {https://github.com/Levis0045/MetaLex-vagrant},
         date   = {2017-06-20},
         shool  = {Université de Lille 3},
         year   = {2017},
