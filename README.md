@@ -67,11 +67,10 @@ MetaLex-vagrant is developped in `Python 2.7` and vagrant environment, these pac
     
 ```
 
-- Or we can use `setup.sh` to install all package dependencies
+- Or we can use `setup.sh` to install all package dependencies : `Make sure to execute this file in the current system partition ext4 otherwise right permission will be raised in NTFS partition`
   
 ```sh
-    sudo chmod +x setup.sh
-    ./setup.sh
+    sudo ./setup.sh
     
 ```
 
