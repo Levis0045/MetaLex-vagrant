@@ -51,7 +51,7 @@ For current developpement version of this tool, see [MetaLex/v0.3](https://githu
 
 MetaLex-vagrant is developped in `Python 2.7` and vagrant environment, these packages are required :
 
-- Install packages manually
+- We can install all package dependencies manually
 
 ```sh
     sudo apt-get install vagrant
@@ -67,7 +67,7 @@ MetaLex-vagrant is developped in `Python 2.7` and vagrant environment, these pac
     
 ```
 
-- Install packages with `setup.sh`
+- Or we can use `setup.sh` to install all package dependencies
   
 ```sh
     sudo chmod +x setup.sh
