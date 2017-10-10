@@ -59,12 +59,11 @@ MetaLex-vagrant is developped in `Python 2.7` and vagrant environment, these pac
     git clone git@github.com:Levis0045/MetaLex-vagrant.git
     cd MetaLex-vagrant
     git clone git@github.com:Levis0045/MetaLex.git
-    vagrant up   #Build vagrant machine with all dependencies
     vagrant box update #Update the vagrant box
+    vagrant up   #Build vagrant machine with all dependencies
     vagrant ssh  #Connect to ubuntu xenia development
     cd /vagrant
-    cd Metalex-vagrant
-    
+
 ```
 
 - Or we can use `setup.sh` to install all package dependencies : `Make sure to execute this file in the current system partition ext4 otherwise right permission will be raised in NTFS partition`
@@ -76,9 +75,10 @@ MetaLex-vagrant is developped in `Python 2.7` and vagrant environment, these pac
 
 # How to run MetaLex ?
 
-- Virtually, go to the  `Test/` folder and build documentation 
+- Virtually, go to the  `Test/` folder. Re-install `pillow` to fix Image module functionalities and build documentation 
   
 ```sh
+    sudo pip install --no-cache-dir -I pillow
     python runMetaLex.py -h
 
 ```
@@ -107,7 +107,7 @@ MetaLex-vagrant is developped in `Python 2.7` and vagrant environment, these pac
                         Defined file rules that we use to enhance quality of
                         OCR result
   -l LANG, --lang LANG  Set language for optical characters recognition and
-                        others MetaLex treatment
+                        others MetaLex treatments
   -s, --save            Save output result of the current project in files
   -t, --terminal        Show result of the current treatment in the terminal
 
