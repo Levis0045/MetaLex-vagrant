@@ -41,6 +41,7 @@ sudo apt-get -y install cython
 sudo pip install Cython
 
 sudo pip install pillow
+pip install http://effbot.org/downloads/Imaging-1.1.7.tar.gz
 sudo pip install termcolor
 
 sudo CPPFLAGS=-I/usr/local/include pip install tesserocr
