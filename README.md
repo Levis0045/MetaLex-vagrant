@@ -1,6 +1,6 @@
 # MetaLex-vagrant 
 MetaLex is general tool in AGPL Licence for `lexicographics` and `metalexicographics` activities.
-For current developpement version of this tool, see [MetaLex/v0.3](https://github.com/Levis0045/MetaLex/tree/v0.3)
+For current developpement version of this tool, see [MetaLex/v1.0](https://github.com/Levis0045/MetaLex/tree/v1.0)
 
 
 [![Build Status](https://travis-ci.org/claroline/Distribution.svg?branch=master)](mteprojet.fr/MetaLex-vagrant)
@@ -28,20 +28,20 @@ For current developpement version of this tool, see [MetaLex/v0.3](https://githu
     5- Metalexographical analysis / decryption of articles 
 ```
 
-- MetaLex through its modules operates in the same way by successively executing 
+- metalex through its modules operates in the same way by successively executing 
   each of these tasks automatically.
   
 ```
     1 = MetaLex enhances the quality of dictionary images 
-        **MetaLex.dicOcrText.normalizeImage.enhanceImages().filter(f.DETAIL)**
+        **metalex.ocrtext.normalizeImage.EnhanceImages().filter(f.DETAIL)**
     2 = MetaLex extract from dictionary images all dictionary articles 
-        **MetaLex.dicOcrText.makeOcr.imageToText()**
+        **metalex.ocrtext.make_ocr.image_to_text()**
     3 = MetaLex corrects dictionary articles 
-        **MetaLex.dicOcrText.makeTextwell()**
+        **metalex.ocrtext.make_text_well()**
     4 = MetaLex marking dictionary articles depending of some standard 
-        **MetaLex.dicXmlised.xmlised('tei') or MetaLex.dicXmlised.xmlised('lmf')**
+        **metalex.xmlised.put_xml('tei') or MetaLex.xmlised.put_xml('lmf')**
     5 = MetaLex generates some metalexicographics analysis of part of content dictionary 
-        **MetaLex.dicXmlised.handleStat()**
+        **metalex.xmlised.handleStat()**
 ```
 
 - Some other more complex processes can be done !
@@ -59,9 +59,9 @@ MetaLex-vagrant is developped in `Python 2.7` and vagrant environment, these pac
     git clone git@github.com:Levis0045/MetaLex-vagrant.git
     cd MetaLex-vagrant
     git clone git@github.com:Levis0045/MetaLex.git
-    vagrant box update #Update the vagrant box
-    vagrant up   #Build vagrant machine with all dependencies
-    vagrant ssh  #Connect to ubuntu xenia development
+    vagrant box update    # Update the vagrant box
+    vagrant up   # Build vagrant machine with all dependencies
+    vagrant ssh  # Connect to ubuntu xenia development
     cd /vagrant
 
 ```
@@ -70,16 +70,16 @@ MetaLex-vagrant is developped in `Python 2.7` and vagrant environment, these pac
   
 ```sh
     sudo ./setup.sh
-    
+    sudo pip install --no-cache-dir -I pillow
 ```
 
 # How to run MetaLex ?
 
-- Virtually, go to the  `Test/` folder. Re-install `pillow` to fix Image module functionalities and build documentation 
+- Virtually, go to the  `test/` folder. Re-install `pillow` to fix Image module functionalities and build documentation 
   
 ```sh
-    sudo pip install --no-cache-dir -I pillow
-    python runMetaLex.py -h
+    
+    python runMetalex.py -h
 
 ```
 
@@ -139,15 +139,15 @@ MetaLex takes `file_Rule.dic` file which using  specific structure to enhance ou
 
 
 ```sh
-    python runMetaLex.py  -d 'imagesInput' -s   # We defined a folder containing dictionnary images for current treatment 
-    python runMetaLex.py  -i 'imagedic.png' -s  # Or you can also defined a single dictionnary image
+    python runMetalex.py  -d 'imagesInput' -s   # We defined a folder containing dictionnary images for current treatment 
+    python runMetalex.py  -i 'imagedic.png' -s  # Or you can also defined a single dictionnary image
 ```
 
 - Run your project with your own set of parameters and save results
 
 
 ```sh
-    python runMetaLex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInput' -r 'file_Rule.dic' -l 'fra' -s
+    python runMetalex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInput' -r 'file_Rule.dic' -l 'fra' -s
 ```
 
 # Contributors
