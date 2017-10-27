@@ -71,15 +71,21 @@ MetaLex-vagrant is developped in `Python 2.7` and vagrant environment, these pac
   
 ```sh
     sudo ./setup.sh
+    
+```
+
+- Re-install `pillow` to fix Image module functionalities and build documentation 
+  
+```sh
     sudo pip install --no-cache-dir -I pillow
+    
 ```
 
 # How to run MetaLex ?
 
-- Virtually, go to the  `test/` folder. Re-install `pillow` to fix Image module functionalities and build documentation 
+- Virtually, go to the  `test/` folder. 
   
 ```sh
-    
     python runMetalex.py -h
 
 ```
