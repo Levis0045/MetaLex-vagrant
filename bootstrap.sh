@@ -45,6 +45,7 @@ pip install http://effbot.org/downloads/Imaging-1.1.7.tar.gz
 sudo pip install termcolor
 
 sudo CPPFLAGS=-I/usr/local/include pip install tesserocr
+sudo pip install --no-cache-dir -I pillow
 
 #install
 sudo apt-get install git
