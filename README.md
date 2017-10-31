@@ -9,6 +9,10 @@ or see [MetaLex-vagrant/v1.0](https://github.com/Levis0045/MetaLex-vagrant/tree/
 
 # Usage
 
+- metalex proceeds in this way (written in french)
+
+![metalex process](./docs/metalex_process.png)
+
 
 - This is an example of process used with MetaLex 
 
@@ -57,9 +61,9 @@ MetaLex-vagrant is developped in `Python 2.7` and vagrant environment, these pac
 ```sh
     sudo apt-get install vagrant
     sudo apt-get install virtualbox
-    git clone git@github.com:Levis0045/MetaLex-vagrant.git
+    git clone --depth 3 git@github.com:Levis0045/MetaLex-vagrant.git
     cd MetaLex-vagrant
-    git clone git@github.com:Levis0045/MetaLex.git
+    git clone --depth 3 git@github.com:Levis0045/MetaLex.git
     vagrant box update    # Update the vagrant box
     vagrant up   # Build vagrant machine with all dependencies
     vagrant ssh  # Connect to ubuntu xenia development
@@ -156,6 +160,11 @@ MetaLex takes `file_Rule.dic` file which using  specific structure to enhance ou
 ```sh
     python runMetalex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInput' -r 'file_Rule.dic' -l 'fra' -s
 ```
+
+- For the first comand (without parameters), the result in the console will produce this. `NB:` With parameters, error and warning messages will disapear.
+
+![metalex process](./docs/results_process.png)
+
 
 # Contributors
 
