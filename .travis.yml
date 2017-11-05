@@ -1,0 +1,54 @@
+language: python
+
+python:
+  - "2.7"
+
+os:
+  - linux
+  
+matrix:
+  include:
+    - os: linux
+      dist: xenial
+  fast_finish: true
+
+git:
+  depth: 3
+  
+branches:
+  only:
+  - v1.0
+  - master
+  
+notifications:
+  email:
+    recipients:
+      - julestawo@yahoo.fr
+    on_success: always # default: change
+    on_failure: always # default: always
+    
+before_install:
+  # install python dev libs
+  - sudo apt-get -y install python-dev python-pip python-setuptools
+  - sudo apt-get update
+  - sudo pip install --upgrade pip
+  - sudo apt-get -y install zlib1g-dev libpng-dev libjpeg-dev 
+  - sudo apt-get -y install build-essential libssl-dev libffi-dev
+  - sudo apt-get -y install libtesseract-dev libleptonica-dev
+  - sudo apt-get -y install cython
+  - sudo pip install Cython
+  - sudo apt-get install gcc g++
+  - sudo apt-get install autoconf automake libtool checkinstall
+  - sudo apt-get -y install tesseract-ocr
+  - sudo apt-get -y install tesseract-ocr-fra
+  - sudo apt-get -y install tesseract-ocr-dev
+  - sudo apt-get -y install python-html5lib python-lxml python-bs4
+  - sudo pip install http://effbot.org/downloads/Imaging-1.1.7.tar.gz
+
+  
+script:
+  # run static analysis tools on modified files if needed
+  - cd metalex/test/
+  - python runMetalex.py -h  --stderr
+  - python runMetalex.py -p 'projectTestName' -c 'testAuthor' 'testComment' 'testContributors' -d 'dicImages' -r 'file_Rule.dic' -l 'fra' -s  --stderr
+

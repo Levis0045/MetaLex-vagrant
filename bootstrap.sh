@@ -33,8 +33,8 @@ sudo apt-get -y install python-dev python-pip python-setuptools
 sudo pip install --upgrade pip
 
 sudo apt-get -y install libtesseract-dev libleptonica-dev
-sudo apt-get -y  install tesseract-ocr-all
-sudo apt-get -y  install python-html5lib python-lxml python-bs4
+sudo apt-get -y install tesseract-ocr-all
+sudo apt-get -y install python-html5lib python-lxml python-bs4
 
 # install
 sudo apt-get -y install cython

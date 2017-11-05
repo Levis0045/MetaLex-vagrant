@@ -49,9 +49,11 @@ import metalex as dico
 
 # ----External Modules------------------------------------------------------
 
+import os
+import glob
+import argparse
+import textwrap
 import ImageFilter as f
-import os, glob
-import argparse, textwrap
 from termcolor import colored
 
 # ----Functions to run MetaLex in system args------------------------------------------------------
@@ -111,17 +113,7 @@ def run_metalex_test ():
     metalexArgsParser.add_argument('-t', '--terminal', help='Show  result of the current treatment in the terminal', 
                         action='store_true', default=False)
     
-    """
-    subparsers = metalexArgsParser.add_subparsers(title='metalex subcommands', help='sub-commands for specific metalex treatment')
-    
-    parser_ocr = subparsers.add_parser('dicOcrText', help='Plugin for optical recognition character and normalization')
-    parser_ocr.add_argument('-s', '--save', type=str, help='Plugin for optical recognition character and normalization')
-    
-    parser_xml = subparsers.add_parser('dicXmlised', help='Plugin for xml and html file generator')
-    parser_xml.add_argument('-s', '--save', type=str, help='bar help')
-    
-    #metalexArgsParser.print_help()
-    """
+ 
     
     # ----Build contains args------------------------------------------------
     metalexArgs = metalexArgsParser.parse_args()
@@ -144,7 +136,7 @@ def run_metalex_test ():
     else :
         message = u"You must define folder containing image of dictionary or image of dictionary for your project otherwise default folder must be use" 
         dico.logs.manageLog.write_log(message, typ='warm')
-        for imagefile in glob.glob('imagesInputFiles/*.*g') :
+        for imagefile in glob.glob('imagesInput/*.*g') :
             name = os.getcwd()+'/'+imagefile
             imagelist.append(name)
         if len(imagelist) < 1 :   
@@ -193,19 +185,27 @@ def run_metalex_test ():
         
     # ----Start optical recognition of dictionary image files----------------
     if metalexArgs.save and metalexArgs.lang :
-        images.image_to_text(save=True, langIn=metalexArgs.lang)
+        execOcr = images.BuildOcrImages(save=True, langIn=metalexArgs.lang)
+        execOcr.image_to_text()
     elif metalexArgs.lang :
-        images.image_to_text(save=False, langIn=metalexArgs.lang)
+        execOcr = images.BuildOcrImages(save=False, langIn=metalexArgs.lang)
+        execOcr.image_to_text()
     elif metalexArgs.terminal and metalexArgs.lang :
-        images.image_to_text(show=True, langIn=metalexArgs.lang)
+        execOcr = images.BuildOcrImages(show=True, langIn=metalexArgs.lang)
+        execOcr.image_to_text()
     else :
-        images.image_to_text(save=True, langIn='fra')
+        execOcr = images.BuildOcrImages(save=True, langIn='fra')
+        execOcr.image_to_text()
     
     # ----Normalize result of ocr files ------------------------------------
     if metalexArgs.fileRule :
-        images.make_text_well(metalexArgs.fileRule)
+        execNormalize = images.BuildTextWell(metalexArgs.fileRule)
+        execNormalize.make_text_well()
     else :
-        images.make_text_well(u'file_Rule.dic')
+        message = u"FileRule() >> You don't defined file rules for this project. *file_Rule.dic* will be used instead" 
+        execNormalize = images.BuildTextWell(u'../../file_Rule.dic')
+        dico.logs.manageLog.write_log(message, typ='warm')
+        execNormalize.make_text_well()
     
     #-----Produce HTML output file for project------------------------------
     if metalexArgs.save :
@@ -215,7 +215,6 @@ def run_metalex_test ():
             baliseXML.put_xml(save=metalexArgs.save, typ=metalexArgs.xml)
     else :
         images.dico_html(save=False)
-
 
 
 #------------RUN APPLICATION-----------------------------------------------
