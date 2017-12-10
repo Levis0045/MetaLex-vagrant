@@ -1,6 +1,6 @@
-# MetaLex-vagrant
+# MetaLex-vagrant 
 MetaLex is general tool in AGPL Licence for `lexicographics` and `metalexicographics` activities.
-For current developpement version of this tool, see [MetaLex/v1.0](https://github.com/Levis0045/MetaLex/tree/v1.0)
+For current developpement version of this tool, see [MetaLex/v1.0](https://github.com/Levis0045/MetaLex/tree/v1.0) 
 or see [MetaLex-vagrant/v1.0](https://github.com/Levis0045/MetaLex-vagrant/tree/v1.0)
 
 
@@ -14,38 +14,38 @@ or see [MetaLex-vagrant/v1.0](https://github.com/Levis0045/MetaLex-vagrant/tree/
 ![metalex process](./docs/metalex_process.png)
 
 
-- This is an example of process used with MetaLex
+- This is an example of process used with MetaLex 
 
 ```
-    I am a metalexicographer or linguist and I have paper dictionaries.
-    I want to perform a diachronic study of the evolution of the wording of
+    I am a metalexicographer or linguist and I have paper dictionaries. 
+    I want to perform a diachronic study of the evolution of the wording of 
     definitions in a collection of dictionaries available from period A to period B.
 ```
 
 - Traditionally or at best, the contemporary metalexicographer (according to our point of view)
   would apply the following methodology :
-
+  
 ```
     1- Scanning of printed materials (Scan) and enhance its qualities
-    2- Optical reading of the pictures (Ocrisation) = extract articles content
+    2- Optical reading of the pictures (Ocrisation) = extract articles content 
     3- Manual Error Corrections  of text articles                   
     4- Marking of the articles with regular standard                 
-    5- Metalexographical analysis / decryption of articles
+    5- Metalexographical analysis / decryption of articles 
 ```
 
-- metalex through its modules operates in the same way by successively executing
+- metalex through its modules operates in the same way by successively executing 
   each of these tasks automatically.
-
+  
 ```
-    1 = MetaLex enhances the quality of dictionary images
+    1 = MetaLex enhances the quality of dictionary images 
         **metalex.ocrtext.normalizeImage.EnhanceImages().filter(f.DETAIL)**
-    2 = MetaLex extract from dictionary images all dictionary articles
+    2 = MetaLex extract from dictionary images all dictionary articles 
         **metalex.ocrtext.make_ocr.image_to_text()**
-    3 = MetaLex corrects dictionary articles
+    3 = MetaLex corrects dictionary articles 
         **metalex.ocrtext.make_text_well()**
-    4 = MetaLex marking dictionary articles depending of some standard
+    4 = MetaLex marking dictionary articles depending of some standard 
         **metalex.xmlised.put_xml('tei') or MetaLex.xmlised.put_xml('lmf')**
-    5 = MetaLex generates some metalexicographics analysis of part of content dictionary
+    5 = MetaLex generates some metalexicographics analysis of part of content dictionary 
         **metalex.xmlised.handleStat()**
 ```
 
@@ -54,7 +54,6 @@ or see [MetaLex-vagrant/v1.0](https://github.com/Levis0045/MetaLex-vagrant/tree/
 
 # Requirements
 
-##Linux
 MetaLex-vagrant is developped in `Python 2.7` and vagrant environment, these packages are required :
 
 - We can install all package dependencies manually
@@ -73,27 +72,23 @@ MetaLex-vagrant is developped in `Python 2.7` and vagrant environment, these pac
 ```
 
 - Or we can use `setup.sh` to install all package dependencies : `Make sure to execute this file in the current system partition ext4 otherwise right permission will be raised in NTFS partition`
-
+  
 ```shell
     sudo ./setup.sh
-
+    
 ```
 
-- Re-install `pillow` to fix Image module functionalities and build documentation
-
+- Re-install `pillow` to fix Image module functionalities and build documentation 
+  
 ```shell
     sudo pip install --no-cache-dir -I pillow
-
+    
 ```
-
-##Windows
-You can download and install Vagrant & Virtualbox for Windows from thier official pages.
-
 
 # How to run MetaLex ?
 
-- Virtually, go to the  `test/` folder.
-
+- Virtually, go to the  `test/` folder. 
+  
 ```shell
     python runMetalex.py -h
 
@@ -102,7 +97,7 @@ You can download and install Vagrant & Virtualbox for Windows from thier officia
 ```md
 
    MetaLex arguments :
-
+   
   -h, --help            show this help message and exit
   -v, --version         show program's version number and exit
   -p PROJECTNAME, --project PROJECTNAME
@@ -130,7 +125,7 @@ You can download and install Vagrant & Virtualbox for Windows from thier officia
 ```
 
 
-- Build the file rules of the project.
+- Build the file rules of the project. 
 
 
 MetaLex takes `file_Rule.dic` file which using  specific structure to enhance output text of OCR data (from dictionnary images files). `\W` for words replacement, `\C` for caracters replacement and `\R`  for regular expressions replacement. The spaces between headers served to describe remplacement.
@@ -148,14 +143,14 @@ MetaLex takes `file_Rule.dic` file which using  specific structure to enhance ou
     \R
     /a-z+/ij
     \END
-
+    
 ```
 
 - Run your project with the default parameters except dictionary images data and save results
 
 
 ```shell
-    python runMetalex.py  -d 'imagesInput' -s   # We defined a folder containing dictionnary images for current treatment
+    python runMetalex.py  -d 'imagesInput' -s   # We defined a folder containing dictionnary images for current treatment 
     python runMetalex.py  -i 'imagedic.png' -s  # Or you can also defined a single dictionnary image
 ```
 
@@ -170,7 +165,6 @@ MetaLex takes `file_Rule.dic` file which using  specific structure to enhance ou
 
 ![metalex process](./docs/results_process.png)
 
-- After successful command execution you can access results inside imagesInput directory but you can also access it directly from your browser as http://localhost:8080/fs/mnt/fs/ redirects you under '/' of your vagrant host.
 
 # Contributors
 
@@ -193,5 +187,7 @@ Please don't forget to cite this work :
         pages  = {12},
         keywords = {métalexicographie, TAL, fouille de données, extraction d'information, lecture optique, lexicographie, Xmlisation, DTD}
     }
-
+    
 ```
+
+
