@@ -54,7 +54,7 @@ or see [MetaLex-vagrant/v1.0](https://github.com/Levis0045/MetaLex-vagrant/tree/
 
 # Requirements
 
-##Linux
+**Linux**
 MetaLex-vagrant is developped in `Python 2.7` and vagrant environment, these packages are required :
 
 - We can install all package dependencies manually
@@ -86,7 +86,7 @@ MetaLex-vagrant is developped in `Python 2.7` and vagrant environment, these pac
 
 ```
 
-##Windows
+**Windows**
 You can download and install Vagrant & Virtualbox for Windows from thier official pages.
 
 
