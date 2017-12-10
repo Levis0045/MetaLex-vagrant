@@ -16,11 +16,11 @@
 
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-    
+
 #    Contact : levismboning@yahoo.fr
-    
+
 #    --------------------------------------------------------------------------
-    
+
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
@@ -35,7 +35,7 @@ Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/xenial64"
   ### TODO: use Ansible instead ####
   config.vm.provision :shell, path: "bootstrap.sh"
-  config.vm.network :forwarded_port, guest: 80, host: 9013
+  config.vm.network :forwarded_port, guest: 8000, host: 8080
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs

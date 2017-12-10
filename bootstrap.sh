@@ -15,9 +15,9 @@
 
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-    
+
 #    Contact : levismboning@yahoo.fr
-    
+
 #    --------------------------------------------------------------------------
 
 
@@ -50,17 +50,23 @@ sudo CPPFLAGS=-I/usr/local/include pip install tesserocr
 sudo apt-get install git
 touch ~/.bash_profile
 
-cat <<EOT >> ~/.bash_profile
+# install web file manager with docker
+sudo apt-get -y install docker.io
+sudo systemctl start docker
+sudo usermod -aG docker ubuntu
+sudo docker run -d -t --net=host --rm -v ~:/root -v /:/mnt/fs coderaiser/cloudcmd
+
+cat <<EOF >> ~/.bash_profile
 parse_git_branch() {
      git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
 export PS1="\u@\h \[\033[32m\]\w\[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
-EOT
+EOF
 
-cat <<EOT >> ~/.bashrc
+cat <<EOF >> ~/.bashrc
 # to have git branch in bash prompt
 . ~/.bash_profile
-EOT
+EOF
 
 git config --global user.email "you@example.com"
 git config --global user.name "Your Name"
