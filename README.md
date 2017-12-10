@@ -172,7 +172,7 @@ MetaLex takes `file_Rule.dic` file which using  specific structure to enhance ou
 
 ![metalex process](./docs/results_process.png)
 
-- After successful command execution you can access results inside imagesInput directory but you can also access it directly from your browser as http://localhost:8080/fs/mnt/fs/ redirects you under '/' of your vagrant host.
+- After successful command execution you can access results inside imagesInput directory but you can also access it directly from your browser as http://localhost:8080/fs/mnt/fs/ redirects you under '/' of your vagrant host. The web file manager is provided using https://github.com/coderaiser/cloudcmd.
 
 # Contributors
 
