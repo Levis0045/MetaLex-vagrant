@@ -1,6 +1,6 @@
-# MetaLex-vagrant 
+# MetaLex-vagrant
 MetaLex is general tool in AGPL Licence for `lexicographics` and `metalexicographics` activities.
-For current developpement version of this tool, see [MetaLex/v1.0](https://github.com/Levis0045/MetaLex/tree/v1.0) 
+For current developpement version of this tool, see [MetaLex/v1.0](https://github.com/Levis0045/MetaLex/tree/v1.0)
 or see [MetaLex-vagrant/v1.0](https://github.com/Levis0045/MetaLex-vagrant/tree/v1.0)
 
 
@@ -14,38 +14,38 @@ or see [MetaLex-vagrant/v1.0](https://github.com/Levis0045/MetaLex-vagrant/tree/
 ![metalex process](./docs/metalex_process.png)
 
 
-- This is an example of process used with MetaLex 
+- This is an example of process used with MetaLex
 
 ```
-    I am a metalexicographer or linguist and I have paper dictionaries. 
-    I want to perform a diachronic study of the evolution of the wording of 
+    I am a metalexicographer or linguist and I have paper dictionaries.
+    I want to perform a diachronic study of the evolution of the wording of
     definitions in a collection of dictionaries available from period A to period B.
 ```
 
 - Traditionally or at best, the contemporary metalexicographer (according to our point of view)
   would apply the following methodology :
-  
+
 ```
     1- Scanning of printed materials (Scan) and enhance its qualities
-    2- Optical reading of the pictures (Ocrisation) = extract articles content 
-    3- Manual Error Corrections  of text articles                   
-    4- Marking of the articles with regular standard                 
-    5- Metalexographical analysis / decryption of articles 
+    2- Optical reading of the pictures (Ocrisation) = extract articles content
+    3- Manual Error Corrections  of text articles
+    4- Marking of the articles with regular standard
+    5- Metalexographical analysis / decryption of articles
 ```
 
-- metalex through its modules operates in the same way by successively executing 
+- metalex through its modules operates in the same way by successively executing
   each of these tasks automatically.
-  
+
 ```
-    1 = MetaLex enhances the quality of dictionary images 
+    1 = MetaLex enhances the quality of dictionary images
         **metalex.ocrtext.normalizeImage.EnhanceImages().filter(f.DETAIL)**
-    2 = MetaLex extract from dictionary images all dictionary articles 
+    2 = MetaLex extract from dictionary images all dictionary articles
         **metalex.ocrtext.make_ocr.image_to_text()**
-    3 = MetaLex corrects dictionary articles 
+    3 = MetaLex corrects dictionary articles
         **metalex.ocrtext.make_text_well()**
-    4 = MetaLex marking dictionary articles depending of some standard 
+    4 = MetaLex marking dictionary articles depending of some standard
         **metalex.xmlised.put_xml('tei') or MetaLex.xmlised.put_xml('lmf')**
-    5 = MetaLex generates some metalexicographics analysis of part of content dictionary 
+    5 = MetaLex generates some metalexicographics analysis of part of content dictionary
         **metalex.xmlised.handleStat()**
 ```
 
@@ -53,6 +53,8 @@ or see [MetaLex-vagrant/v1.0](https://github.com/Levis0045/MetaLex-vagrant/tree/
 
 
 # Requirements
+
+**Linux**
 
 MetaLex-vagrant is developped in `Python 2.7` and vagrant environment, these packages are required :
 
@@ -72,23 +74,28 @@ MetaLex-vagrant is developped in `Python 2.7` and vagrant environment, these pac
 ```
 
 - Or we can use `setup.sh` to install all package dependencies : `Make sure to execute this file in the current system partition ext4 otherwise right permission will be raised in NTFS partition`
-  
+
 ```shell
     sudo ./setup.sh
-    
+
 ```
 
-- Re-install `pillow` to fix Image module functionalities and build documentation 
-  
+- Re-install `pillow` to fix Image module functionalities and build documentation
+
 ```shell
     sudo pip install --no-cache-dir -I pillow
-    
+
 ```
+
+**Windows**
+
+You can download and install Vagrant & Virtualbox for Windows from thier official pages.
+
 
 # How to run MetaLex ?
 
-- Virtually, go to the  `test/` folder. 
-  
+- Virtually, go to the  `test/` folder.
+
 ```shell
     python runMetalex.py -h
 
@@ -97,7 +104,7 @@ MetaLex-vagrant is developped in `Python 2.7` and vagrant environment, these pac
 ```md
 
    MetaLex arguments :
-   
+
   -h, --help            show this help message and exit
   -v, --version         show program's version number and exit
   -p PROJECTNAME, --project PROJECTNAME
@@ -125,7 +132,7 @@ MetaLex-vagrant is developped in `Python 2.7` and vagrant environment, these pac
 ```
 
 
-- Build the file rules of the project. 
+- Build the file rules of the project.
 
 
 MetaLex takes `file_Rule.dic` file which using  specific structure to enhance output text of OCR data (from dictionnary images files). `\W` for words replacement, `\C` for caracters replacement and `\R`  for regular expressions replacement. The spaces between headers served to describe remplacement.
@@ -143,14 +150,14 @@ MetaLex takes `file_Rule.dic` file which using  specific structure to enhance ou
     \R
     /a-z+/ij
     \END
-    
+
 ```
 
 - Run your project with the default parameters except dictionary images data and save results
 
 
 ```shell
-    python runMetalex.py  -d 'imagesInput' -s   # We defined a folder containing dictionnary images for current treatment 
+    python runMetalex.py  -d 'imagesInput' -s   # We defined a folder containing dictionnary images for current treatment
     python runMetalex.py  -i 'imagedic.png' -s  # Or you can also defined a single dictionnary image
 ```
 
@@ -165,6 +172,7 @@ MetaLex takes `file_Rule.dic` file which using  specific structure to enhance ou
 
 ![metalex process](./docs/results_process.png)
 
+- After successful command execution you can access results inside imagesInput directory but you can also access it directly from your browser as http://localhost:8080/fs/mnt/fs/ redirects you under '/' of your vagrant host. The web file manager is provided using https://github.com/coderaiser/cloudcmd.
 
 # Contributors
 
@@ -173,21 +181,19 @@ Special thank to [Bill](https://github.com/billmetangmo) for this version
 
 # Reference
 
-Please don't forget to cite this work :
+- PETREQUIN, G. et P. S WIGGERS. 2007, «La métalexicographie. Concours et perspectives
+d’une (sous-)discipline», L’Information Grammaticale, vol. 114, n o 1, doi :10.3406/
+igram.2007.4443, p. 7–10. URL http://www.persee.fr/doc/igram_0222-9838_2007_num_114_1_4443.
 
-```latex
+- CORBIN, P. et N. GASIGLIA. 2016a, « Structurations formelle et conceptuelle des articles
+de dictionnaires : panorama des moyens utilisables pour codifier leurs contenus, à par-
+tir de l’exemple de dictionnaires Larousse », in R. Coluccia, J. Brincat, M. Joseph & F.
+Möhren éds, Actes du XXVIIe Congrès international de linguistique et de philologie ro-
+manes (Nancy, 15-20 juillet 2013, no 17, p. 143–155. URL http://www.atilf.fr/cilpr2013/actes/section-5/CILPR-2013-5-Corbin-Gasiglia.pdf.
 
-    @article{Mboning-Elvis,
-        title  = {Quand le TAL s'empare de la métalexicographie : conception d'un outil pour le métalexicographe},
-        author = {Mboning, Elvis},
-        url    = {https://github.com/Levis0045/MetaLex-vagrant},
-        date   = {2017-06-20},
-        shool  = {Université de Lille 3},
-        year   = {2017},
-        pages  = {12},
-        keywords = {métalexicographie, TAL, fouille de données, extraction d'information, lecture optique, lexicographie, Xmlisation, DTD}
-    }
-    
-```
+- MASLINSKY, K. 2014, «Daba : a model and tools for Manding corpora», URL https://publications.hse.ru/en/chapters/146893702 .
 
+- PRUVOST, J. 2004, « Du lexicographe Pierre Larousse (XIX e s.) à la maison Larousse (XXe -XXIe s.) », Revue internationnal de lexicographie, vol. 25, n o 2, p. 39–54.
+
+- QUEMADA, B. 1990, «Lexicographie», In Lexikon der Romanistischen Linguistik, vol. 1, no 156, p. 9–29.
 
