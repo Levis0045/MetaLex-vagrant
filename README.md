@@ -28,8 +28,8 @@ or see [MetaLex-vagrant/v1.0](https://github.com/Levis0045/MetaLex-vagrant/tree/
 ```
     1- Scanning of printed materials (Scan) and enhance its qualities
     2- Optical reading of the pictures (Ocrisation) = extract articles content
-    3- Manual Error Corrections  of text articles                   
-    4- Marking of the articles with regular standard                 
+    3- Manual Error Corrections  of text articles
+    4- Marking of the articles with regular standard
     5- Metalexographical analysis / decryption of articles
 ```
 
@@ -181,19 +181,19 @@ Special thank to [Bill](https://github.com/billmetangmo) for this version
 
 # Reference
 
-Please don't forget to cite this work :
+- PETREQUIN, G. et P. S WIGGERS. 2007, «La métalexicographie. Concours et perspectives
+d’une (sous-)discipline», L’Information Grammaticale, vol. 114, n o 1, doi :10.3406/
+igram.2007.4443, p. 7–10. URL http://www.persee.fr/doc/igram_0222-9838_2007_num_114_1_4443.
 
-```latex
+- CORBIN, P. et N. GASIGLIA. 2016a, « Structurations formelle et conceptuelle des articles
+de dictionnaires : panorama des moyens utilisables pour codifier leurs contenus, à par-
+tir de l’exemple de dictionnaires Larousse », in R. Coluccia, J. Brincat, M. Joseph & F.
+Möhren éds, Actes du XXVIIe Congrès international de linguistique et de philologie ro-
+manes (Nancy, 15-20 juillet 2013, no 17, p. 143–155. URL http://www.atilf.fr/cilpr2013/actes/section-5/CILPR-2013-5-Corbin-Gasiglia.pdf.
 
-    @article{Mboning-Elvis,
-        title  = {Quand le TAL s'empare de la métalexicographie : conception d'un outil pour le métalexicographe},
-        author = {Mboning, Elvis},
-        url    = {https://github.com/Levis0045/MetaLex-vagrant},
-        date   = {2017-06-20},
-        shool  = {Université de Lille 3},
-        year   = {2017},
-        pages  = {12},
-        keywords = {métalexicographie, TAL, fouille de données, extraction d'information, lecture optique, lexicographie, Xmlisation, DTD}
-    }
+- MASLINSKY, K. 2014, «Daba : a model and tools for Manding corpora», URL https://publications.hse.ru/en/chapters/146893702 .
 
-```
+- PRUVOST, J. 2004, « Du lexicographe Pierre Larousse (XIX e s.) à la maison Larousse (XXe -XXIe s.) », Revue internationnal de lexicographie, vol. 25, n o 2, p. 39–54.
+
+- QUEMADA, B. 1990, «Lexicographie», In Lexikon der Romanistischen Linguistik, vol. 1, no 156, p. 9–29.
+
