@@ -55,7 +55,7 @@ touch ~/.bash_profile
 sudo apt-get -y install docker.io
 sudo systemctl start docker
 sudo usermod -aG docker ubuntu
-sudo docker run -d -t --net=host --rm -v ~:/root -v /:/mnt/fs coderaiser/cloudcmd
+sudo docker run -d -t --net=host --rm -v ~:/root -v /:/mnt/fs -v /vagrant:/vagrant coderaiser/cloudcmd
 
 cat <<EOF >> ~/.bash_profile
 parse_git_branch() {
