@@ -21,7 +21,7 @@ MarkupSafe==1.0
 mccabe==0.6.1
 olefile==0.44
 PIL==1.1.7
-Pillow==4.3.0
+Pillow==6.2.0
 Pygments==2.2.0
 pylint==1.7.4
 pytz==2017.2
